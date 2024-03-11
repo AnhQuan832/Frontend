@@ -1,0 +1,38 @@
+<div class="container" [formGroup]="addSubCategoryForm">
+    <span class="p-float-label">
+        <h6 class="addressLabel ps-0">Category</h6>
+        <div class="d-flex gap-2">
+            <div class="w-100">
+                <p-dropdown
+                    [options]="categoryOption"
+                    optionLabel="name"
+                    [autoDisplayFirst]="false"
+                    formControlName="category"
+                >
+                </p-dropdown>
+            </div>
+        </div>
+    </span>
+    <div class="d-flex flex-column w-100">
+        <span class="p-float-label">
+            <h6 class="addressLabel ps-0">Name</h6>
+            <input
+                class="inputtext ps-1 w-100"
+                type="text"
+                pInputText
+                formControlName="name"
+            />
+        </span>
+    </div>
+    <div class="button-group d-flex justify-content-center mt-2">
+        <button
+            type="submit"
+            class="btn btn-primary text-nowrap"
+            [disabled]="addSubCategoryForm.invalid"
+            (click)="addNewSubCategory()"
+        >
+            Add Sub-Category
+        </button>
+    </div>
+</div>
+<p-toast key="toast"></p-toast>

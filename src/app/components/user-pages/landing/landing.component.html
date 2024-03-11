@@ -1,0 +1,229 @@
+<main>
+  <article>
+    <!--
+        - #HERO
+      -->
+
+    <section
+      class="section hero has-bg-image"
+      id="home"
+      aria-label="home"
+      style="background-image: url('assets/imgs/hero-banner.jpg')"
+    >
+      <div class="container">
+        <h1 class="h1 hero-title">
+          <span class="span">High Quality</span> Pet Food
+        </h1>
+
+        <p class="hero-text">Up to 40% Discount</p>
+
+        <!-- <button href="#" class="btn btn-secondary">Shop Now</button> -->
+      </div>
+    </section>
+
+    <!--
+        - #CATEGORY
+      -->
+
+    <section class="section category" aria-label="category">
+      <div class="container mx-auto">
+        <h2 class="section-title mx-auto">Top categories</h2>
+
+        <ul class="has-scrollbar">
+          <li class="scrollbar-item">
+            <div class="category-card">
+              <figure class="card-banner img-holder">
+                <img
+                  src="assets/imgs/category-1.jpg"
+                  width="330"
+                  height="300"
+                  loading="lazy"
+                  alt="Cat Food"
+                  class="img-cover"
+                />
+              </figure>
+
+              <h3 class="h3">
+                <a href="#" class="card-title">Cat Food</a>
+              </h3>
+            </div>
+          </li>
+
+          <li class="scrollbar-item">
+            <div class="category-card">
+              <figure class="card-banner img-holder">
+                <img
+                  src="assets/imgs/category-2.jpg"
+                  width="330"
+                  height="300"
+                  loading="lazy"
+                  alt="Cat Toys"
+                  class="img-cover"
+                />
+              </figure>
+
+              <h3 class="h3">
+                <a href="#" class="card-title">Cat Toys</a>
+              </h3>
+            </div>
+          </li>
+
+          <li class="scrollbar-item">
+            <div class="category-card">
+              <figure class="card-banner img-holder">
+                <img
+                  src="assets/imgs/category-3.jpg"
+                  width="330"
+                  height="300"
+                  loading="lazy"
+                  alt="Dog Food"
+                  class="img-cover"
+                />
+              </figure>
+
+              <h3 class="h3">
+                <a href="#" class="card-title">Dog Food</a>
+              </h3>
+            </div>
+          </li>
+
+          <li class="scrollbar-item">
+            <div class="category-card">
+              <figure class="card-banner img-holder">
+                <img
+                  src="assets/imgs/category-4.jpg"
+                  width="330"
+                  height="300"
+                  loading="lazy"
+                  alt="Dog Toys"
+                  class="img-cover"
+                />
+              </figure>
+
+              <h3 class="h3">
+                <a href="#" class="card-title">Dog Toys</a>
+              </h3>
+            </div>
+          </li>
+
+          <li class="scrollbar-item">
+            <div class="category-card">
+              <figure class="card-banner img-holder">
+                <img
+                  src="assets/imgs/category-5.jpg"
+                  width="330"
+                  height="300"
+                  loading="lazy"
+                  alt="Dog Sumpplements"
+                  class="img-cover"
+                />
+              </figure>
+
+              <h3 class="h3">
+                <a href="#" class="card-title">Sumpplements</a>
+              </h3>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!--
+        - #OFFERS
+      -->
+
+    <!--
+        - #PRODUCT
+      -->
+
+    <section class="section mt-4 product" id="shop" aria-label="product">
+      <div class="container mx-auto">
+        <h2 class="h2 section-title">Best Seller</h2>
+
+        <ul class="grid-list">
+          <li
+            *ngFor="let item of mostProd"
+            style="cursor: pointer"
+            (click)="onProdClick(item.productId)"
+          >
+            <div class="product-card">
+              <div
+                class="card-banner img-holder"
+                style="--width: 360; --height: 360"
+              >
+                <img
+                  width="360"
+                  [src]="item.images[0]"
+                  height="360"
+                  loading="lazy"
+                  alt="Commodo leo sed porta"
+                  class="img-cover default"
+                />
+              </div>
+
+              <div class="card-content">
+                <!-- <div class="wrapper">
+                  <div class="rating-wrapper"></div>
+
+                  <span class="span">(1)</span>
+                </div> -->
+
+                <h3 class="h3">
+                  <a href="#" class="card-title">{{ item.name }}</a>
+                </h3>
+
+                <data class="card-price" value="15">{{
+                  item.price | currency : "VND"
+                }}</data>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!--
+        - #SERVICE
+      -->
+
+    <!--
+        - #CTA
+      -->
+
+    <section
+      class="cta has-bg-image"
+      aria-label="cta"
+      style="background-image: url('assets/imgs/cta-bg.jpg')"
+    >
+      <div class="container mx-auto">
+        <figure class="cta-banner">
+          <img
+            src="assets/imgs/cta-banner.png"
+            width="900"
+            height="660"
+            loading="lazy"
+            alt="cat"
+            class="w-100"
+          />
+        </figure>
+
+        <div class="cta-content">
+          <h2 class="h2 section-title">
+            Taste it, love it or we’ll replace it… Guaranteed!
+          </h2>
+
+          <p class="section-text">
+            At Petio, we believe your dog and cat will love their food so much
+            that if they don’t … we’ll help you find a replacement. That’s our
+            taste guarantee.
+          </p>
+
+          <a href="#" class="btn">Find out more</a>
+        </div>
+      </div>
+    </section>
+
+    <!--
+    - #FOOTER
+  --></article>
+</main>

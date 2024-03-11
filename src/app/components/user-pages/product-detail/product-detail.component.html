@@ -1,0 +1,252 @@
+<div
+  *ngIf="isLoading"
+  class="loading w-100 h-100 position-absolute d-flex d-flex justify-content-center align-items-center flex-column gap-2 bg-body rounded-3 z-3"
+>
+  <div class="spinner-border" role="status">
+    <span class="sr-only"></span>
+  </div>
+  <p style="opacity: 0.7">Loading</p>
+</div>
+<div class="container p-4" *ngIf="!isLoading">
+  <div class="info d-flex gap-4">
+    <p-galleria
+      [value]="product?.images"
+      [showItemNavigatorsOnHover]="true"
+      [showItemNavigators]="true"
+      [containerStyle]="{ 'max-width': '640px', 'min-height': '500px' }"
+    >
+      <ng-template pTemplate="item" let-item>
+        <img
+          [src]="item"
+          style="
+            width: 80%;
+            display: block;
+            padding-bottom: 10px;
+            min-height: 300px;
+            object-fit: cover;
+            border-radius: 5px;
+          "
+        />
+      </ng-template>
+      <ng-template pTemplate="thumbnail" let-item>
+        <div class="grid grid-nogutter justify-content-center">
+          <img [src]="item" class="h-100" style="display: block; width: 20%" />
+        </div>
+      </ng-template>
+    </p-galleria>
+
+    <div class="product-info col-6">
+      <div class="basic-info ps-4">
+        <div class="product-name d-flex">
+          <h1 class="py-2 mb-0">{{ product?.name }}</h1>
+        </div>
+        <div class="product-rating">
+          <p-rating
+            [(ngModel)]="product.avgRating"
+            [readonly]="true"
+            [cancel]="false"
+          ></p-rating>
+        </div>
+
+        <h5 class="mt-2">{{ attPrice | currency : "VND" }}</h5>
+        <div class="size attribute">
+          <h5 class="mb-0 mt-1"><b [style.width.px]="80">Brand:</b></h5>
+          <h5 class="mb-0 mt-1">{{ product?.brand.name }}</h5>
+        </div>
+
+        <div class="size attribute" *ngIf="listSize.length > 0">
+          <h5 class="mt-2"><b>Size</b></h5>
+          <div
+            class="size"
+            *ngFor="let size of listSize"
+            [id]="size.attributeId"
+            [ngClass]="{ disabled: !size.active }"
+            (click)="size.active ? onAttribute($event, size, 'size') : null"
+          >
+            {{ size.name }}
+          </div>
+        </div>
+        <div class="color attribute" *ngIf="listColor.length > 0">
+          <h5 class="mt-2"><b>Color</b></h5>
+
+          <div
+            class="color"
+            *ngFor="let color of listColor"
+            [id]="color.attributeId"
+            [ngClass]="{ disabled: !color.active }"
+            (click)="color.active ? onAttribute($event, color, 'color') : null"
+          >
+            {{ color.name }}
+          </div>
+        </div>
+        <div class="size attribute" *ngIf="listSize.length > 0">
+          <h5 class="mt-2"><b>Amount</b></h5>
+          <p-inputNumber
+            [(ngModel)]="numberOfProduct"
+            [showButtons]="true"
+            buttonLayout="horizontal"
+            inputId="horizontal"
+            spinnerMode="horizontal"
+            [step]="1"
+            incrementButtonIcon="pi pi-plus"
+            decrementButtonIcon="pi pi-minus"
+            [min]="0"
+            [max]="selectedVariety.stockAmount || 0"
+            (onInput)="onChangeQty($event)"
+          ></p-inputNumber>
+          <small *ngIf="isDisableBuy" class="text-danger w-100"
+            >Over stock</small
+          >
+        </div>
+      </div>
+
+      <div class="button-group pt-4 ps-4 d-flex gap-2">
+        <button
+          [disabled]="!numberOfProduct"
+          class="btn btn-primary"
+          (click)="buyNow()"
+        >
+          Buy now
+        </button>
+        <button
+          [disabled]="!numberOfProduct"
+          class="btn btn-secondary"
+          (click)="addToCart()"
+        >
+          Add to cart
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="product.description" class="detail-status pt-4">
+    <div class="card p-4 my-4">
+      <h5><b>Detail</b></h5>
+      <span>{{ product.description }}</span>
+    </div>
+  </div>
+
+  <div class="card detail-status p-4 mt-">
+    <div class="inline-flex align-items-center">
+      <h5><b>Review</b></h5>
+      <div class="list-review" *ngFor="let rv of product.ratingList">
+        <div class="info d-flex align-items-start">
+          <img
+            width="50px"
+            class="me-2"
+            src="{{ product.images[0] || rv.userAvatar }}"
+            onerror="this.onerror=null;this.src='/assets/imgs/no_user.png';"
+            alt=""
+          />
+          <span class="d-flex flex-column">
+            <p style="font-size: 0.75rem" class="m-0">
+              {{ rv.userFirstName }} {{ rv.userLastName }} |
+              {{ rv.date | date : "dd/MM/yyyy" }}
+            </p>
+            <span
+              ><p-rating
+                [(ngModel)]="rv.score"
+                [cancel]="false"
+                [readonly]="true"
+              ></p-rating
+            ></span>
+            <p class="mt-2 ps-2 mb-0">{{ rv.message }}</p>
+          </span>
+        </div>
+        <hr />
+      </div>
+    </div>
+  </div>
+
+  <section class="section my-4 product" id="shop" aria-label="product">
+    <div class="container mx-auto">
+      <h2 class="h2 section-title">Best Seller</h2>
+
+      <ul class="grid-list d-flex gap-4">
+        <li
+          *ngFor="let item of mostBuy"
+          style="cursor: pointer"
+          (click)="onProdClick(item)"
+        >
+          <div class="product-card">
+            <div
+              class="card-banner img-holder"
+              style="--width: 360; --height: 360"
+            >
+              <img
+                width="120px"
+                [src]="item.images[0]"
+                height="120px"
+                loading="lazy"
+                alt="Commodo leo sed porta"
+                class="img-cover default"
+              />
+            </div>
+
+            <div class="card-content">
+              <!-- <div class="wrapper">
+                  <div class="rating-wrapper"></div>
+
+                  <span class="span">(1)</span>
+                </div> -->
+
+              <h5>
+                {{ item.name }}
+              </h5>
+
+              <p class="card-price" value="15">
+                {{ item.price | currency : "VND" }}
+              </p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+  <section class="section my-4 product" id="shop" aria-label="product">
+    <div class="container mx-auto">
+      <h2 class="h2 section-title">Most View</h2>
+
+      <ul class="grid-list d-flex gap-4">
+        <li
+          *ngFor="let item of mostProd"
+          style="cursor: pointer"
+          (click)="onProdClick(item)"
+        >
+          <div class="product-card">
+            <div
+              class="card-banner img-holder"
+              style="--width: 360; --height: 360"
+            >
+              <img
+                width="120px"
+                [src]="item.images[0]"
+                height="120px"
+                loading="lazy"
+                alt="Commodo leo sed porta"
+                class="img-cover default"
+              />
+            </div>
+
+            <div class="card-content">
+              <!-- <div class="wrapper">
+                  <div class="rating-wrapper"></div>
+
+                  <span class="span">(1)</span>
+                </div> -->
+
+              <h5>
+                {{ item.name }}
+              </h5>
+
+              <p class="card-price" value="15">
+                {{ item.price | currency : "VND" }}
+              </p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<p-toast key="toast"></p-toast>

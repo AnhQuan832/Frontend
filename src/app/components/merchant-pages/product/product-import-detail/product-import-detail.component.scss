@@ -1,0 +1,10 @@
+:host::ng-deep {
+    .p-dropdown,
+    .p-multiselect,
+    .p-inputtext {
+        width: 100%;
+    }
+}
+.container {
+    width: 500px;
+}

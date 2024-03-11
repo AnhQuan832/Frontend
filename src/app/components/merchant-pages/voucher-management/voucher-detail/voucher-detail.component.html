@@ -1,0 +1,100 @@
+<div class="container" [formGroup]="addVoucherForm">
+    <span class="p-float-label mt-2">
+        <h6 class="addressLabel ps-0">Voucher Type</h6>
+        <div class="d-flex gap-2">
+            <div class="w-100">
+                <p-dropdown
+                    [options]="voucherOption"
+                    optionValue="id"
+                    optionLabel="name"
+                    [autoDisplayFirst]="false"
+                    formControlName="type"
+                >
+                </p-dropdown>
+            </div>
+        </div>
+    </span>
+    <div class="grid-2">
+        <div class="d-flex flex-column w-100">
+            <span class="p-float-label mt-2">
+                <h6 class="addressLabel ps-0">Value</h6>
+                <p-inputNumber
+                    *ngIf="addVoucherForm.value.type === 'FLAT'"
+                    class="inputtext ps-1 w-100"
+                    formControlName="value"
+                    mode="decimal"
+                    mode="currency"
+                    currency="VND"
+                    locale="jp-JP"
+                >
+                </p-inputNumber>
+                <p-inputNumber
+                    *ngIf="addVoucherForm.value.type !== 'FLAT'"
+                    class="inputtext ps-1 w-100"
+                    formControlName="value"
+                    mode="decimal"
+                    max="100"
+                    suffix=" %"
+                >
+                </p-inputNumber>
+            </span>
+        </div>
+        <div class="d-flex flex-column w-100">
+            <span class="p-float-label mt-2">
+                <h6 class="addressLabel ps-0">
+                    Price <small>(Member point)</small>
+                </h6>
+                <p-inputNumber
+                    class="inputtext ps-1 w-100"
+                    formControlName="price"
+                    min="0"
+                    locale="jp-JP"
+                ></p-inputNumber>
+            </span>
+        </div>
+        <div
+            class="d-flex flex-column w-100"
+            *ngIf="addVoucherForm.value.type !== 'FLAT'"
+        >
+            <span class="p-float-label mt-2">
+                <h6 class="addressLabel ps-0">Max Discount Value</h6>
+                <p-inputNumber
+                    class="inputtext ps-1 w-100"
+                    formControlName="maxValue"
+                    mode="decimal"
+                    mode="currency"
+                    min="0"
+                    currency="VND"
+                    locale="jp-JP"
+                >
+                </p-inputNumber>
+            </span>
+        </div>
+        <div class="d-flex flex-column w-100">
+            <span class="p-float-label mt-2">
+                <h6 class="addressLabel ps-0">Min Invoice</h6>
+                <p-inputNumber
+                    class="inputtext ps-1 w-100"
+                    formControlName="minInvoiceValue"
+                    mode="decimal"
+                    mode="currency"
+                    min="0"
+                    currency="VND"
+                    locale="jp-JP"
+                >
+                </p-inputNumber>
+            </span>
+        </div>
+    </div>
+    <div class="button-group d-flex justify-content-center mt-4">
+        <button
+            type="submit"
+            class="btn btn-primary text-nowrap"
+            [disabled]="addVoucherForm.invalid"
+            (click)="addNewVoucher()"
+        >
+            {{ this.model ? "Update" : "Create new Voucher" }}
+        </button>
+    </div>
+</div>
+<p-toast key="toast"></p-toast>

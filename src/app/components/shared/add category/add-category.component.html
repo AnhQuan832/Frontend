@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="d-flex flex-column w-100">
+        <span class="p-float-label">
+            <h6 class="addressLabel ps-0">Name</h6>
+
+            <input
+                class="inputtext ps-1 w-100"
+                type="text"
+                pInputText
+                [(ngModel)]="name"
+            />
+        </span>
+    </div>
+    <div class="button-group d-flex justify-content-center mt-2">
+        <button
+            type="submit"
+            class="btn btn-primary text-nowrap"
+            (click)="addNewCategory()"
+        >
+            Create new Category
+        </button>
+    </div>
+</div>
+<p-toast key="toast"></p-toast>

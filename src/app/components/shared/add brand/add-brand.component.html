@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="d-flex flex-column w-100">
+        <span class="p-float-label">
+            <h6 class="addressLabel ps-0">Logo</h6>
+            <img *ngIf="imgUrl" class="mx-auto" [src]="imgUrl" alt="" />
+            <input
+                class="ps-1 w-100"
+                type="file"
+                (change)="selectImages($event)"
+            />
+        </span>
+    </div>
+    <div class="d-flex flex-column w-100">
+        <span class="p-float-label">
+            <h6 class="addressLabel ps-0">Name</h6>
+
+            <input
+                class="inputtext ps-1 w-100"
+                pInputText
+                type="text"
+                [(ngModel)]="brand.name"
+            />
+        </span>
+    </div>
+    <div class="button-group d-flex justify-content-center mt-2">
+        <button
+            type="submit"
+            class="btn btn-primary text-nowrap"
+            (click)="addNewBrand()"
+        >
+            Create new Brand
+        </button>
+    </div>
+</div>
+<p-toast key="toast"></p-toast>

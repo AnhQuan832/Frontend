@@ -1,0 +1,135 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button
+                            pButton
+                            pRipple
+                            label="New"
+                            icon="pi pi-plus"
+                            class="p-button-success mr-2"
+                            (click)="openAddVoucher()"
+                        ></button>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table
+                #dt
+                [value]="listVoucher"
+                responsiveLayout="scroll"
+                [rows]="10"
+                [globalFilterFields]="[
+                    'type',
+                    'createdDate',
+                    'value',
+                    'price',
+                    'maxValue',
+                    'minInvoiceValue'
+                ]"
+                [paginator]="true"
+                [rowsPerPageOptions]="[10, 20, 30]"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [(selection)]="selectedVouchers"
+                selectionMode="multiple"
+                [rowHover]="true"
+                dataKey="voucherId"
+            >
+                <ng-template pTemplate="caption">
+                    <div
+                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+                    >
+                        <h5 class="m-0">Manage Voucher</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input
+                                pInputText
+                                type="text"
+                                (input)="onGlobalFilter(dt, $event)"
+                                placeholder="Search..."
+                                class="w-full sm:w-auto"
+                            />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <!-- <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th> -->
+                        <th [width]="'20%'" pSortableColumn="type">
+                            Type
+                            <p-sortIcon field="type"></p-sortIcon>
+                        </th>
+                        <th [width]="'20%'" pSortableColumn="createdDate">
+                            Created Date
+                            <p-sortIcon field="createdDate"></p-sortIcon>
+                        </th>
+
+                        <th [width]="'20%'" pSortableColumn="value">
+                            Value <p-sortIcon field="value"></p-sortIcon>
+                        </th>
+                        <th [width]="'20%'" pSortableColumn="price">
+                            Price <p-sortIcon field="price"></p-sortIcon>
+                        </th>
+                        <th [width]="'20%'" pSortableColumn="maxValue">
+                            Max value <p-sortIcon field="maxValue"></p-sortIcon>
+                        </th>
+
+                        <th [width]="'20%'" pSortableColumn="minInvoiceValue">
+                            Min Invoice value
+                            <p-sortIcon field="minInvoiceValue"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr
+                        style="cursor: pointer"
+                        (click)="openAddVoucher(product)"
+                    >
+                        <!-- <td>
+                            <p-tableCheckbox
+                                [value]="product"
+                                (click)="($event.stopPropagation)"
+                            ></p-tableCheckbox>
+                        </td> -->
+
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Type</span>
+                            {{ product.type }}
+                        </td>
+
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Create Date</span>
+                            {{ product.createdDate | date : "dd/MM/yyyy" }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Value</span>
+                            {{
+                                product.type === "FLAT"
+                                    ? (product.value | currency : "VND")
+                                    : product.value + "%"
+                            }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Price</span>
+                            {{ product.price | currency : "VND" }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Max vale</span>
+                            {{ product.maxValue | currency : "VND" }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Min invoice</span>
+                            {{ product.minInvoiceValue | currency : "VND" }}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+<p-toast key="toast"></p-toast>

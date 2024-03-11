@@ -1,0 +1,260 @@
+<div
+  class="check-out d-flex p-4 gap-4"
+  [formGroup]="checkOutForm"
+  style="min-height: 65vh"
+>
+  <div class="col-7 p-4 card">
+    <h3>Pescue Shop</h3>
+    <div class="personal">
+      <span>
+        <h6 class="mt-1">Name</h6>
+        <input
+          class="inputtext w-100 ps-2 form-control"
+          formControlName="recipientName"
+          pInputText
+        />
+      </span>
+      <span>
+        <h6 class="mt-1">Phone</h6>
+        <input
+          class="inputtext w-100 ps-2 form-control"
+          formControlName="phoneNumber"
+          pInputText
+        />
+      </span>
+
+      <span class="mt-2">
+        <h6 class="mt-1">Email</h6>
+        <input
+          class="inputtext w-100 ps-2 form-control"
+          formControlName="userEmail"
+          pInputText
+        />
+      </span>
+      <span class="mt-2">
+        <h6 class="mt-1">Payment Type</h6>
+        <p-dropdown
+          [options]="paymentType"
+          optionLabel="name"
+          optionValue="id"
+          class="w-100"
+          formControlName="paymentType"
+        />
+      </span>
+    </div>
+    <span class="my-2">
+      <h6 class="mt-3"><i class="bi bi-geo-alt"></i> Address</h6>
+      <div class="my-1 field-checkbox" *ngFor="let item of listAddress">
+        <p-radioButton
+          name="item"
+          [value]="item"
+          [ngModelOptions]="{ standalone: true }"
+          [(ngModel)]="selectedAdd"
+          [inputId]="item.addressId"
+          (ngModelChange)="changeAdd()"
+        ></p-radioButton>
+        <label [for]="item.addressId" class="ms-2 position-relative">
+          {{ item.streetName }}, {{ item.wardName }}, {{ item.districtName }},
+          {{ item.cityName }}.
+        </label>
+      </div>
+    </span>
+    <div
+      *ngIf="isAddNewAddress"
+      class="address-container personal my-2"
+      formGroupName="address"
+    >
+      <span class="p-float-label w-100">
+        <h6 class="mt-1 p-1 ps-0">Street</h6>
+        <input
+          class="inputtext ps-1 w-100"
+          type="text"
+          formControlName="streetName"
+        />
+      </span>
+      <span class="p-float-label w-100">
+        <h6 class="mt-1 p-1 ps-0">Province/ City</h6>
+        <p-dropdown
+          [options]="listProvince"
+          [filter]="true"
+          [autoDisplayFirst]="false"
+          optionLabel="provName"
+          filterBy="provName"
+          [ngModelOptions]="{ standalone: true }"
+          [(ngModel)]="selectedProvince"
+          (onChange)="provinceSelectedChange($event.value)"
+        >
+        </p-dropdown>
+      </span>
+      <span class="p-float-label w-100">
+        <h6 class="mt-1 p-1 ps-0">District</h6>
+        <p-dropdown
+          [filter]="true"
+          [autoDisplayFirst]="false"
+          optionLabel="distName"
+          filterBy="distName"
+          [options]="listDistrict"
+          [ngModelOptions]="{ standalone: true }"
+          [(ngModel)]="selectedDistrict"
+          (onChange)="districtSelectedChange($event.value)"
+        >
+        </p-dropdown>
+      </span>
+      <span class="p-float-label w-100">
+        <h6 class="mt-1 p-1 ps-0">Ward</h6>
+        <p-dropdown
+          [options]="listWard"
+          [ngModelOptions]="{ standalone: true }"
+          [(ngModel)]="selectedWard"
+          [autoDisplayFirst]="false"
+          filterBy="wardName"
+          optionLabel="wardName"
+          (onChange)="wardSelectChange($event.value)"
+        >
+        </p-dropdown>
+      </span>
+    </div>
+    <p-button
+      label="Add address"
+      styleClass="p-button-outlined"
+      class="rounded-2"
+      (onClick)="onAddress()"
+    ></p-button>
+    <span *ngIf="selectedWard || selectedAdd" class="p-float-label">
+      <h6 class="mt-2 p-1 ps-0">Shipping Serive</h6>
+      <div class="d-flex align-items-center" *ngFor="let item of shipService">
+        <div *ngIf="item.price > 0">
+          <p-radioButton
+            [value]="item"
+            [ngModelOptions]="{ standalone: true }"
+            [(ngModel)]="selectedShipping"
+            inputId="{{ item.service_type_id }}"
+          ></p-radioButton>
+          <label
+            for="{{ item.service_type_id }}"
+            class="ms-2 position-relative"
+          >
+            {{ item.name }} ({{ item.price | currency : "VND" }})</label
+          >
+        </div>
+      </div>
+    </span>
+  </div>
+  <div *ngIf="cartItem" class="col-5 card p-4">
+    <div class="items">
+      <div
+        *ngFor="let item of cartItem"
+        class="d-flex justify-content-between align-items-center"
+      >
+        <div
+          class="item-name d-flex justify-content-start align-items-center gap-4"
+        >
+          <img width="60px" [src]="item?.image || item?.images[0]" alt="" />
+          <h6>{{ item.name }}</h6>
+          <h6>x{{ item.quantity }}</h6>
+        </div>
+        <p>{{ item?.totalItemPrice || item?.price | currency : "VND" }}</p>
+      </div>
+    </div>
+    <p-divider
+      *ngIf="voucherOption.length"
+      type="solid"
+      class="my-4"
+    ></p-divider>
+    <div *ngIf="voucherOption.length" class="voucher">
+      <span class="my-4">
+        <h6>Voucher</h6>
+        <!-- <input class="inputtext w-50 ps-2 mt-0 form-control" name="emailInput" type="email" pInputText /> -->
+        <div
+          class="d-flex align-items-center gap-2 field-checkbox"
+          *ngFor="let item of voucherOption"
+        >
+          <p-radioButton
+            name="item"
+            [value]="item"
+            [ngModelOptions]="{ standalone: true }"
+            [(ngModel)]="selectedVoucher"
+            [inputId]="item.voucherId"
+            [disabled]="item.minInvoiceValue > totalPrice"
+            (ngModelChange)="voucherChange()"
+          ></p-radioButton>
+          <label
+            [for]="item.voucherId"
+            class="ms-2 position-relative d-flex flex-column justify-content-start"
+            [ngClass]="{ disabled: item.minInvoiceValue > totalPrice }"
+          >
+            <p class="mb-0">
+              <b>Discount:</b>
+              {{
+                item.type === "FLAT"
+                  ? (item.value | currency : "VND")
+                  : item.value +
+                    "%" +
+                    "   (max:     " +
+                    (item.maxValue | currency : "VND") +
+                    ")"
+              }}
+            </p>
+            <p class="mb-2">
+              <b>Min order value:</b>
+              {{ item.minInvoiceValue | currency : "VND" }}
+            </p>
+          </label>
+        </div>
+      </span>
+    </div>
+    <p-divider type="solid" class="my-4"></p-divider>
+    <div class="shipping">
+      <span class="d-flex justify-content-between">
+        <h6>Order Payment</h6>
+        <h6>
+          {{
+            totalPrice || cartItem[0]?.price * cartItem[0]?.quantity
+              | currency : "VND"
+          }}
+        </h6>
+      </span>
+      <span class="d-flex justify-content-between">
+        <h6>Shipping Fee</h6>
+        <h6>
+          {{
+            selectedShipping?.price || shipService[0].price | currency : "VND"
+          }}
+        </h6>
+      </span>
+      <span class="d-flex justify-content-between">
+        <h6>Discount</h6>
+        <h6>
+          {{ -discount || 0 | currency : "VND" }}
+        </h6>
+      </span>
+    </div>
+    <p-divider type="solid" class="my-2"></p-divider>
+    <span class="d-flex justify-content-between">
+      <h6>Total</h6>
+      <h6>
+        {{
+          (shipService[0].price || selectedShipping?.price) +
+            totalPrice -
+            discount ||
+            (shipService[0].price || selectedShipping?.price) +
+              cartItem[0]?.price * cartItem[0]?.quantity -
+              discount | currency : "VND"
+        }}
+      </h6>
+    </span>
+    <button
+      class="btn btn-primary mt-2 mx-auto"
+      [disabled]="
+        !checkOutForm.value.phoneNumber ||
+        !checkOutForm.value.recipientName ||
+        (!selectedAdd && isLogin)
+      "
+      (click)="onCheckOut()"
+    >
+      Place Order
+    </button>
+  </div>
+</div>
+
+<p-toast key="toast"></p-toast>

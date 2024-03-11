@@ -1,0 +1,16 @@
+:host::ng-deep {
+    .p-dropdown,
+    input,
+    .p-inputnumber-input {
+        width: 100%;
+    }
+    h6 {
+        margin-bottom: 0.25rem;
+    }
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 2fr);
+    gap: 16px;
+}

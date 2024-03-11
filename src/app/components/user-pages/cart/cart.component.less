@@ -1,0 +1,27 @@
+.p-button {
+  border-radius: 5px;
+  border: none;
+  background-color: rgb(216, 22, 22);
+  color: #fff;
+}
+
+:host::ng-deep .num-product {
+  input {
+    border-radius: 0;
+    width: 40px;
+    text-align: center;
+    border-left: 0;
+    border-right: 0;
+    &:focus {
+      border-color: #161616;
+    }
+  }
+  .p-button {
+    border: solid 1px #161616;
+    background-color: #fff;
+    span {
+      color: #161616;
+      border: none;
+    }
+  }
+}

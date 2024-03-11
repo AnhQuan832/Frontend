@@ -1,0 +1,189 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <form class="container ps-4" [formGroup]="addProductForm">
+                <div class="d-flex flex-column w-100">
+                    <span class="p-float-label col-11">
+                        <h6 class="addressLabel ps-0">Name</h6>
+                        <input
+                            type="text"
+                            pInputText
+                            class="w-full"
+                            formControlName="name"
+                        />
+                    </span>
+                    <span class="p-float-label">
+                        <h6 class="addressLabel ps-3">Brand</h6>
+                        <div class="d-flex gap-2">
+                            <div class="col-11 pt-0">
+                                <p-dropdown
+                                    [options]="brandOption"
+                                    optionLabel="name"
+                                    [autoDisplayFirst]="false"
+                                    formControlName="brand"
+                                >
+                                </p-dropdown>
+                            </div>
+                            <div class="col-1 d-flex align-items-center pt-0">
+                                <i
+                                    class="bi bi-plus-circle-dotted"
+                                    (click)="onAddBrand()"
+                                    pTooltip="Add new Brand"
+                                ></i>
+                            </div>
+                        </div>
+                    </span>
+                    <span class="p-float-label">
+                        <h6 class="addressLabel ps-3">Category</h6>
+                        <div class="d-flex gap-2">
+                            <div class="col-11 pt-0">
+                                <p-dropdown
+                                    [options]="categoryOption"
+                                    optionLabel="name"
+                                    [autoDisplayFirst]="false"
+                                    formControlName="category"
+                                    (onChange)="onCategoryChange($event)"
+                                >
+                                </p-dropdown>
+                            </div>
+                            <div class="col-1 d-flex align-items-center pt-0">
+                                <i
+                                    class="bi bi-plus-circle-dotted"
+                                    (click)="onAddCategory()"
+                                    pTooltip="Add new Category"
+                                ></i>
+                            </div>
+                        </div>
+                    </span>
+                    <span class="p-float-label">
+                        <h6 class="addressLabel ps-3">Sub category</h6>
+                        <div class="d-flex gap-2">
+                            <div class="col-11 pt-0">
+                                <p-dropdown
+                                    [options]="subCategoryOption"
+                                    optionLabel="name"
+                                    [autoDisplayFirst]="false"
+                                    formControlName="subCategory"
+                                >
+                                </p-dropdown>
+                            </div>
+                            <div class="col-1 d-flex align-items-center pt-0">
+                                <i
+                                    class="bi bi-plus-circle-dotted"
+                                    (click)="onAddSubCategory()"
+                                    pTooltip="Add new Sub Category"
+                                ></i>
+                            </div>
+                        </div>
+                    </span>
+
+                    <span class="p-float-label col-11">
+                        <h6 class="addressLabel ps-0">
+                            Color <small>(Optional)</small>
+                        </h6>
+                        <div class="d-flex gap-2">
+                            <p-multiSelect
+                                class="w-100"
+                                [options]="attribute.COLOR"
+                                optionLabel="name"
+                                formControlName="color"
+                                display="chip"
+                            >
+                            </p-multiSelect>
+                        </div>
+                    </span>
+
+                    <span class="p-float-label col-11">
+                        <h6 class="addressLabel ps-0">
+                            Size <small>(Optional)</small>
+                        </h6>
+                        <div class="d-flex gap-2">
+                            <p-multiSelect
+                                class="w-100"
+                                [options]="attribute.SIZE"
+                                optionLabel="name"
+                                formControlName="size"
+                                display="chip"
+                            >
+                            </p-multiSelect>
+                        </div>
+                    </span>
+                    <span class="p-float-label col-11">
+                        <h6 class="addressLabel ps-0">Price</h6>
+                        <p-inputNumber
+                            formControlName="price"
+                            mode="currency"
+                            currency="VND"
+                            locale="jp-JP"
+                        >
+                        </p-inputNumber>
+                    </span>
+
+                    <span class="p-float-label col-11">
+                        <h6 class="addressLabel ps-0">Detail</h6>
+                        <textarea
+                            formControlName="detail"
+                            class="w-100"
+                            name=""
+                            id="textarea"
+                            pInputTextarea
+                            [autoResize]="true"
+                        ></textarea>
+                    </span>
+
+                    <span class="p-float-label col-11">
+                        <h6 class="addressLabel ps-0">Description</h6>
+                        <textarea
+                            formControlName="description"
+                            class="w-100"
+                            name=""
+                            id="textarea"
+                            pInputTextarea
+                            [autoResize]="true"
+                        ></textarea>
+                    </span>
+                </div>
+
+                <div class="pet-image col-11">
+                    <p-divider align="left">
+                        <div class="inline-flex align-items-center">
+                            <b>Product Image</b>
+                        </div>
+                    </p-divider>
+                    <div class="d-flex justify-content-center w-100">
+                        <p-fileUpload
+                            name="file[]"
+                            class="w-100 my-1"
+                            name="demo[]"
+                            chooseLabel="Select image"
+                            cancelLabel="Cancel"
+                            [showUploadButton]="false"
+                            [multiple]="true"
+                            [maxFileSize]="10000000"
+                            (onSelect)="onSelectFiles($event)"
+                            (onRemove)="onRemoveFile($event)"
+                        >
+                            <ng-template pTemplate="content">
+                                <!-- <ul *ngIf="uploadedFiles.length">
+            <li *ngFor="let file of uploadedFiles">
+              {{ file.name }} - {{ file.size }} bytes
+            </li>
+          </ul> -->
+                            </ng-template>
+                        </p-fileUpload>
+                    </div>
+                </div>
+                <div class="button-group d-flex justify-content-center mt-2">
+                    <button
+                        pButton
+                        pRipple
+                        label="Create new Product"
+                        type="submit"
+                        (click)="onAddProduct()"
+                        [disabled]="addProductForm.invalid || imgs.length == 0"
+                    ></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,423 @@
+<div
+    *ngIf="isLoading"
+    class="loading w-100 h-100 position-absolute d-flex d-flex justify-content-center align-items-center flex-column gap-2 bg-body z-3"
+>
+    <div class="spinner-border" role="status">
+        <span class="sr-only"></span>
+    </div>
+    <p style="opacity: 0.7">Loading</p>
+</div>
+
+<div class="container-fluid mt-4" *ngIf="!isLoading" style="min-height: 63vh">
+    <div class="row">
+        <!-- card-info -->
+        <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+            <div class="card card-profile p-4 shadow" [formGroup]="formGroup">
+                <div class="row justify-content-center">
+                    <div
+                        class="card-profile-image rounded-circle d-flex justify-content-center"
+                    >
+                        <img
+                            width="120px"
+                            height="120px"
+                            id="imgInput"
+                            src="{{ formGroup.value.userAvatar }}"
+                            onerror="this.onerror=null;this.src='/assets/imgs/no_user.png';"
+                            class="rounded-circle"
+                        />
+                    </div>
+                </div>
+                <div class="change-logo d-flex justify-content-center my-2">
+                    <!-- <button
+            (click)="avatarInput.click()"
+            style="width: fit-content; padding: 0.25rem 1.5rem"
+            class="btn btn-secondary"
+          >
+            Select avatar
+          </button> -->
+                    <input
+                        type="file"
+                        accept="image/png, image/jpeg"
+                        #avatarInput
+                        (change)="selectedAvatar($event)"
+                        style="display: none"
+                    />
+                </div>
+                <div class="pl-lg-4 position-relative px-4">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div>
+                                <h6>Email</h6>
+                                <input
+                                    class="w-100 rounded-2 p-2 mb-3"
+                                    type="text"
+                                    placeholder="Username"
+                                    formControlName="userEmail"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div>
+                                <h6>First Name</h6>
+                                <input
+                                    type="email"
+                                    class="w-100 rounded-2 p-2 mb-3"
+                                    id="input-email"
+                                    formControlName="userFirstName"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div>
+                                <h6>Last Name</h6>
+                                <input
+                                    type="email"
+                                    class="w-100 rounded-2 p-2 mb-3"
+                                    id="input-email"
+                                    formControlName="userLastName"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div>
+                                <h6>Phone number</h6>
+                                <input
+                                    type="text"
+                                    pattern="[0-9]+"
+                                    minlength="10"
+                                    maxlength="11"
+                                    class="w-100 rounded-2 p-2 mb-3"
+                                    placeholder="Enter your Phone number"
+                                    formControlName="userPhoneNumber"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div>
+                                <h6>Member point</h6>
+                                <input
+                                    type="text"
+                                    pattern="[0-9]+"
+                                    minlength="10"
+                                    maxlength="11"
+                                    class="w-100 rounded-2 p-2 mb-3"
+                                    formControlName="memberPoint"
+                                />
+                            </div>
+                        </div>
+                        <!-- <div class="col-lg-6">
+                <div>
+                  <span class="p-float-label">
+                    <h6 class="addressLabel ps-0">Giới tính</h6>
+                    <p-dropdown
+                      [options]="genderOptions"
+                      optionLabel="value"
+                      class="mb-3"
+                      [autoDisplayFirst]="false"
+                     formControlName="user.gender"
+                    >
+                    </p-dropdown>
+                  </span>
+                </div>
+              </div> -->
+
+                        <!-- <div class="col-lg-6">
+                <div>
+                  <span class="d-flex flex-column">
+                    <h6 class="addressLabel ps-0">Ngày sinh</h6>
+
+                    <p-calendar
+                     formControlName="dob"
+                      class="w-100 rounded-2 mb-3"
+                      [showIcon]="true"
+                      dateFormat="dd/mm/yy"
+                    ></p-calendar>
+                  </span>
+                </div>
+              </div> -->
+                        <div class="col-lg-6">
+                            <div>
+                                <span class="d-flex flex-column"> </span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center mt-2">
+                            <button
+                                class="btn btn-primary m-auto"
+                                (click)="updateData()"
+                            >
+                                Update
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- card-info -->
+                <!-- <div class="card-body pt-0 pt-md-4">
+          <div class="text-center">
+            <h3>
+              {{ user.userFirstName + " " + user.userLastName }}
+            </h3>
+            <div>
+              <h5>
+                {{ user.userEmail }}
+              </h5>
+            </div>
+            <div>
+              Số thú cưng đang nhận nuôi online: {{ onlineAdoptionPet.length }}
+            </div>
+          </div>
+        </div> -->
+            </div>
+        </div>
+        <!-- detail-info -->
+        <div class="col-xl-8 order-xl-1">
+            <div class="card shadow mb-3">
+                <div class="card-body">
+                    <h4 class="heading-small text-muted mb-1">
+                        Transaction History
+                    </h4>
+                    <div class="pl-lg-6">
+                        <div class="row">
+                            <p-table
+                                #dt
+                                [value]="listTransactions"
+                                [rows]="5"
+                                [paginator]="true"
+                                [tableStyle]="{ 'min-width': '75rem' }"
+                                [rowHover]="true"
+                                dataKey="id"
+                                styleClass="p-datatable-striped"
+                                [tableStyle]="{ 'min-width': '25rem' }"
+                            >
+                                <ng-template pTemplate="header">
+                                    <tr class="py-5">
+                                        <th
+                                            pSortableColumn="createdDate"
+                                            style="min-width: 6rem"
+                                            class="ps-4"
+                                        >
+                                            Date
+                                            <p-sortIcon
+                                                field="createdDate"
+                                            ></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="totalPrice">
+                                            Total
+                                            <p-sortIcon
+                                                field="totalPrice"
+                                            ></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="discountPrice">
+                                            Discount
+                                            <p-sortIcon
+                                                field="discountPrice"
+                                            ></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="finalPrice">
+                                            Final Price
+                                            <p-sortIcon
+                                                field="finalPrice"
+                                            ></p-sortIcon>
+                                        </th>
+
+                                        <th pSortableColumn="paymentType">
+                                            Payment Type
+                                            <p-sortIcon
+                                                field="paymentType"
+                                            ></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="status">
+                                            Status
+                                            <p-sortIcon
+                                                field="status"
+                                            ></p-sortIcon>
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-invoice>
+                                    <tr
+                                        (click)="onRowSelect(invoice)"
+                                        style="cursor: pointer"
+                                    >
+                                        <td class="ps-4">
+                                            {{
+                                                invoice.createdDate
+                                                    | date : "dd/MM/yyyy"
+                                            }}
+                                        </td>
+                                        <td>
+                                            {{
+                                                invoice.totalPrice
+                                                    | currency : "VND"
+                                            }}
+                                        </td>
+                                        <td>
+                                            {{
+                                                invoice.discountPrice
+                                                    | currency : "VND"
+                                            }}
+                                        </td>
+                                        <td>
+                                            {{
+                                                invoice.finalPrice
+                                                    | currency : "VND"
+                                            }}
+                                        </td>
+                                        <td>
+                                            {{
+                                                invoice.paymentType ===
+                                                "CREDIT_CARD"
+                                                    ? "Banking"
+                                                    : "COD"
+                                            }}
+                                        </td>
+                                        <td>
+                                            <p-tag
+                                                [value]="invoice.status"
+                                                [severity]="
+                                                    getSeverity(invoice.status)
+                                                "
+                                            ></p-tag>
+                                        </td>
+                                        <td>
+                                            <p-button
+                                                *ngIf="
+                                                    invoice.status ===
+                                                        'PENDING' ||
+                                                    invoice.status === 'CANCEL'
+                                                "
+                                                styleClass="p-button-secondary"
+                                                label="Contact"
+                                                (onClick)="
+                                                    $event.stopPropagation();
+                                                    contactAdmin()
+                                                "
+                                            ></p-button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+
+                            <hr *ngIf="cart" class="mt-4" />
+                            <h4 *ngIf="cart">Detail</h4>
+                            <p-table
+                                *ngIf="cart"
+                                #dt
+                                [value]="cart"
+                                responsiveLayout="scroll"
+                                [(selection)]="selectedProducts"
+                                dataKey="cartItemId"
+                                [rows]="8"
+                                [globalFilterFields]="[
+                                    'name',
+                                    'price',
+                                    'brand.name',
+                                    'subCategory.category.name'
+                                ]"
+                                [paginator]="true"
+                                [showCurrentPageReport]="true"
+                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                [rowHover]="true"
+                            >
+                                <!-- <ng-template pTemplate="caption">
+          <div class="d-flex justify-content-end">
+            <span class="block p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input
+                pInputText
+                type="text"
+                (input)="onGlobalFilter(dt, $event)"
+                placeholder="Search..."
+                class="w-full sm:w-auto"
+              />
+            </span>
+          </div>
+        </ng-template> -->
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>Product</th>
+                                        <th pSortableColumn="unitPrice">
+                                            Price
+                                            <p-sortIcon
+                                                field="unitPrice"
+                                            ></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="quantity">
+                                            Quantity
+                                            <p-sortIcon
+                                                field="quantity"
+                                            ></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="totalItemPrice">
+                                            Total
+                                            <p-sortIcon
+                                                field="totalItemPrice"
+                                            ></p-sortIcon>
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-product>
+                                    <tr>
+                                        <td style="min-width: 10rem">
+                                            <span class="p-column-title"
+                                                >Name</span
+                                            >
+                                            <img
+                                                [src]="product?.image"
+                                                width="100"
+                                                class="shadow-4"
+                                            />
+                                            {{ product.name }}
+                                        </td>
+
+                                        <td style="width: 14%; min-width: 8rem">
+                                            <span class="p-column-title"
+                                                >Price</span
+                                            >
+                                            {{
+                                                product.unitPrice
+                                                    | currency : "VND"
+                                            }}
+                                        </td>
+                                        <td
+                                            style="width: 14%; min-width: 10rem"
+                                            class="num-product"
+                                        >
+                                            <span class="p-column-title"
+                                                >Quantity</span
+                                            >
+                                            {{ product.quantity }}
+                                        </td>
+                                        <td
+                                            style="width: 14%; min-width: 10rem"
+                                        >
+                                            <span class="p-column-title"
+                                                >Total</span
+                                            >
+                                            {{
+                                                product.total_price
+                                                    | currency : "VND"
+                                            }}
+                                        </td>
+                                        <td>
+                                            <p-button
+                                                *ngIf="isBought"
+                                                icon="pi pi-pencil"
+                                                styleClass="p-button-secondary"
+                                                label="Review"
+                                                (onClick)="addRating(product)"
+                                            ></p-button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

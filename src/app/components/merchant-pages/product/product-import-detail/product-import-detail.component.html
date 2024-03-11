@@ -1,0 +1,306 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <div class="container ps-4">
+                <div class="d-flex flex-column w-100">
+                    <span *ngIf="!model" class="p-float-label mb-3">
+                        <h6 class="addressLabel">Product</h6>
+                        <div class="w-100">
+                            <p-multiSelect
+                                [options]="products"
+                                optionLabel="name"
+                                display="chip"
+                                [(ngModel)]="selectedProducts"
+                                (onChange)="handleChangeProduct($event)"
+                            >
+                            </p-multiSelect>
+                        </div>
+                    </span>
+
+                    <span>
+                        <h6 *ngIf="!model" class="addressLabel">Varieties</h6>
+
+                        <p-table
+                            *ngIf="!model"
+                            [value]="listDetails"
+                            dataKey="name"
+                            rowGroupMode="subheader"
+                            groupRowsBy="name"
+                            sortField="name"
+                            sortMode="single"
+                            [tableStyle]="{ 'min-width': '20rem' }"
+                        >
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th width="100px">Size</th>
+                                    <th width="120px">Color</th>
+
+                                    <th class="text-center" width="100px">
+                                        Quantity
+                                    </th>
+                                    <th class="text-center" width="180px">
+                                        Price
+                                    </th>
+                                </tr>
+                            </ng-template>
+
+                            <ng-template
+                                pTemplate="groupheader"
+                                let-product
+                                let-rowIndex="rowIndex"
+                                let-expanded="expanded"
+                            >
+                                <tr
+                                    pRowGroupHeader
+                                    pTooltip="View Detail"
+                                    style="cursor: pointer"
+                                >
+                                    <td colspan="4">
+                                        <button
+                                            type="button"
+                                            pButton
+                                            pRipple
+                                            [pRowToggler]="product"
+                                            class="p-button-text p-button-rounded p-button-plain mr-2"
+                                            [icon]="
+                                                expanded
+                                                    ? 'pi pi-chevron-down'
+                                                    : 'pi pi-chevron-right'
+                                            "
+                                        ></button>
+
+                                        <img
+                                            src="{{ product?.images[0] }}"
+                                            alt=""
+                                            width="32"
+                                            style="vertical-align: middle"
+                                        />
+                                        <span class="font-bold ml-2">{{
+                                            product.name || product.productName
+                                        }}</span>
+                                        <span>{{ product.totalImport }}</span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <ng-template
+                                pTemplate="rowexpansion"
+                                let-product
+                                let-editing="editing"
+                            >
+                                <tr *ngFor="let variety of product.varieties">
+                                    <ng-container
+                                        *ngIf="
+                                            variety.varietyAttributes[0]
+                                                ?.name ||
+                                            variety.varietyAttributes[1]?.name
+                                        "
+                                    >
+                                        <td>
+                                            {{
+                                                variety.varietyAttributes[0]
+                                                    ?.type == "SIZE"
+                                                    ? variety
+                                                          .varietyAttributes[0]
+                                                          ?.name
+                                                    : variety
+                                                          .varietyAttributes[1]
+                                                          ?.name
+                                            }}
+                                        </td>
+                                        <td>
+                                            {{
+                                                variety.varietyAttributes[0]
+                                                    ?.type != "SIZE"
+                                                    ? variety
+                                                          .varietyAttributes[0]
+                                                          ?.name
+                                                    : variety
+                                                          .varietyAttributes[1]
+                                                          ?.name
+                                            }}
+                                        </td>
+                                        <td
+                                            [pEditableColumn]="variety.quantity"
+                                            pEditableColumnField="quantity"
+                                            class="text-center"
+                                        >
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <p-inputNumber
+                                                        type="number"
+                                                        [(ngModel)]="
+                                                            variety.quantity
+                                                        "
+                                                        [ngModelOptions]="{
+                                                            standalone: true
+                                                        }"
+                                                        [min]="0"
+                                                        [max]="1000"
+                                                        required
+                                                    />
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <span
+                                                        pTooltip="Edit quantity"
+                                                        style="cursor: pointer"
+                                                    >
+                                                        {{ variety.quantity }}
+                                                    </span>
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td
+                                            [pEditableColumn]="variety.name"
+                                            pEditableColumnField="price"
+                                            class="text-center"
+                                        >
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <p-inputNumber
+                                                        type="number"
+                                                        currency="VND"
+                                                        locale="jp-JP"
+                                                        [min]="0"
+                                                        [(ngModel)]="
+                                                            variety.price
+                                                        "
+                                                        [ngModelOptions]="{
+                                                            standalone: true
+                                                        }"
+                                                        required
+                                                    ></p-inputNumber>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    <span
+                                                        pTooltip="Edit price"
+                                                        style="cursor: pointer"
+                                                    >
+                                                        {{
+                                                            variety.price
+                                                                | currency
+                                                                    : "VND"
+                                                        }}
+                                                    </span>
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+
+                        <p-table
+                            *ngIf="model"
+                            [value]="listDetails"
+                            dataKey="productName"
+                            rowGroupMode="subheader"
+                            groupRowsBy="productName"
+                            sortField="productName"
+                            sortMode="single"
+                            [tableStyle]="{ 'min-width': '20rem' }"
+                        >
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th width="150px">Variety</th>
+                                    <th class="text-center" width="100px">
+                                        Quantity
+                                    </th>
+                                    <th width="120px">Price</th>
+
+                                    <th class="text-center" width="180px">
+                                        Total Price
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </ng-template>
+
+                            <ng-template
+                                pTemplate="groupheader"
+                                let-product
+                                let-rowIndex="rowIndex"
+                                let-expanded="expanded"
+                            >
+                                <tr pRowGroupHeader style="cursor: pointer">
+                                    <td colspan="4">
+                                        <button
+                                            type="button"
+                                            pButton
+                                            pRipple
+                                            [pRowToggler]="product"
+                                            class="p-button-text p-button-rounded p-button-plain mr-2"
+                                            [icon]="
+                                                expanded
+                                                    ? 'pi pi-chevron-down'
+                                                    : 'pi pi-chevron-right'
+                                            "
+                                        ></button>
+
+                                        <img
+                                            src="{{ product[0]?.image }}"
+                                            alt=""
+                                            width="32"
+                                            style="vertical-align: middle"
+                                        />
+                                        <span class="font-bold ml-2">{{
+                                            product.productName
+                                        }}</span>
+                                    </td>
+
+                                    <td>
+                                        <span>{{ product.totalImport }}</span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <ng-template
+                                pTemplate="rowexpansion"
+                                let-product
+                                let-editing="editing"
+                            >
+                                <tr *ngFor="let variety of product.varieties">
+                                    <td>
+                                        {{ variety.attributeName.join(", ") }}
+                                    </td>
+                                    <td>
+                                        {{ variety.quantity }}
+                                    </td>
+                                    <td class="text-center">
+                                        <span
+                                            pTooltip="Edit quantity"
+                                            style="cursor: pointer"
+                                        >
+                                            {{
+                                                variety.importPrice
+                                                    | currency : "VND"
+                                            }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span style="cursor: pointer">
+                                            {{
+                                                variety.totalImportPrice
+                                                    | currency : "VND"
+                                            }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </span>
+                </div>
+
+                <div
+                    *ngIf="!model"
+                    class="button-group d-flex justify-content-center mt-2"
+                >
+                    <button
+                        pButton
+                        pRipple
+                        label="Import"
+                        type="submit"
+                        (click)="onImport()"
+                    ></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
