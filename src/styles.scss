@@ -12,9 +12,28 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/flags/flags.css";
 @import "assets/demo/styles/badges.scss";
 @import "assets/demo/styles/code.scss";
-:host::ng-deep {
-    .p-dropdown,
-    .p-multiselect {
+
+::ng-deep {
+    .p-password,
+    .p-inputtext {
         width: 100%;
+        border-radius: 7px;
+        height: 40px;
+    }
+    .p-password input {
+        border: solid 1px #fff;
+    }
+}
+
+.btn-primary {
+    border-radius: 10px;
+    max-height: 60px;
+    min-height: 40px;
+    height: 6vh;
+    width: 20vw;
+    background-color: #ff9b00 !important;
+    border: none;
+    &:active {
+        background-color: #ff9b00 !important;
     }
 }

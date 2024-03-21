@@ -46,46 +46,43 @@ export class ProductDetailComponent implements OnInit {
     }
 
     initialize() {
-        this.isLogin = this.storageService.getDataFromCookie('jwtToken');
-        if (!this.isLogin)
-            this.cartService.getUnauthCart().subscribe({
-                next: (res) => {
-                    this.storageService.setItemLocal('cart', res);
-                },
-            });
+        // this.isLogin = this.storageService.getDataFromCookie('jwtToken');
+        // if (!this.isLogin)
+        //     this.cartService.getUnauthCart().subscribe({
+        //         next: (res) => {
+        //             this.storageService.setItemLocal('cart', res);
+        //         },
+        //     });
         this.product = this.storageService.getItemLocal('currentProduct');
-        this.listVarieties = this.product?.varieties;
-        this.isLoading = true;
-        this.productSerivce.getProdMost(7).subscribe({
-            next: (res) => (this.mostProd = res),
-        });
-        this.productSerivce.getProdMostBuy(7).subscribe((data) => {
-            this.mostBuy = data;
-        });
-        this.productSerivce.getProductDetail(this.product.productId).subscribe({
-            next: (res) => {
-                this.product = res;
-                this.product.varieties.forEach((item) => {
-                    this.listDetailVariety.push({
-                        ...item,
-                        ...item.varietyAttributes,
-                    });
-                });
-                this.product.varietyAttributeList.forEach((item) => {
-                    if (item.type === 'SIZE')
-                        this.listSize.push({ ...item, active: true });
-                    else this.listColor.push({ ...item, active: true });
-                });
-                this.isLoading = false;
-            },
-        });
-        if (!this.isLogin)
-            // this.cartService.getCart().subscribe({
-            //   next: (res) => this.storageService.setItemLocal('cart', res),
-            // });
-            this.cartService.getUnauthCart().subscribe({
-                next: (res) => this.storageService.setItemLocal('cart', res),
-            });
+        // this.listVarieties = this.product?.varieties;
+        // this.isLoading = true;
+        // this.productSerivce.getProdMost(7).subscribe({
+        //     next: (res) => (this.mostProd = res),
+        // });
+        // this.productSerivce.getProdMostBuy(7).subscribe((data) => {
+        //     this.mostBuy = data;
+        // });
+        // this.productSerivce.getProductDetail(this.product.productId).subscribe({
+        //     next: (res) => {
+        //         this.product = res;
+        //         this.product.varieties.forEach((item) => {
+        //             this.listDetailVariety.push({
+        //                 ...item,
+        //                 ...item.varietyAttributes,
+        //             });
+        //         });
+        //         this.product.varietyAttributeList.forEach((item) => {
+        //             if (item.type === 'SIZE')
+        //                 this.listSize.push({ ...item, active: true });
+        //             else this.listColor.push({ ...item, active: true });
+        //         });
+        //         this.isLoading = false;
+        //     },
+        // });
+        // if (!this.isLogin)
+        //     this.cartService.getUnauthCart().subscribe({
+        //         next: (res) => this.storageService.setItemLocal('cart', res),
+        //     });
     }
 
     setDefaultAttribute() {

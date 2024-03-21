@@ -1,5 +1,5 @@
 // export const API_URL = 'http://localhost:8080/api/v1';
-const API_URL = 'https://doan02-be-production.up.railway.app/api/v1/';
+const API_URL = 'https://kltn-pescue-production.up.railway.app/api/v1/';
 
 export const API = {
     AUTHENTICATE: {
@@ -7,6 +7,10 @@ export const API = {
             LOGIN: API_URL + 'auth/authenticate',
             REGISTER: API_URL + 'auth/userRegister',
             GG_LOGIN: API_URL + 'auth/authenticateGoogleUser',
+            CONFIRM_EMAIL: API_URL + 'otp/sendOTPConfirmEmail',
+            FORGOT_PASS: API_URL + 'otp/sendOTPForgotPassword',
+            VALIDATE_EMAIL: API_URL + 'otp/validateOTPConfirmEmail',
+            VALIDATE_PASS: API_URL + 'otp/validateOTPForgotPassword',
         },
         STATUS: {
             SYSTEM_ERROR: '0_1_f',

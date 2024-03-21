@@ -1,0 +1,253 @@
+<div class="image-slider" [class.large-layout]="layout.isLarge()">
+    <div class="thumbnail-container">
+        <button
+            [hidden]="images.length < 5"
+            [style.transform]="!layout.isLarge() ? 'rotate(-90deg)' : null"
+            class="pre-thumbnail"
+            (click)="previousThumbnail()"
+        >
+            <svg
+                width="40"
+                height="40"
+                viewBox="0 0 40 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <g
+                    [attr.opacity]="
+                        isAtStart || displayedThumbnails.length < 4
+                            ? '0.65'
+                            : '1'
+                    "
+                >
+                    <rect
+                        width="40"
+                        height="40"
+                        rx="3.2"
+                        fill="white"
+                        fill-opacity="0.01"
+                    />
+                    <rect
+                        x="0.5"
+                        y="0.5"
+                        width="39"
+                        height="39"
+                        rx="2.7"
+                        stroke="white"
+                        stroke-opacity="0.01"
+                    />
+                    <g clip-path="url(#clip0_2694_14480)">
+                        <rect
+                            width="24"
+                            height="24"
+                            transform="translate(8 8)"
+                            fill="white"
+                            fill-opacity="0.01"
+                        />
+                        <path
+                            d="M18.8737 15.291L11.6797 23.5125C10.8307 24.483 11.5207 26.001 12.8092 26.001H27.1972C27.4856 26.0013 27.7679 25.9184 28.0104 25.7623C28.2528 25.6062 28.4452 25.3836 28.5644 25.121C28.6835 24.8584 28.7245 24.567 28.6824 24.2817C28.6402 23.9965 28.5167 23.7294 28.3267 23.5125L21.1327 15.2925C20.9919 15.1314 20.8183 15.0023 20.6235 14.9138C20.4286 14.8253 20.2172 14.7795 20.0032 14.7795C19.7892 14.7795 19.5777 14.8253 19.3829 14.9138C19.1881 15.0023 19.0145 15.1314 18.8737 15.2925V15.291Z"
+                            fill="#064F32"
+                        />
+                    </g>
+                </g>
+                <defs>
+                    <clipPath id="clip0_2694_14480">
+                        <rect
+                            width="24"
+                            height="24"
+                            fill="white"
+                            transform="translate(8 8)"
+                        />
+                    </clipPath>
+                </defs>
+            </svg>
+        </button>
+        <div class="thumbnails" [class.large-layout]="layout.isLarge()">
+            <img
+                *ngFor="let img of displayedThumbnails"
+                [src]="img"
+                [class.selected-thumbnail]="img === currentImage"
+                class="thumbnail"
+                [style.width.px]="
+                    layout.isLarge() ? '96' : layout.isMedium() ? '60' : '40'
+                "
+                (mouseover)="changeImage(img)"
+                (click)="changeImage(img)"
+            />
+        </div>
+        <button
+            [hidden]="images.length < 5"
+            class="next-thumnail"
+            [style.transform]="!layout.isLarge() ? 'rotate(-90deg)' : null"
+            (click)="nextThumbnail()"
+        >
+            <svg
+                width="40"
+                height="40"
+                viewBox="0 0 40 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <g
+                    [attr.opacity]="
+                        isAtEnd || displayedThumbnails.length < 4 ? '0.65' : '1'
+                    "
+                >
+                    <rect
+                        width="40"
+                        height="40"
+                        rx="3.2"
+                        fill="white"
+                        fill-opacity="0.01"
+                    />
+                    <rect
+                        x="0.5"
+                        y="0.5"
+                        width="39"
+                        height="39"
+                        rx="2.7"
+                        stroke="white"
+                        stroke-opacity="0.01"
+                    />
+                    <g clip-path="url(#clip0_2694_14485)">
+                        <rect
+                            width="24"
+                            height="24"
+                            transform="translate(8 8)"
+                            fill="white"
+                            fill-opacity="0.01"
+                        />
+                        <path
+                            d="M18.8737 24.711L11.6797 16.488C10.8307 15.5205 11.5207 14.001 12.8092 14.001H27.1972C27.4856 14.0007 27.7679 14.0836 28.0104 14.2397C28.2528 14.3958 28.4452 14.6184 28.5644 14.881C28.6835 15.1436 28.7245 15.435 28.6824 15.7202C28.6402 16.0055 28.5167 16.2726 28.3267 16.4895L21.1327 24.7095C20.9919 24.8706 20.8183 24.9997 20.6235 25.0882C20.4286 25.1767 20.2172 25.2224 20.0032 25.2224C19.7892 25.2224 19.5777 25.1767 19.3829 25.0882C19.1881 24.9997 19.0145 24.8706 18.8737 24.7095V24.711Z"
+                            fill="#064F32"
+                        />
+                    </g>
+                </g>
+                <defs>
+                    <clipPath id="clip0_2694_14485">
+                        <rect
+                            width="24"
+                            height="24"
+                            fill="white"
+                            transform="translate(8 8)"
+                        />
+                    </clipPath>
+                </defs>
+            </svg>
+        </button>
+    </div>
+
+    <div class="main-image-container">
+        <button
+            *ngIf="!layout.isSmall()"
+            class="prev-button"
+            (click)="previousImage()"
+        >
+            <svg
+                width="32"
+                height="32"
+                viewBox="0 0 32 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <g
+                    [attr.opacity]="
+                        displayedThumbnails.length === 1 ? '0.65' : '1'
+                    "
+                >
+                    <rect
+                        x="0.5"
+                        y="0.5"
+                        width="31"
+                        height="31"
+                        rx="2.7"
+                        stroke="#064F32"
+                    />
+                    <g clip-path="url(#clip0_2694_14487)">
+                        <rect
+                            width="16"
+                            height="16"
+                            transform="translate(8 8)"
+                            fill="white"
+                            fill-opacity="0.01"
+                        />
+                        <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M23.0019 16.0011C23.0019 15.8685 22.9492 15.7413 22.8554 15.6476C22.7617 15.5538 22.6345 15.5011 22.5019 15.5011H10.7089L13.8559 12.3551C13.9024 12.3086 13.9392 12.2534 13.9644 12.1927C13.9896 12.132 14.0025 12.0669 14.0025 12.0011C14.0025 11.9354 13.9896 11.8703 13.9644 11.8095C13.9392 11.7488 13.9024 11.6936 13.8559 11.6471C13.8094 11.6006 13.7542 11.5638 13.6935 11.5386C13.6327 11.5134 13.5676 11.5005 13.5019 11.5005C13.4361 11.5005 13.371 11.5134 13.3103 11.5386C13.2495 11.5638 13.1944 11.6006 13.1479 11.6471L9.14787 15.6471C9.10131 15.6936 9.06436 15.7487 9.03916 15.8095C9.01395 15.8702 9.00098 15.9354 9.00098 16.0011C9.00098 16.0669 9.01395 16.132 9.03916 16.1928C9.06436 16.2535 9.10131 16.3087 9.14787 16.3551L13.1479 20.3551C13.1944 20.4016 13.2495 20.4385 13.3103 20.4636C13.371 20.4888 13.4361 20.5018 13.5019 20.5018C13.5676 20.5018 13.6327 20.4888 13.6935 20.4636C13.7542 20.4385 13.8094 20.4016 13.8559 20.3551C13.9024 20.3086 13.9392 20.2534 13.9644 20.1927C13.9896 20.132 14.0025 20.0669 14.0025 20.0011C14.0025 19.9354 13.9896 19.8703 13.9644 19.8095C13.9392 19.7488 13.9024 19.6936 13.8559 19.6471L10.7089 16.5011H22.5019C22.6345 16.5011 22.7617 16.4484 22.8554 16.3547C22.9492 16.2609 23.0019 16.1337 23.0019 16.0011Z"
+                            fill="#064F32"
+                        />
+                    </g>
+                </g>
+                <defs>
+                    <clipPath id="clip0_2694_14487">
+                        <rect
+                            width="16"
+                            height="16"
+                            fill="white"
+                            transform="translate(8 8)"
+                        />
+                    </clipPath>
+                </defs>
+            </svg>
+        </button>
+        <img
+            [src]="currentImage"
+            class="main-image"
+            [class.small-layout]="layout.isSmall()"
+        />
+        <button
+            *ngIf="!layout.isSmall()"
+            class="next-button"
+            (click)="nextImage()"
+        >
+            <svg
+                width="32"
+                height="32"
+                viewBox="0 0 32 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <g
+                    [attr.opacity]="
+                        displayedThumbnails.length === 1 ? '0.65' : '1'
+                    "
+                >
+                    <rect
+                        x="0.5"
+                        y="0.5"
+                        width="31"
+                        height="31"
+                        rx="2.7"
+                        stroke="#064F32"
+                    />
+                    <g clip-path="url(#clip0_2694_14489)">
+                        <rect
+                            width="16"
+                            height="16"
+                            transform="translate(8 8)"
+                            fill="white"
+                            fill-opacity="0.01"
+                        />
+                        <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M9.00195 16.0011C9.00195 15.8685 9.05463 15.7413 9.1484 15.6476C9.24217 15.5538 9.36934 15.5011 9.50195 15.5011H21.295L18.148 12.3551C18.0541 12.2612 18.0013 12.1339 18.0013 12.0011C18.0013 11.8683 18.0541 11.741 18.148 11.6471C18.2418 11.5532 18.3692 11.5005 18.502 11.5005C18.6347 11.5005 18.7621 11.5532 18.856 11.6471L22.856 15.6471C22.9025 15.6936 22.9395 15.7487 22.9647 15.8095C22.9899 15.8702 23.0028 15.9354 23.0028 16.0011C23.0028 16.0669 22.9899 16.132 22.9647 16.1928C22.9395 16.2535 22.9025 16.3087 22.856 16.3551L18.856 20.3551C18.7621 20.449 18.6347 20.5018 18.502 20.5018C18.3692 20.5018 18.2418 20.449 18.148 20.3551C18.0541 20.2612 18.0013 20.1339 18.0013 20.0011C18.0013 19.8683 18.0541 19.741 18.148 19.6471L21.295 16.5011H9.50195C9.36934 16.5011 9.24217 16.4484 9.1484 16.3547C9.05463 16.2609 9.00195 16.1337 9.00195 16.0011Z"
+                            fill="#064F32"
+                        />
+                    </g>
+                </g>
+                <defs>
+                    <clipPath id="clip0_2694_14489">
+                        <rect
+                            width="16"
+                            height="16"
+                            fill="white"
+                            transform="translate(8 8)"
+                        />
+                    </clipPath>
+                </defs>
+            </svg>
+        </button>
+    </div>
+</div>

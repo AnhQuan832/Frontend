@@ -6,7 +6,23 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
     styles: [],
 })
 export class BaseComponent {
-    constructor() {
-        console.log('Base compoent');
+    private userInfo;
+    private jwtToken;
+    constructor() {}
+
+    getUserInfo() {
+        return this.userInfo;
+    }
+
+    setUserInfo(user) {
+        this.userInfo = user;
+    }
+
+    setToken(token) {
+        this.jwtToken = token;
+    }
+
+    getToken() {
+        return this.jwtToken;
     }
 }

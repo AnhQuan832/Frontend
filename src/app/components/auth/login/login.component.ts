@@ -1,67 +1,123 @@
+import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { Component, OnInit } from '@angular/core';
+import {
+    AbstractControl,
+    FormBuilder,
+    ValidatorFn,
+    Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
-import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import {
+    GoogleLoginProvider,
+    FacebookLoginProvider,
+} from '@abacritt/angularx-social-login';
 import { LoginService } from 'src/app/services/login.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { BaseComponent } from 'src/app/base.component';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styles: [
-        `
-            :host ::ng-deep .pi-eye,
-            :host ::ng-deep .pi-eye-slash {
-                transform: scale(1.6);
-                margin-right: 1rem;
-                color: var(--primary-color) !important;
-            }
-        `,
-    ],
+    styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
-    valCheck: string[] = ['remember'];
-    err;
-
-    password!: string;
-    email!: string;
-    protected isSubmitted: boolean = false;
-    protected msgError: string;
+export class LoginComponent extends BaseComponent implements OnInit {
+    isSubmitted = false;
+    msgError: string;
+    private accessToken = '';
     constructor(
-        public layoutService: LayoutService,
-        private loginService: LoginService,
+        private socialLoginService: SocialAuthService,
+        private builder: FormBuilder,
+        private authService: LoginService,
         private router: Router,
         private storageService: StorageService
-    ) {}
+    ) {
+        super();
+    }
+
+    loginForm = this.builder.group({
+        userEmail: this.builder.control('', [Validators.required]),
+        userPassword: this.builder.control('', [Validators.required]),
+    });
     ngOnInit(): void {
+        this.loginWithGoogle();
         document.cookie =
             'jwtToken' + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     }
 
+    loginWithGoogle() {
+        this.socialLoginService.authState.subscribe((user) => {
+            this.authService.loginGoogle(user).subscribe((res) => {
+                if (typeof res === 'string') {
+                    this.msgError = res;
+                    return;
+                }
+                const { jwtToken, ...userInfo } = res;
+                this.setUserInfo(userInfo);
+                this.storageService.setTimeResetTokenCookie(
+                    'jwtToken',
+                    jwtToken
+                );
+                this.router.navigate(['/user/home']);
+            });
+        });
+    }
+
     login() {
         this.isSubmitted = true;
-        if (this.email && this.password)
-            this.loginService.login(this.email, this.password).subscribe({
-                next: (res) => {
-                    if (res) {
-                        if (
-                            res.userRoles[0].roleName === 'ROLE_ADMIN' ||
-                            res.userRoles[1].roleName === 'ROLE_ADMIN'
-                        ) {
-                            sessionStorage.setItem('userRoles', 'ROLE_ADMIN');
-                            const { jwtToken, ...userInfo } = res;
-                            this.storageService.setItemLocal(
-                                'userInfo',
-                                userInfo
-                            );
-                            this.storageService.setTimeResetTokenCookie(
-                                'jwtToken',
-                                jwtToken
-                            );
-                            this.router.navigate(['']);
+        this.router.navigate(['/user/home']);
+
+        if (this.loginForm.valid)
+            this.authService
+                .login(
+                    this.loginForm.value.userEmail,
+                    this.loginForm.value.userPassword
+                )
+                .subscribe({
+                    next: (res) => {
+                        if (typeof res === 'string') {
+                            this.msgError = res;
+                            return;
                         }
-                    } else this.err = true;
-                },
-                error: (err) => (this.err = err),
-            });
+                        const { jwtToken, ...userInfo } = res;
+                        this.setUserInfo(userInfo);
+                        this.storageService.setTimeResetTokenCookie(
+                            'jwtToken',
+                            jwtToken
+                        );
+                        this.router.navigate(['/user/home']);
+                    },
+                    error: (err) => console.log(err),
+                });
+    }
+
+    getAccessToken(): void {
+        this.socialLoginService
+            .getAccessToken(GoogleLoginProvider.PROVIDER_ID)
+            .then((accessToken) => (this.accessToken = accessToken));
+    }
+    public signOut(): void {
+        this.socialLoginService.signOut();
+    }
+    refreshToken(): void {
+        this.socialLoginService.refreshAuthToken(
+            GoogleLoginProvider.PROVIDER_ID
+        );
+    }
+
+    clearErrorNotification() {
+        this.isSubmitted = false;
+    }
+
+    emailValidator(exceptionEmail: string): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: any } | null => {
+            const email = control.value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(email)) {
+                return { invalidEmail: true };
+            } else {
+                return null;
+            }
+        };
     }
 }

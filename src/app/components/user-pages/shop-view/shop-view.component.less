@@ -1,45 +1,63 @@
 .shopView {
-  .shopView-filter {
-    .search-bar {
-      input {
-        background-color: rgb(228, 230, 235);
-        border: none;
-        padding-left: 2.2rem !important;
-        &:focus {
-          outline: none;
-        }
-      }
-      i {
-        margin-left: 0.35rem;
-      }
-    }
-    label {
-      padding-left: 5px;
-    }
-  }
-  @media (max-width: 649.98px) {
-    display: flex;
-    flex-direction: column;
-    .side-filter {
-      width: 100%;
-      h4 {
-        font-size: 16px;
-      }
-    }
-    .pet-list {
-      width: 100%;
-      padding-top: 0;
-    }
-  }
-}
+    padding-left: 32px;
+    .shopView-filter {
+        margin-top: 16px;
 
-:host::ng-deep {
-  .p-grid {
-    background-color: rgb(227, 227, 227) !important;
-    min-height: 84vh;
-  }
+        border-radius: 20px;
+        border: solid 1px #c5c5c5;
+        height: fit-content;
+        .search-bar {
+            input {
+                background-color: rgb(228, 230, 235);
+                border: none;
+                padding-left: 2.2rem !important;
+                &:focus {
+                    outline: none;
+                }
+            }
+            i {
+                margin-left: 0.35rem;
+            }
+        }
+        label {
+            padding-left: 5px;
+        }
+    }
+    @media (max-width: 649.98px) {
+        display: flex;
+        flex-direction: column;
+        .side-filter {
+            width: 100%;
+            h4 {
+                font-size: 16px;
+            }
+        }
+        .pet-list {
+            width: 100%;
+            padding-top: 0;
+        }
+    }
 }
 
 .view {
-  width: 85%;
+    width: 85%;
+}
+
+.shopView-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    .product {
+        width: clamp(150px, 25%, 225px);
+    }
+}
+
+:host::ng-deep {
+    .p-tree {
+        border: none;
+        padding: 0;
+        .p-tree-container .p-treenode .p-treenode-content {
+            padding: 0;
+        }
+    }
 }

@@ -9,7 +9,7 @@ import { AuthGuard } from './components/auth/auth.guard';
         RouterModule.forRoot(
             [
                 {
-                    path: '',
+                    path: 'merchant',
                     component: AppLayoutComponent,
                     children: [
                         {
@@ -21,7 +21,7 @@ import { AuthGuard } from './components/auth/auth.guard';
                             // canActivate: [AuthGuard],
                         },
                         {
-                            path: 'pages',
+                            path: '',
                             loadChildren: () =>
                                 import(
                                     './components/merchant-pages/pages.module'
@@ -38,11 +38,11 @@ import { AuthGuard } from './components/auth/auth.guard';
                         ),
                 },
                 {
-                    path: 'landing',
+                    path: 'user',
                     loadChildren: () =>
-                        import('./components/user-pages/landing.module').then(
-                            (m) => m.LandingModule
-                        ),
+                        import(
+                            './components/user-pages/user-pages.module'
+                        ).then((m) => m.UserPageModule),
                 },
                 { path: 'notfound', component: NotfoundComponent },
                 { path: '**', redirectTo: '/notfound' },

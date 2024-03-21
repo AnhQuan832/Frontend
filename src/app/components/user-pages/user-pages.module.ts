@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LandingRoutingModule } from './landing-routing.module';
-import { LandingComponent } from './landing.component';
+import { LandingRoutingModule } from './user-pages-routing.module';
+import { UserPageComponent } from './user-pages.component';
 import { StyleClassModule } from 'primeng/styleclass';
 import { DividerModule } from 'primeng/divider';
 import { ChartModule } from 'primeng/chart';
@@ -31,6 +31,10 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { SharedModule } from '../shared/shared.module';
+import { SliderModule } from 'primeng/slider';
+import { TreeModule } from 'primeng/tree';
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
     imports: [
@@ -63,9 +67,13 @@ import { ToolbarModule } from 'primeng/toolbar';
         ButtonModule,
         RatingModule,
         TagModule,
+        SharedModule,
+        SliderModule,
+        TreeModule,
+        TabViewModule,
     ],
     declarations: [
-        LandingComponent,
+        UserPageComponent,
         ShopViewComponent,
         ProductDetailComponent,
         UserProfileComponent,
@@ -76,4 +84,4 @@ import { ToolbarModule } from 'primeng/toolbar';
         CompletCheckoutComponent,
     ],
 })
-export class LandingModule {}
+export class UserPageModule {}

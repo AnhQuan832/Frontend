@@ -1,0 +1,42 @@
+.quantity-container {
+    border: 1px solid #bfcdd9;
+    border-radius: 3.2px;
+    width: 104px;
+    height: 40px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    button {
+        text-align: center;
+        width: 24px;
+        background-color: white;
+        border: none;
+        padding: 6px 6px;
+        cursor: pointer;
+    }
+    input {
+        width: 48px;
+        text-align: center;
+        margin: 5px 0px;
+        border: none;
+        &:focus {
+            outline: none;
+        }
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}
+.btn-add {
+    border: 1px solid #c5c5c5;
+    max-width: 168px;
+    flex-grow: 1;
+    height: 32px;
+    border-radius: 3.2px;
+    background-color: #c5c5c5;
+    padding: 4px 8px 4px 8px;
+    color: white;
+}
