@@ -7,6 +7,7 @@ import { Location } from '@angular/common';
 import { ProductService } from 'src/app/services/product.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { LoginComponent } from '../../auth/login/login.component';
+import { BaseComponent } from 'src/app/base.component';
 
 @Component({
     selector: 'app-nav-bar',
@@ -14,8 +15,11 @@ import { LoginComponent } from '../../auth/login/login.component';
     styleUrls: ['./nav-bar.component.less'],
     providers: [LoginComponent],
 })
-export class NavBarComponent implements OnInit, AfterViewInit {
-    isLogin;
+export class NavBarComponent
+    extends BaseComponent
+    implements OnInit, AfterViewInit
+{
+    isLogin: boolean = !!this.getUserInfo();
     keySearch;
     searchRes;
     isShowSearch = true;
@@ -53,11 +57,10 @@ export class NavBarComponent implements OnInit, AfterViewInit {
         private storageService: StorageService,
         private location: Location,
         private loginCpn: LoginComponent
-    ) {}
-    ngOnInit(): void {
-        const info = this.storageService.getItemLocal('userInfo');
-        this.isLogin = info?.userId ? true : false;
+    ) {
+        super();
     }
+    ngOnInit(): void {}
     ngAfterViewInit(): void {
         this.setActiveNav();
     }

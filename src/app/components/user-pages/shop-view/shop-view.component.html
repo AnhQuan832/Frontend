@@ -71,14 +71,14 @@
                 </div> -->
                 <div class="cate-type w-100 p-2">
                     <h5>Category</h5>
-                    <p-tree
+                    <!-- <p-tree
                         [value]="listCate"
                         class="w-full md:w-30rem"
                         selectionMode="multiple"
                         [(selection)]="selectedCategory"
-                    ></p-tree>
+                    ></p-tree> -->
 
-                    <!-- <div
+                    <div
                         *ngFor="let cate of listCate"
                         class="field-checkbox p-1 d-flex align-items-center"
                     >
@@ -92,7 +92,7 @@
                         <label [for]="cate.categoryId">{{
                             cate.name || "Unknown"
                         }}</label>
-                    </div> -->
+                    </div>
                 </div>
                 <p-divider></p-divider>
                 <div class="brand-type w-100 p-2">
@@ -118,7 +118,16 @@
                     <p-slider
                         [(ngModel)]="priceRange"
                         [range]="true"
+                        min="0"
+                        max="50000000"
+                        [step]="1000"
+                        (onChange)="onPriceChange()"
                     ></p-slider>
+                    <div class="d-flex justify-content-between">
+                        <p>{{ priceRange[0] | number : "1.0-0" }}</p>
+                        -
+                        <p>{{ priceRange[1] | number : "1.0-0" }}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -137,112 +146,8 @@
       </ng-template> -->
 
         <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
-        ></app-product-card>
-        <app-product-card
-            class="product"
-            [product]="products[0]"
+            *ngFor="let product of products"
+            [product]="product"
         ></app-product-card>
     </div>
 </div>

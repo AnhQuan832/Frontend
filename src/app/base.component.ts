@@ -1,4 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { StorageService } from './services/storage.service';
+import {
+    Component,
+    inject,
+    Inject,
+    Injector,
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
+import { UserService } from './services/user.service';
 
 @Component({
     selector: 'app-base',
@@ -7,11 +16,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 })
 export class BaseComponent {
     private userInfo;
+    private userRole;
     private jwtToken;
     constructor() {}
 
     getUserInfo() {
-        return this.userInfo;
+        if (this.userInfo) return this.userInfo;
+        return JSON.parse(localStorage.getItem('currentUser'));
     }
 
     setUserInfo(user) {
@@ -24,5 +35,17 @@ export class BaseComponent {
 
     getToken() {
         return this.jwtToken;
+    }
+
+    setRole(role) {
+        this.userRole = role;
+    }
+
+    getRole() {
+        if (!this.userRole) {
+            const info = JSON.parse(localStorage.getItem('currentUser'));
+            this.setRole(info.userRoles[0].roleName);
+        }
+        return this.userRole;
     }
 }

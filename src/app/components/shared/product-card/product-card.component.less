@@ -2,13 +2,16 @@
 
 .card {
     margin: 16px;
+    padding: 0;
     cursor: pointer;
     box-sizing: border-box;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     display: inline-flex;
-    max-width: 100%;
+    max-width: 200px;
+    height: 360px;
+    border-radius: 8px;
     box-shadow: 2px 5px 2px 0px rgba(0, 0, 0, 0.12);
     -webkit-box-shadow: 2px 5px 2px 0px rgba(0, 0, 0, 0.12);
     -moz-box-shadow: 2px 5px 2px 0px rgba(0, 0, 0, 0.12);
@@ -20,7 +23,8 @@
     img {
         align-self: stretch;
         height: 200px;
-        border-radius: 4px;
+        width: 200px;
+        border-radius: 7px 7px 0 0;
     }
     i {
         cursor: pointer;
@@ -29,5 +33,13 @@
             color: @primary-color;
             font-weight: 700;
         }
+    }
+
+    .clamp {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 3;
     }
 }

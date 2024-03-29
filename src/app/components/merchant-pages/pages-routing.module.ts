@@ -33,6 +33,11 @@ import { RouterModule } from '@angular/router';
                 loadChildren: () =>
                     import('./sale/sale.module').then((m) => m.SaleModule),
             },
+            {
+                path: 'live',
+                loadChildren: () =>
+                    import('./live/live.module').then((m) => m.LiveModule),
+            },
             { path: '**', redirectTo: '/notfound' },
         ]),
     ],

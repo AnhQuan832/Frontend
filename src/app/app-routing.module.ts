@@ -18,7 +18,6 @@ import { AuthGuard } from './components/auth/auth.guard';
                                 import(
                                     './components/dashboard/dashboard.module'
                                 ).then((m) => m.DashboardModule),
-                            // canActivate: [AuthGuard],
                         },
                         {
                             path: '',
@@ -26,9 +25,12 @@ import { AuthGuard } from './components/auth/auth.guard';
                                 import(
                                     './components/merchant-pages/pages.module'
                                 ).then((m) => m.PagesModule),
-                            canActivate: [AuthGuard],
                         },
                     ],
+                    canActivate: [AuthGuard],
+                    data: {
+                        userRoles: ['ROLE_MERCHANT', 'ROLE_ADMIN'],
+                    },
                 },
                 {
                     path: 'auth',

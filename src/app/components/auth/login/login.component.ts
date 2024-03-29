@@ -51,12 +51,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
                     this.msgError = res;
                     return;
                 }
-                const { jwtToken, ...userInfo } = res;
-                this.setUserInfo(userInfo);
-                this.storageService.setTimeResetTokenCookie(
-                    'jwtToken',
-                    jwtToken
-                );
+                this.setInfo(res);
                 this.router.navigate(['/user/home']);
             });
         });
@@ -78,13 +73,15 @@ export class LoginComponent extends BaseComponent implements OnInit {
                             this.msgError = res;
                             return;
                         }
-                        const { jwtToken, ...userInfo } = res;
-                        this.setUserInfo(userInfo);
-                        this.storageService.setTimeResetTokenCookie(
-                            'jwtToken',
-                            jwtToken
-                        );
-                        this.router.navigate(['/user/home']);
+                        this.setInfo(res);
+                        switch (this.getRole()) {
+                            case 'MERCHANT':
+                            case 'ADMIN':
+                                this.router.navigate(['/merchant']);
+                                break;
+                            default:
+                                this.router.navigate(['/user/home']);
+                        }
                     },
                     error: (err) => console.log(err),
                 });
@@ -119,5 +116,13 @@ export class LoginComponent extends BaseComponent implements OnInit {
                 return null;
             }
         };
+    }
+
+    setInfo(data) {
+        const { jwtToken, ...userInfo } = data;
+        this.storageService.setItemLocal('currentUser', userInfo);
+        this.setUserInfo(userInfo);
+        this.setRole(userInfo.userRoles[0].roleName);
+        this.storageService.setTimeResetTokenCookie('jwtToken', jwtToken);
     }
 }

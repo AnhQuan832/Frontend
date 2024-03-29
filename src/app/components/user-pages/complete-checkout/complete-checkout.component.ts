@@ -5,11 +5,11 @@ import { InvoiceService } from 'src/app/services/invoice.service';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
-    selector: 'app-complet-checkout',
-    templateUrl: './complet-checkout.component.html',
-    styleUrls: ['./complet-checkout.component.less'],
+    selector: 'app-complete-checkout',
+    templateUrl: './complete-checkout.component.html',
+    styleUrls: ['./complete-checkout.component.less'],
 })
-export class CompletCheckoutComponent implements OnInit {
+export class CompleteCheckoutComponent implements OnInit {
     constructor(
         private location: Location,
         private invoiceService: InvoiceService,

@@ -7,7 +7,10 @@
     </div>
     <p style="opacity: 0.7">Loading</p>
 </div>
-<p class="bread-crumb">Store > Dog > Others</p>
+<p class="bread-crumb">
+    Store > {{ product.subCategory.category.name }} >
+    {{ product.subCategory.name }}
+</p>
 <div class="container p-4" *ngIf="!isLoading">
     <div class="info d-flex gap-4 mb-4">
         <!-- <p-galleria
@@ -129,12 +132,13 @@
                     Buy now
                 </button>
                 <button
+                    pButton
+                    pRipple
                     [disabled]="!numberOfProduct"
                     class="btn btn-secondary"
+                    icon="pi pi-shopping-cart"
                     (click)="addToCart()"
-                >
-                    Add to cart
-                </button>
+                ></button>
             </div>
         </div>
     </div>
@@ -261,7 +265,8 @@
                     style="cursor: pointer"
                     (click)="onProdClick(item)"
                 >
-                    <div class="product-card">
+                    <app-product-card [product]="item"></app-product-card>
+                    <!-- <div class="product-card">
                         <div
                             class="card-banner img-holder"
                             style="--width: 360; --height: 360"
@@ -277,13 +282,7 @@
                         </div>
 
                         <div class="card-content">
-                            <!-- <div class="wrapper">
-                  <div class="rating-wrapper"></div>
-
-                  <span class="span">(1)</span>
-                </div> -->
-
-                            <h5>
+                            <h5 class="line-clamp">
                                 {{ item.name }}
                             </h5>
 
@@ -291,7 +290,7 @@
                                 {{ item.price | currency : "VND" }}
                             </p>
                         </div>
-                    </div>
+                    </div> -->
                 </li>
             </ul>
         </div>

@@ -118,7 +118,7 @@ export class ProductDetailComponent implements OnInit {
                 console.log(this.product);
                 this.listSize = [];
                 this.listColor = [];
-                this.product.varietyAttributeList.forEach((item) => {
+                (this.product.varietyAttributeList || []).forEach((item) => {
                     if (item.type === 'SIZE') this.listSize.push(item);
                     else this.listColor.push(item);
                 });

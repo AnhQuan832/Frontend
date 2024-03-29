@@ -92,7 +92,7 @@ export class ProductComponent {
     onRowSelect(data) {
         this.storageSerive.setItemLocal('currentProduct', data);
         this.router.navigate([
-            `pages/product/product-detail/${data.productId}`,
+            `merchant/product/product-detail/${data.productId}`,
         ]);
     }
 

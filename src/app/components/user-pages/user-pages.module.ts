@@ -10,7 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { CartComponent } from './cart/cart.component';
 import { ChatComponent } from './chat/chat.component';
 import { CheckOutComponent } from './check-out/check-out.component';
-import { CompletCheckoutComponent } from './complet-checkout/complet-checkout.component';
+import { CompleteCheckoutComponent } from './complete-checkout/complete-checkout.component';
 import { InvoiceHistoryComponent } from './invoice-history/invoice-history.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ShopViewComponent } from './shop-view/shop-view.component';
@@ -35,6 +35,9 @@ import { SharedModule } from '../shared/shared.module';
 import { SliderModule } from 'primeng/slider';
 import { TreeModule } from 'primeng/tree';
 import { TabViewModule } from 'primeng/tabview';
+import { CheckboxModule } from 'primeng/checkbox';
+import { MerchantRequestComponent } from './merchant-request/merchant-request.component';
+import { FileUploadModule } from 'primeng/fileupload';
 
 @NgModule({
     imports: [
@@ -71,6 +74,8 @@ import { TabViewModule } from 'primeng/tabview';
         SliderModule,
         TreeModule,
         TabViewModule,
+        CheckboxModule,
+        FileUploadModule,
     ],
     declarations: [
         UserPageComponent,
@@ -81,7 +86,8 @@ import { TabViewModule } from 'primeng/tabview';
         CheckOutComponent,
         ChatComponent,
         InvoiceHistoryComponent,
-        CompletCheckoutComponent,
+        CompleteCheckoutComponent,
+        MerchantRequestComponent,
     ],
 })
 export class UserPageModule {}

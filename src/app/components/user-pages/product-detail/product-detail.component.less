@@ -154,3 +154,15 @@ button {
     font-size: 16px;
     margin-bottom: 16px;
 }
+
+.product-card {
+    width: 200px;
+    background-color: #fff;
+    .line-clamp {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 3;
+    }
+}
