@@ -6,12 +6,13 @@ import { StorageService } from 'src/app/services/storage.service';
 import { ProductService } from 'src/app/services/product.service';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { CartService } from 'src/app/services/cart.service';
+import { BaseComponent } from 'src/app/base.component';
 @Component({
     selector: 'app-product-detail',
     templateUrl: './product-detail.component.html',
     styleUrls: ['./product-detail.component.less'],
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent extends BaseComponent implements OnInit {
     product;
     listImg;
     numberOfProduct = 0;
@@ -33,11 +34,13 @@ export class ProductDetailComponent implements OnInit {
     constructor(
         private storageService: StorageService,
         private router: Router,
-        private productSerivce: ProductService,
+        private productService: ProductService,
         private cartService: CartService,
         private messageSerice: MessageService,
         private invoiceService: InvoiceService
-    ) {}
+    ) {
+        super();
+    }
     ngOnInit(): void {
         this.initialize();
         setTimeout(() => {
@@ -46,7 +49,6 @@ export class ProductDetailComponent implements OnInit {
     }
 
     initialize() {
-        this.isLogin = this.storageService.getDataFromCookie('jwtToken');
         if (!this.isLogin)
             this.cartService.getUnauthCart().subscribe({
                 next: (res) => {
@@ -56,13 +58,13 @@ export class ProductDetailComponent implements OnInit {
         this.product = this.storageService.getItemLocal('currentProduct');
         this.listVarieties = this.product?.varieties;
         this.isLoading = true;
-        this.productSerivce.getProdMost(7).subscribe({
+        this.productService.getProdMost(7).subscribe({
             next: (res) => (this.mostProd = res),
         });
-        this.productSerivce.getProdMostBuy(7).subscribe((data) => {
+        this.productService.getProdMostBuy(7).subscribe((data) => {
             this.mostBuy = data;
         });
-        this.productSerivce.getProductDetail(this.product.productId).subscribe({
+        this.productService.getProductDetail(this.product.productId).subscribe({
             next: (res) => {
                 this.product = res;
                 this.product.varieties.forEach((item) => {
@@ -71,7 +73,7 @@ export class ProductDetailComponent implements OnInit {
                         ...item.varietyAttributes,
                     });
                 });
-                this.product.varietyAttributeList.forEach((item) => {
+                (this.product.varietyAttributeList || []).forEach((item) => {
                     if (item.type === 'SIZE')
                         this.listSize.push({ ...item, active: true });
                     else this.listColor.push({ ...item, active: true });
@@ -80,9 +82,6 @@ export class ProductDetailComponent implements OnInit {
             },
         });
         if (!this.isLogin)
-            // this.cartService.getCart().subscribe({
-            //   next: (res) => this.storageService.setItemLocal('cart', res),
-            // });
             this.cartService.getUnauthCart().subscribe({
                 next: (res) => this.storageService.setItemLocal('cart', res),
             });
@@ -237,6 +236,7 @@ export class ProductDetailComponent implements OnInit {
     onProdClick(item) {
         this.storageService.setItemLocal('currentProduct', item);
         this.router.navigate([`/user/product-detail/${item.productId}`]);
-        location.href = `https://pescue-shop.vercel.app/user/product-detail/${item.productId}`;
+        // location.href = `https://pescue-shop.vercel.app/user/product-detail/${item.productId}`;
+        window.location.reload();
     }
 }

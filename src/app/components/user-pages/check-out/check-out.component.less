@@ -1,9 +1,15 @@
 .personal {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  column-gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 1rem;
 }
 
 label.disabled {
-  color: #949390;
+    color: #949390;
+}
+
+:host::ng-deep {
+    .p-dropdown {
+        width: 100% !important;
+    }
 }

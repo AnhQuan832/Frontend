@@ -13,7 +13,18 @@ import { StorageService } from 'src/app/services/storage.service';
 export class CartComponent implements OnInit {
     cart;
     cartId;
-    selectedProducts: any[] = [];
+    selectedProducts: any[] = [
+        {
+            totalItemPrice: 200,
+            quantity: 2,
+            stockAmount: 4,
+            unitPrice: 100,
+            listAttributeName: ['attribute1', 'attribute2'],
+            name: 'Product 1',
+            image: 'https://firebasestorage.googleapis.com/v0/b/advance-totem-350103.appspot.com/o/Fund%2Fnha-cho-cho-bang-go.jpg?alt=media&token=f7553df5-a21b-497b-a200-b88a48139439',
+            isSelected: true,
+        },
+    ];
     isLogin: boolean = false;
     originalData: any;
     constructor(
@@ -50,7 +61,34 @@ export class CartComponent implements OnInit {
                     (item) => item.isSelected
                 );
             },
-            error: () => console.log('error'),
+            error: () => {
+                this.cart = [
+                    {
+                        totalItemPrice: 200,
+                        quantity: 2,
+                        stockAmount: 4,
+                        unitPrice: 100,
+                        listAttributeName: ['attribute1', 'attribute2'],
+                        name: 'Product 1',
+                        image: 'https://firebasestorage.googleapis.com/v0/b/advance-totem-350103.appspot.com/o/Fund%2Fnha-cho-cho-bang-go.jpg?alt=media&token=f7553df5-a21b-497b-a200-b88a48139439',
+                        isSelected: true,
+                    },
+                    {
+                        totalItemPrice: 300,
+                        quantity: 3,
+                        stockAmount: 4,
+                        unitPrice: 100,
+                        listAttributeName: [
+                            'attribute1',
+                            'attribute2',
+                            'attribute3',
+                        ],
+                        name: 'Product 2',
+                        image: 'https://firebasestorage.googleapis.com/v0/b/advance-totem-350103.appspot.com/o/Fund%2Fnha-cho-cho-bang-go.jpg?alt=media&token=f7553df5-a21b-497b-a200-b88a48139439',
+                        isSelected: false,
+                    },
+                ];
+            },
         });
     }
     removeItem(data) {

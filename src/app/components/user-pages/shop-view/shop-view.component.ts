@@ -26,14 +26,16 @@ export class ShopViewComponent implements OnInit {
             numScroll: 1,
         },
     ];
-    products;
+    priceRange: number[] = [10000, 2000000];
+    products = [];
     searchValue;
     timeAutoPlay = 3000;
     sortedProd;
     defaultProd;
     protected selectedBrand = 'All';
     protected selectedCate = 'All';
-    listCate;
+    selectedCategory;
+    listCate = [];
     listBrand;
     constructor(private productService: ProductService) {}
     ngOnInit(): void {
@@ -49,7 +51,6 @@ export class ShopViewComponent implements OnInit {
             },
             error: (err) => console.log(err),
         });
-
         forkJoin([
             this.productService.getCategory(),
             this.productService.getBrand(),
@@ -157,4 +158,6 @@ export class ShopViewComponent implements OnInit {
         }
         this.sortedProd = [...this.products];
     }
+
+    onPriceChange() {}
 }

@@ -1,27 +1,49 @@
 .p-button {
-  border-radius: 5px;
-  border: none;
-  background-color: rgb(216, 22, 22);
-  color: #fff;
+    border-radius: 5px;
+    border: none;
+    background-color: rgb(216, 22, 22);
+    color: #fff;
 }
 
 :host::ng-deep .num-product {
-  input {
-    border-radius: 0;
-    width: 40px;
-    text-align: center;
-    border-left: 0;
-    border-right: 0;
-    &:focus {
-      border-color: #161616;
+    input {
+        border-radius: 0;
+        width: 40px;
+        text-align: center;
+        border-left: 0;
+        border-right: 0;
+        &:focus {
+            border-color: #161616;
+        }
     }
-  }
-  .p-button {
-    border: solid 1px #161616;
-    background-color: #fff;
-    span {
-      color: #161616;
-      border: none;
+    .p-button {
+        border: solid 1px #161616;
+        background-color: #fff;
+        span {
+            color: #161616;
+            border: none;
+        }
     }
-  }
+}
+.cart-header {
+    font-family: "ABeeZee", sans-serif;
+}
+.cart-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    .num-item {
+        display: flex;
+    }
+}
+.title {
+    font-size: 20px;
+    font-weight: 600;
+}
+.detail {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
 }

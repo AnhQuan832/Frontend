@@ -1,15 +1,18 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
+import { BaseComponent } from '../base.component';
 
 @Component({
     selector: 'app-menu',
     templateUrl: './app.menu.component.html',
 })
-export class AppMenuComponent implements OnInit {
+export class AppMenuComponent extends BaseComponent implements OnInit {
     model: any[] = [];
 
-    constructor(public layoutService: LayoutService) {}
+    constructor(public layoutService: LayoutService) {
+        super();
+    }
 
     ngOnInit() {
         this.model = [
@@ -18,7 +21,7 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Dashboard',
                         icon: 'pi pi-fw pi-home',
-                        routerLink: ['/'],
+                        routerLink: ['/merchant'],
                     },
                 ],
             },
@@ -31,34 +34,39 @@ export class AppMenuComponent implements OnInit {
                             {
                                 label: 'Manage',
                                 icon: 'pi pi-fw pi-box',
-                                routerLink: ['/pages/product'],
+                                routerLink: ['/merchant/product'],
                             },
                             {
                                 label: 'Import',
                                 icon: 'pi pi-fw pi-download',
-                                routerLink: ['/pages/product/import'],
+                                routerLink: ['/merchant/product/import'],
                             },
                         ],
                     },
                     {
                         label: 'Order',
                         icon: 'pi pi-fw pi-shopping-cart',
-                        routerLink: ['/pages/order'],
+                        routerLink: ['/merchant/order'],
                     },
                     {
                         label: 'Voucher',
                         icon: 'pi pi-fw pi-ticket',
-                        routerLink: ['/pages/voucher'],
+                        routerLink: ['/merchant/voucher'],
                     },
                     {
-                        label: 'Statistic',
+                        label: 'Live',
                         icon: 'pi pi-fw pi-chart-line',
-                        routerLink: ['/pages/sale'],
+                        routerLink: ['/merchant/live'],
                     },
                     {
                         label: 'Message',
                         icon: 'pi pi-fw pi-comment',
-                        routerLink: ['/pages/message'],
+                        routerLink: ['/merchant/message'],
+                    },
+                    {
+                        label: 'Statistic',
+                        icon: 'pi pi-fw pi-chart-line',
+                        routerLink: ['/merchant/sale'],
                     },
                     {
                         label: 'Log out',

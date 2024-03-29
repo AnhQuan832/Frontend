@@ -31,9 +31,30 @@ import { AddBrand } from './add brand/add-brand.component';
 import { AddCategory } from './add category/add-category.component';
 import { AddProduct } from './add product/add-product.component';
 import { AddSubCategory } from './add sub-category/add-sub-category.component';
+import { FooterComponent } from './footer/footer.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { ProductCardComponent } from './product-card/product-card.component';
+import { RatingComponent } from './rating/rating.component';
+import { RatingModule } from 'primeng/rating';
+import { MenuModule } from 'primeng/menu';
+import { LogoComponent } from './logo/logo.component';
+import { QuantityComponent } from './quantity/quantity.component';
+import { ProductImageComponent } from './product-image/product-image.component';
 
 @NgModule({
-    declarations: [AddBrand, AddCategory, AddProduct, AddSubCategory],
+    declarations: [
+        AddBrand,
+        AddCategory,
+        AddProduct,
+        AddSubCategory,
+        FooterComponent,
+        NavBarComponent,
+        ProductCardComponent,
+        RatingComponent,
+        LogoComponent,
+        QuantityComponent,
+        ProductImageComponent,
+    ],
     imports: [
         CommonModule,
         PagesRoutingModule,
@@ -63,6 +84,21 @@ import { AddSubCategory } from './add sub-category/add-sub-category.component';
         MultiSelectModule,
         InputTextModule,
         InputNumberModule,
+        RatingModule,
+        MenuModule,
+    ],
+    exports: [
+        AddBrand,
+        AddCategory,
+        AddProduct,
+        AddSubCategory,
+        FooterComponent,
+        NavBarComponent,
+        ProductCardComponent,
+        RatingComponent,
+        LogoComponent,
+        QuantityComponent,
+        ProductImageComponent,
     ],
     providers: [MessageService, DialogService, ProductComponent],
 })

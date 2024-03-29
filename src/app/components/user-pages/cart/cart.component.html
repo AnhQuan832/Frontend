@@ -1,14 +1,63 @@
-<div class="grid">
-  <div class="col-12">
-    <div
-      class="card m-4 px-6 py-6"
-      style="margin-bottom: 6rem; min-height: 53vh"
-    >
-      <p-table
+<div class="grid w-100 px-6 py-4" style="margin-bottom: 6rem; min-height: 53vh">
+    <h3 class="col-12 cart-header mb-0">My cart</h3>
+    <div class="col-12 xl:col-8">
+        <div class="card px-6 py-6">
+            <div *ngFor="let item of cart">
+                <div class="cart-item">
+                    <span
+                        style="min-width: 10rem"
+                        class="d-flex align-items-center flex-wrap gap-4"
+                    >
+                        <p-checkbox
+                            [(ngModel)]="item.isSelected"
+                            [binary]="true"
+                            (onChange)="selectItem(item)"
+                        ></p-checkbox>
+                        <img
+                            [src]="item?.image"
+                            width="100"
+                            height="100"
+                            class="shadow-4 rounded-3"
+                        />
+                        <span class="d-flex flex-column">
+                            <h5 class="mb-0" style="width: fit-content">
+                                {{ item.name }}
+                            </h5>
+                            <small style="font-size: 12px">{{
+                                item.listAttributeName.join(", ")
+                            }}</small>
+                            <span style="width: 14%; min-width: 8rem">
+                                {{ item.unitPrice | currency : "VND" }}
+                            </span>
+                        </span>
+                    </span>
+
+                    <span style="width: 14%; min-width: 10rem" class="num-item">
+                        <app-quantity
+                            [quantity]="item.quantity"
+                            [min]="1"
+                            [max]="item.stockAmount"
+                            (onQuantity)="onChangeQty(item, $event)"
+                        ></app-quantity>
+                        <button
+                            pButton
+                            pRipple
+                            icon="pi pi-trash"
+                            class="p-button-rounded p-button-danger p-button-text"
+                            (click)="$event.stopPropagation(); removeItem(item)"
+                        ></button>
+                    </span>
+                    <!-- <span style="width: 14%; min-width: 10rem">
+                    {{ item.totalItemPrice | currency : "VND" }}
+                </span> -->
+                </div>
+                <p-divider></p-divider>
+            </div>
+            <!-- <p-table
         #dt
         [value]="cart"
         responsiveLayout="scroll"
-        [(selection)]="selectedProducts"
+        [(selection)]="selecteditems"
         dataKey="cartItemId"
         [rows]="8"
         [globalFilterFields]="[
@@ -42,7 +91,7 @@
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
 
-            <th>Product</th>
+            <th>item</th>
             <th pSortableColumn="unitPrice">
               Price <p-sortIcon field="unitPrice"></p-sortIcon>
             </th>
@@ -56,36 +105,36 @@
             <th width="80px"></th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product>
+        <ng-template pTemplate="body" let-item>
           <tr>
-            <td style="width: 3rem">
+            <span style="width: 3rem">
               <p-tableCheckbox
-                [value]="product"
-                (click)="selectItem(product)"
+                [value]="item"
+                (click)="selectItem(item)"
               ></p-tableCheckbox>
-            </td>
+            </span>
 
-            <td style="min-width: 10rem" class="d-flex align-items-center">
+            <span style="min-width: 10rem" class="d-flex align-items-center">
               <span class="p-column-title">Name</span>
-              <img [src]="product?.image" width="100" class="shadow-4" />
+              <img [src]="item?.image" width="100" class="shadow-4" />
               <span class="d-flex flex-column ms-4">
                 <h5 class="mb-0" style="width: fit-content">
-                  {{ product.name }}
+                  {{ item.name }}
                 </h5>
                 <small style="font-size: 12px">{{
-                  product.listAttributeName.join(", ")
+                  item.listAttributeName.join(", ")
                 }}</small>
               </span>
-            </td>
+            </span>
 
-            <td style="width: 14%; min-width: 8rem">
+            <span style="width: 14%; min-width: 8rem">
               <span class="p-column-title">Price</span>
-              {{ product.unitPrice | currency : "VND" }}
-            </td>
-            <td style="width: 14%; min-width: 10rem" class="num-product">
+              {{ item.unitPrice | currency : "VND" }}
+            </span>
+            <span style="width: 14%; min-width: 10rem" class="num-item">
               <span class="p-column-title">Quantity</span>
               <p-inputNumber
-                [(ngModel)]="product.quantity"
+                [(ngModel)]="item.quantity"
                 [showButtons]="true"
                 buttonLayout="horizontal"
                 inputId="horizontal"
@@ -94,40 +143,66 @@
                 incrementButtonIcon="pi pi-plus"
                 decrementButtonIcon="pi pi-minus"
                 [min]="1"
-                [max]="product.stockAmount"
-                (onInput)="onChangeQty(product, $event.value)"
+                [max]="item.stockAmount"
+                (onInput)="onChangeQty(item, $event.value)"
               ></p-inputNumber>
-            </td>
-            <td style="width: 14%; min-width: 10rem">
+            </span>
+            <span style="width: 14%; min-width: 10rem">
               <span class="p-column-title">Total</span>
-              {{ product.totalItemPrice | currency : "VND" }}
-            </td>
+              {{ item.totalItemPrice | currency : "VND" }}
+            </span>
 
-            <td>
+            <span>
               <div class="flex">
                 <button
                   pButton
                   pRipple
                   icon="pi pi-trash"
                   class="p-button-rounded p-button-warning"
-                  (click)="$event.stopPropagation(); removeItem(product)"
+                  (click)="$event.stopPropagation(); removeItem(item)"
                 ></button>
               </div>
-            </td>
+            </span>
           </tr>
         </ng-template>
-      </p-table>
+      </p-table> -->
+        </div>
+
+        <!-- <div class="me-4 mb-2" style="z-index: 100; opacity: 1">
+            <div class="d-flex justify-content-end">
+                <button
+                    [disabled]="selecteditems.length === 0"
+                    class="btn btn-primary"
+                    (click)="onCheckOut()"
+                >
+                    Check out
+                </button>
+            </div>
+        </div> -->
     </div>
-    <div class="me-4 mb-2" style="z-index: 100; opacity: 1">
-      <div class="d-flex justify-content-end">
-        <button
-          [disabled]="selectedProducts.length === 0"
-          class="btn btn-primary"
-          (click)="onCheckOut()"
-        >
-          Check out
-        </button>
-      </div>
+    <div class="col-12 xl:col-4">
+        <div class="card">
+            <div class="title mb-2">Order Summary</div>
+            <div class="detail">
+                <p>Subtotal</p>
+                <p>33.000</p>
+            </div>
+            <div class="detail">
+                <p>Discount</p>
+                <p>33.000</p>
+            </div>
+            <p-divider></p-divider>
+            <div class="detail">
+                <p>Total</p>
+                <p>33.000</p>
+            </div>
+            <button
+                [disabled]="selectedProducts.length === 0"
+                class="btn btn-primary w-100"
+                (click)="onCheckOut()"
+            >
+                Check out
+            </button>
+        </div>
     </div>
-  </div>
 </div>

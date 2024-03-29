@@ -9,7 +9,7 @@ import { AuthGuard } from './components/auth/auth.guard';
         RouterModule.forRoot(
             [
                 {
-                    path: '',
+                    path: 'merchant',
                     component: AppLayoutComponent,
                     children: [
                         {
@@ -18,17 +18,19 @@ import { AuthGuard } from './components/auth/auth.guard';
                                 import(
                                     './components/dashboard/dashboard.module'
                                 ).then((m) => m.DashboardModule),
-                            // canActivate: [AuthGuard],
                         },
                         {
-                            path: 'pages',
+                            path: '',
                             loadChildren: () =>
                                 import(
                                     './components/merchant-pages/pages.module'
                                 ).then((m) => m.PagesModule),
-                            canActivate: [AuthGuard],
                         },
                     ],
+                    canActivate: [AuthGuard],
+                    data: {
+                        userRoles: ['ROLE_MERCHANT', 'ROLE_ADMIN'],
+                    },
                 },
                 {
                     path: 'auth',
@@ -38,11 +40,11 @@ import { AuthGuard } from './components/auth/auth.guard';
                         ),
                 },
                 {
-                    path: 'landing',
+                    path: 'user',
                     loadChildren: () =>
-                        import('./components/user-pages/landing.module').then(
-                            (m) => m.LandingModule
-                        ),
+                        import(
+                            './components/user-pages/user-pages.module'
+                        ).then((m) => m.UserPageModule),
                 },
                 { path: 'notfound', component: NotfoundComponent },
                 { path: '**', redirectTo: '/notfound' },

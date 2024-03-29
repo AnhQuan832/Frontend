@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
+import { BaseComponent } from 'src/app/base.component';
 
 @Component({
     selector: 'app-user-profile',
@@ -15,9 +16,9 @@ import { UserService } from 'src/app/services/user.service';
     styleUrls: ['./user-profile.component.less'],
     providers: [DialogService, ChatComponent],
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent extends BaseComponent implements OnInit {
     user: any;
-    isLoading: boolean = true;
+    isLoading: boolean = false;
     ref: DynamicDialogRef;
     isBought = false;
     protected genderOptions = [
@@ -31,7 +32,7 @@ export class UserProfileComponent implements OnInit {
         },
         {
             id: 'OTHER',
-            value: 'Khác',
+            value: 'Other',
         },
     ];
     protected avatarFile: FileList;
@@ -44,14 +45,16 @@ export class UserProfileComponent implements OnInit {
     originalData: any;
     constructor(
         private formBuilder: FormBuilder,
-        private userSerivce: UserService,
+        private userService: UserService,
         private invoiceService: InvoiceService,
         private dialogSerivce: DialogService,
         private chat: ChatComponent,
         private router: Router,
         private msgService: MessageService,
         private storageSerivce: StorageService
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.formGroup = this.formBuilder.group({
@@ -64,9 +67,11 @@ export class UserProfileComponent implements OnInit {
             userAvatar: [null, Validators.required],
             addressList: this.formBuilder.group({}),
         });
+        this.user = this.getUserInfo();
+        this.formGroup.patchValue(this.user);
         const info = this.storageSerivce.getItemLocal('userInfo');
-        if (info?.userId) this.getData();
-        else this.router.navigate(['/user/home']);
+        // if (info?.userId) this.getData();
+        // else this.router.navigate(['/user/home']);
         this.formGroup.get('userEmail').disable();
         this.formGroup.get('memberPoint').disable();
     }
@@ -81,7 +86,7 @@ export class UserProfileComponent implements OnInit {
     getData() {
         this.isLoading = true;
         forkJoin([
-            this.userSerivce.getProfile(),
+            this.userService.getProfile(),
             this.invoiceService.getPaymentInfo(),
         ]).subscribe({
             next: (res) => {
@@ -134,7 +139,7 @@ export class UserProfileComponent implements OnInit {
     }
 
     updateData() {
-        this.userSerivce.update(this.formGroup.getRawValue()).subscribe({
+        this.userService.update(this.formGroup.getRawValue()).subscribe({
             next: (res) => {
                 this.msgService.add({
                     key: 'toast',

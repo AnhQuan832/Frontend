@@ -43,7 +43,7 @@ export class AddProduct implements OnInit {
     });
 
     constructor(
-        private productSerivce: ProductService,
+        private productService: ProductService,
         private router: Router,
         private builder: FormBuilder,
         private sanitizer: DomSanitizer,
@@ -57,15 +57,15 @@ export class AddProduct implements OnInit {
     }
 
     private initialize() {
-        this.productSerivce.getAttribute().subscribe({
+        this.productService.getAttribute().subscribe({
             next: (res) => {
                 this.attribute = res;
             },
         });
-        this.productSerivce.getBrand().subscribe({
+        this.productService.getBrand().subscribe({
             next: (res) => (this.brandOption = res),
         });
-        this.productSerivce.getCategory().subscribe({
+        this.productService.getCategory().subscribe({
             next: (res) => (this.categoryOption = res),
         });
     }
@@ -93,7 +93,7 @@ export class AddProduct implements OnInit {
             header: 'Add new Brand',
         });
         this.ref.onClose.subscribe((res) => {
-            this.productSerivce.getBrand().subscribe({
+            this.productService.getBrand().subscribe({
                 next: (res) => (this.brandOption = res),
             });
         });
@@ -104,7 +104,7 @@ export class AddProduct implements OnInit {
             header: 'Add new Category',
         });
         this.ref.onClose.subscribe((res) => {
-            this.productSerivce.getCategory().subscribe({
+            this.productService.getCategory().subscribe({
                 next: (res) => (this.categoryOption = res),
             });
         });
@@ -123,7 +123,7 @@ export class AddProduct implements OnInit {
             ...this.addProductForm.get('size').value,
         ];
         this.addProductForm.get('varietyAttributeList').setValue(listVariety);
-        this.productSerivce
+        this.productService
             .addNewProduct(this.prepareFormData(this.addProductForm))
             .subscribe({
                 next: (res) => {
@@ -149,7 +149,7 @@ export class AddProduct implements OnInit {
     }
 
     onCategoryChange(event) {
-        this.productSerivce.getSubCategory(event.value.categoryId).subscribe({
+        this.productService.getSubCategory(event.value.categoryId).subscribe({
             next: (res) => (this.subCategoryOption = res),
         });
     }

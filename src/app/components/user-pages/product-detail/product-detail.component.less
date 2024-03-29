@@ -1,60 +1,168 @@
 :host::ng-deep {
-  .p-inputtext,
-  .inputtext {
-    border-radius: 0 !important;
-    width: 40px;
-    text-align: center;
-    border-left: 0;
-    border-right: 0;
-    &:focus {
-      border-color: #161616;
+    .p-inputtext,
+    .inputtext {
+        border-radius: 0 !important;
+        width: 40px;
+        text-align: center;
+        border-left: 0;
+        border-right: 0;
+        &:focus {
+            border-color: #161616;
+        }
     }
-  }
-  .p-galleria .p-galleria-thumbnail-container {
-    height: 160px;
-    background-color: transparent;
-  }
-  .p-button {
-    border: solid 1px #161616;
-    background-color: #fff;
-    span {
-      color: #161616;
-      border: none;
+    .p-galleria .p-galleria-thumbnail-container {
+        height: 160px;
+        background-color: transparent;
     }
-  }
+    .p-button {
+        border: solid 1px #161616;
+        background-color: #fff;
+        span {
+            color: #161616;
+            border: none;
+        }
+    }
 }
 
 .attribute {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  h5 {
-    width: 80px;
-  }
-  > div {
-    border-radius: 2px;
-    border: solid 1px;
-    padding: 0.5rem;
-    width: fit-content;
-    min-width: 40px;
-    text-align: center;
-    cursor: pointer;
-  }
-  .active {
-    border: solid 1px #ff9b00;
-    color: #ff9b00;
-  }
-  .disabled {
-    border: solid 1px #949390;
-    color: #949390;
-    cursor: default;
-  }
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    h5 {
+        width: 80px;
+    }
+    > div {
+        border-radius: 2px;
+        border: solid 1px;
+        padding: 0.5rem;
+        width: fit-content;
+        min-width: 40px;
+        text-align: center;
+        cursor: pointer;
+    }
+    .active {
+        border: solid 1px #ff9b00;
+        color: #ff9b00;
+    }
+    .disabled {
+        border: solid 1px #949390;
+        color: #949390;
+        cursor: default;
+    }
 }
 
 .grid-list {
-  li {
-    list-style: none;
-    width: fit-content;
-  }
+    li {
+        list-style: none;
+        width: fit-content;
+    }
+}
+
+.image-slider {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 24px;
+    flex-direction: column-reverse;
+    &.large-layout {
+        flex-direction: row !important;
+        .thumbnail-container {
+            flex-direction: column !important;
+        }
+    }
+}
+
+.thumbnail {
+    width: 60px;
+    height: auto;
+    aspect-ratio: 1;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 12px;
+}
+.selected-thumbnail {
+    border: 2px solid #064f32;
+    border-radius: 12px;
+}
+.main-image-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.main-image {
+    width: calc(100% - 88px);
+    max-width: 544px;
+    height: auto;
+    border-radius: 12px;
+    aspect-ratio: 1;
+    transition: width 0.3s;
+    // &.small-layout{
+    //     max-width: 200px !important;
+    // }
+}
+
+button {
+    // position: absolute;
+    background-color: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.pre-thumbnail {
+    top: -10%;
+}
+.next-thumbnail {
+    top: 0%;
+}
+
+.thumbnail-container {
+    position: relative;
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+    &.large-layout {
+        flex-direction: column !important;
+        align-items: center;
+
+        .thumbnail {
+            width: 96px;
+        }
+    }
+}
+
+.thumbnails {
+    overflow: hidden;
+    // height: 250px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    &.large-layout {
+        flex-direction: column !important;
+    }
+}
+
+.bread-crumb {
+    padding-left: 32px;
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+
+.product-card {
+    width: 200px;
+    background-color: #fff;
+    .line-clamp {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 3;
+    }
 }
