@@ -9,6 +9,7 @@ import { InvoiceService } from 'src/app/services/invoice.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
 import { BaseComponent } from 'src/app/base.component';
+import { MerchantRequestComponent } from '../merchant-request/merchant-request.component';
 
 @Component({
     selector: 'app-user-profile',
@@ -47,11 +48,11 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         private formBuilder: FormBuilder,
         private userService: UserService,
         private invoiceService: InvoiceService,
-        private dialogSerivce: DialogService,
+        private dialogService: DialogService,
         private chat: ChatComponent,
         private router: Router,
         private msgService: MessageService,
-        private storageSerivce: StorageService
+        private storageService: StorageService
     ) {
         super();
     }
@@ -69,7 +70,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         });
         this.user = this.getUserInfo();
         this.formGroup.patchValue(this.user);
-        const info = this.storageSerivce.getItemLocal('userInfo');
+        const info = this.storageService.getItemLocal('userInfo');
         // if (info?.userId) this.getData();
         // else this.router.navigate(['/user/home']);
         this.formGroup.get('userEmail').disable();
@@ -108,7 +109,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
     }
 
     addRating(row) {
-        // this.ref = this.dialogSerivce.open(RatingComponent, {
+        // this.ref = this.dialogService.open(RatingComponent, {
         //   header: 'Write a Review',
         //   data: row,
         // });
@@ -149,5 +150,11 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
             },
         });
         this.getData();
+    }
+
+    registerMerchant() {
+        this.dialogService.open(MerchantRequestComponent, {
+
+        })
     }
 }

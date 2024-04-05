@@ -132,4 +132,8 @@ export class NavBarComponent
     toLoginPage() {
         this.router.navigate(['/auth/login']);
     }
+
+    toChatPage() {
+        this.router.navigate(['/user/message']);
+    }
 }
