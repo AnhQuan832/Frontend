@@ -13,6 +13,17 @@
         <!-- card-info -->
         <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
             <div class="card card-profile p-4 shadow" [formGroup]="formGroup">
+                <div
+                    class="d-flex justify-content-between align-items-center mb-4"
+                >
+                    <h5>My Account</h5>
+                    <button
+                        class="btn btn-secondary w-fit"
+                        (click)="registerMerchant()"
+                    >
+                        Register for Merchant
+                    </button>
+                </div>
                 <div class="row justify-content-center">
                     <div
                         class="card-profile-image rounded-circle d-flex justify-content-center"
@@ -112,36 +123,6 @@
                                 />
                             </div>
                         </div>
-                        <!-- <div class="col-lg-6">
-                <div>
-                  <span class="p-float-label">
-                    <h6 class="addressLabel ps-0">Giới tính</h6>
-                    <p-dropdown
-                      [options]="genderOptions"
-                      optionLabel="value"
-                      class="mb-3"
-                      [autoDisplayFirst]="false"
-                     formControlName="user.gender"
-                    >
-                    </p-dropdown>
-                  </span>
-                </div>
-              </div> -->
-
-                        <!-- <div class="col-lg-6">
-                <div>
-                  <span class="d-flex flex-column">
-                    <h6 class="addressLabel ps-0">Ngày sinh</h6>
-
-                    <p-calendar
-                     formControlName="dob"
-                      class="w-100 rounded-2 mb-3"
-                      [showIcon]="true"
-                      dateFormat="dd/mm/yy"
-                    ></p-calendar>
-                  </span>
-                </div>
-              </div> -->
                         <div class="col-lg-6">
                             <div>
                                 <span class="d-flex flex-column"> </span>
@@ -157,34 +138,130 @@
                         </div>
                     </div>
                 </div>
-                <!-- card-info -->
-                <!-- <div class="card-body pt-0 pt-md-4">
-          <div class="text-center">
-            <h3>
-              {{ user.userFirstName + " " + user.userLastName }}
-            </h3>
-            <div>
-              <h5>
-                {{ user.userEmail }}
-              </h5>
-            </div>
-            <div>
-              Số thú cưng đang nhận nuôi online: {{ onlineAdoptionPet.length }}
-            </div>
-          </div>
-        </div> -->
             </div>
         </div>
         <!-- detail-info -->
         <div class="col-xl-8 order-xl-1">
             <div class="card shadow mb-3">
                 <div class="card-body">
-                    <h4 class="heading-small text-muted mb-1">
-                        Transaction History
-                    </h4>
+                    <h4 class="heading-small text-muted mb-4">My purchase</h4>
                     <div class="pl-lg-6">
                         <div class="row">
-                            <p-table
+                            <p-tabView>
+                                <p-tabPanel header="All">
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur
+                                        adipiscing elit, sed do eiusmod tempor
+                                        incididunt ut labore et dolore magna
+                                        aliqua. Ut enim ad minim veniam, quis
+                                        nostrud exercitation ullamco laboris
+                                        nisi ut aliquip ex ea commodo consequat.
+                                        Duis aute irure dolor in reprehenderit
+                                        in voluptate velit esse cillum dolore eu
+                                        fugiat nulla pariatur. Excepteur sint
+                                        occaecat cupidatat non proident, sunt in
+                                        culpa qui officia deserunt mollit anim
+                                        id est laborum.
+                                    </p>
+                                </p-tabPanel>
+                                <p-tabPanel header="To Pay">
+                                    <p>
+                                        Sed ut perspiciatis unde omnis iste
+                                        natus error sit voluptatem accusantium
+                                        doloremque laudantium, totam rem
+                                        aperiam, eaque ipsa quae ab illo
+                                        inventore veritatis et quasi architecto
+                                        beatae vitae dicta sunt explicabo. Nemo
+                                        enim ipsam voluptatem quia voluptas sit
+                                        aspernatur aut odit aut fugit, sed quia
+                                        consequuntur magni dolores eos qui
+                                        ratione voluptatem sequi nesciunt.
+                                        Consectetur, adipisci velit, sed quia
+                                        non numquam eius modi.
+                                    </p>
+                                </p-tabPanel>
+                                <p-tabPanel header="To Ship">
+                                    <p>
+                                        At vero eos et accusamus et iusto odio
+                                        dignissimos ducimus qui blanditiis
+                                        praesentium voluptatum deleniti atque
+                                        corrupti quos dolores et quas molestias
+                                        excepturi sint occaecati cupiditate non
+                                        provident, similique sunt in culpa qui
+                                        officia deserunt mollitia animi, id est
+                                        laborum et dolorum fuga. Et harum quidem
+                                        rerum facilis est et expedita
+                                        distinctio. Nam libero tempore, cum
+                                        soluta nobis est eligendi optio cumque
+                                        nihil impedit quo minus.
+                                    </p>
+                                </p-tabPanel>
+                                <p-tabPanel header="To Revceive">
+                                    <p>
+                                        At vero eos et accusamus et iusto odio
+                                        dignissimos ducimus qui blanditiis
+                                        praesentium voluptatum deleniti atque
+                                        corrupti quos dolores et quas molestias
+                                        excepturi sint occaecati cupiditate non
+                                        provident, similique sunt in culpa qui
+                                        officia deserunt mollitia animi, id est
+                                        laborum et dolorum fuga. Et harum quidem
+                                        rerum facilis est et expedita
+                                        distinctio. Nam libero tempore, cum
+                                        soluta nobis est eligendi optio cumque
+                                        nihil impedit quo minus.
+                                    </p>
+                                </p-tabPanel>
+                                <p-tabPanel header="Completed">
+                                    <p>
+                                        At vero eos et accusamus et iusto odio
+                                        dignissimos ducimus qui blanditiis
+                                        praesentium voluptatum deleniti atque
+                                        corrupti quos dolores et quas molestias
+                                        excepturi sint occaecati cupiditate non
+                                        provident, similique sunt in culpa qui
+                                        officia deserunt mollitia animi, id est
+                                        laborum et dolorum fuga. Et harum quidem
+                                        rerum facilis est et expedita
+                                        distinctio. Nam libero tempore, cum
+                                        soluta nobis est eligendi optio cumque
+                                        nihil impedit quo minus.
+                                    </p>
+                                </p-tabPanel>
+                                <p-tabPanel header="Cancelled">
+                                    <p>
+                                        At vero eos et accusamus et iusto odio
+                                        dignissimos ducimus qui blanditiis
+                                        praesentium voluptatum deleniti atque
+                                        corrupti quos dolores et quas molestias
+                                        excepturi sint occaecati cupiditate non
+                                        provident, similique sunt in culpa qui
+                                        officia deserunt mollitia animi, id est
+                                        laborum et dolorum fuga. Et harum quidem
+                                        rerum facilis est et expedita
+                                        distinctio. Nam libero tempore, cum
+                                        soluta nobis est eligendi optio cumque
+                                        nihil impedit quo minus.
+                                    </p>
+                                </p-tabPanel>
+                                <p-tabPanel header="Return">
+                                    <p>
+                                        At vero eos et accusamus et iusto odio
+                                        dignissimos ducimus qui blanditiis
+                                        praesentium voluptatum deleniti atque
+                                        corrupti quos dolores et quas molestias
+                                        excepturi sint occaecati cupiditate non
+                                        provident, similique sunt in culpa qui
+                                        officia deserunt mollitia animi, id est
+                                        laborum et dolorum fuga. Et harum quidem
+                                        rerum facilis est et expedita
+                                        distinctio. Nam libero tempore, cum
+                                        soluta nobis est eligendi optio cumque
+                                        nihil impedit quo minus.
+                                    </p>
+                                </p-tabPanel>
+                            </p-tabView>
+                            <!-- <p-table
                                 #dt
                                 [value]="listTransactions"
                                 [rows]="5"
@@ -303,7 +380,7 @@
                                         </td>
                                     </tr>
                                 </ng-template>
-                            </p-table>
+                            </p-table> -->
 
                             <hr *ngIf="cart" class="mt-4" />
                             <h4 *ngIf="cart">Detail</h4>
@@ -326,20 +403,6 @@
                                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                                 [rowHover]="true"
                             >
-                                <!-- <ng-template pTemplate="caption">
-          <div class="d-flex justify-content-end">
-            <span class="block p-input-icon-left">
-              <i class="pi pi-search"></i>
-              <input
-                pInputText
-                type="text"
-                (input)="onGlobalFilter(dt, $event)"
-                placeholder="Search..."
-                class="w-full sm:w-auto"
-              />
-            </span>
-          </div>
-        </ng-template> -->
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th>Product</th>

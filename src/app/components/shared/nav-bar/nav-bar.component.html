@@ -34,7 +34,7 @@
                         >Product</a
                     >
                 </li>
-                <li *ngIf="isLogin" class="nav-item">
+                <!-- <li *ngIf="isLogin" class="nav-item">
                     <a
                         id="message"
                         class="nav-link"
@@ -42,7 +42,7 @@
                         href="/user/message"
                         >Message</a
                     >
-                </li>
+                </li> -->
             </ul>
         </div>
         <div class="header d-flex flex-row justify-content-between w-75">
@@ -101,11 +101,15 @@
                 </li>
                 <li class="nav-item d-flex">
                     <button *ngIf="isLogin" class="nav_profile-cart">
+                        <i class="bi bi-chat" (click)="toChatPage()"></i>
+                    </button>
+                    <button *ngIf="isLogin" class="nav_profile-cart">
                         <i
                             class="bi bi-person"
                             (click)="menu.toggle($event)"
                         ></i>
                     </button>
+
                     <button
                         *ngIf="!isLogin"
                         style="

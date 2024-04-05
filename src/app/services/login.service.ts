@@ -25,11 +25,11 @@ export class LoginService {
                         API.AUTHENTICATE.STATUS.AUTHENTICATE_SUCCESSFUL
                     ) {
                         return data.data.user;
-                    } else if (
-                        data.meta.statusCode ===
-                        API.AUTHENTICATE.STATUS.BAD_CREDENTIAL
-                    ) {
-                        return false;
+                        // } else if (
+                        //     data.meta.statusCode ===
+                        //     API.AUTHENTICATE.STATUS.BAD_CREDENTIAL
+                        // ) {
+                        //     return false;
                     } else {
                         throw new Error(data.meta);
                     }
