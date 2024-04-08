@@ -40,6 +40,7 @@ import { MenuModule } from 'primeng/menu';
 import { LogoComponent } from './logo/logo.component';
 import { QuantityComponent } from './quantity/quantity.component';
 import { ProductImageComponent } from './product-image/product-image.component';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
     declarations: [
@@ -86,6 +87,7 @@ import { ProductImageComponent } from './product-image/product-image.component';
         InputNumberModule,
         RatingModule,
         MenuModule,
+        SkeletonModule,
     ],
     exports: [
         AddBrand,

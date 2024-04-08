@@ -6,7 +6,7 @@ import { ProductService } from 'src/app/services/product.service';
 @Component({
     selector: 'app-shop-view',
     templateUrl: './shop-view.component.html',
-    styleUrls: ['./shop-view.component.less'],
+    styleUrls: ['./shop-view.component.scss'],
 })
 export class ShopViewComponent implements OnInit {
     responsiveOptions = [
@@ -37,14 +37,18 @@ export class ShopViewComponent implements OnInit {
     selectedCategory;
     listCate = [];
     listBrand;
+    isLoading: boolean = false;
     constructor(private productService: ProductService) {}
     ngOnInit(): void {
         this.initialize();
     }
 
     private initialize() {
+        this.isLoading = true;
+
         this.productService.getAllProduct().subscribe({
             next: (res) => {
+                this.isLoading = false;
                 this.products = res;
                 this.sortedProd = _.cloneDeep(this.products);
                 this.defaultProd = _.cloneDeep(this.products);

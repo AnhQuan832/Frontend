@@ -9,10 +9,11 @@ $gutter: 1rem; //for primeflex grid system
 
 ::ng-deep {
     .p-password,
-    .p-inputtext {
+    .p-inputtext,
+    .p-dropdown.p-component {
         width: 100%;
         border-radius: 7px;
-        height: 40px;
+        height: 40px !important;
     }
     input {
         border: solid 1px #fff !important;

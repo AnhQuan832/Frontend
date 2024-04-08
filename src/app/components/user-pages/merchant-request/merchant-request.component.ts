@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { BaseComponent } from 'src/app/base.component';
 import { AddressService } from 'src/app/services/address.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { AddressService } from 'src/app/services/address.service';
     templateUrl: './merchant-request.component.html',
     styleUrls: ['./merchant-request.component.scss'],
 })
-export class MerchantRequestComponent {
+export class MerchantRequestComponent extends BaseComponent {
     avatarFile: FileList;
     logoUrl: string;
     documentList: Array<File> = new Array();
@@ -23,7 +24,9 @@ export class MerchantRequestComponent {
         private router: Router,
         private messageService: MessageService,
         private apiAddress: AddressService
-    ) {}
+    ) {
+        super();
+    }
 
     requestForm = this.builder.group({
         shelterName: this.builder.control('', Validators.required),
@@ -50,7 +53,7 @@ export class MerchantRequestComponent {
 
     bindProvinces() {
         this.apiAddress.getProvinces().then((response: any) => {
-            const rListProvince = response.data.data;
+            const rListProvince = response.data;
             this.listProvince = rListProvince.map((rListProvince) => {
                 return {
                     provName: rListProvince.name_with_type,
@@ -69,7 +72,7 @@ export class MerchantRequestComponent {
             (item) => item.provName == selectedValue.provName
         );
         this.apiAddress
-            .getDisctrictsByProvince(foundProvince.provCode)
+            .getDistrictsByProvince(foundProvince.provCode)
             .then((response: any) => {
                 const rListDistrict = response.data.data;
                 (this.listDistrict = rListDistrict.map((rListDistrict) => {

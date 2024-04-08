@@ -10,7 +10,7 @@ import { BaseComponent } from 'src/app/base.component';
 @Component({
     selector: 'app-product-detail',
     templateUrl: './product-detail.component.html',
-    styleUrls: ['./product-detail.component.less'],
+    styleUrls: ['./product-detail.component.scss'],
 })
 export class ProductDetailComponent extends BaseComponent implements OnInit {
     product;
