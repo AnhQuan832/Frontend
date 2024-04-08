@@ -48,4 +48,16 @@ export class BaseComponent {
         }
         return this.userRole;
     }
+
+    prepareFormData(formData, data, name, isObject = false) {
+        if (isObject) {
+            formData.append(
+                name,
+                new Blob([JSON.stringify(data)], { type: 'application/json' })
+            );
+        } else {
+            formData.append(name, data);
+        }
+        // return formData;
+    }
 }

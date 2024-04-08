@@ -10,6 +10,7 @@ import { FileHandler } from 'src/app/model/FileHandler';
 import { MessageService } from 'primeng/api';
 import { ProductService } from 'src/app/services/product.service';
 import { ProductComponent } from '../../merchant-pages/product/product.component';
+import { BaseComponent } from 'src/app/base.component';
 
 @Component({
     selector: 'app-charts',
@@ -17,7 +18,7 @@ import { ProductComponent } from '../../merchant-pages/product/product.component
     styleUrls: ['./add-product.component.scss'],
     providers: [DialogService],
 })
-export class AddProduct implements OnInit {
+export class AddProduct extends BaseComponent implements OnInit {
     avatarFile: any;
     avatarUrl: any;
     imgs: FileHandler[] = [];
@@ -51,7 +52,9 @@ export class AddProduct implements OnInit {
         private messageService: MessageService,
         private ref: DynamicDialogRef,
         private productCpn: ProductComponent
-    ) {}
+    ) {
+        super();
+    }
     ngOnInit(): void {
         this.initialize();
     }
@@ -70,19 +73,11 @@ export class AddProduct implements OnInit {
         });
     }
 
-    prepareFormData(product: any) {
+    setUpFormData(product: any) {
         const formData = new FormData();
-        const data = product.value;
-        formData.append(
-            'productDTO',
-            new Blob([JSON.stringify(data)], { type: 'application/json' })
-        );
+        this.prepareFormData(formData, product.value, 'productDTO', true);
         for (let i = 0; i < this.imgs.length; i++) {
-            formData.append(
-                'images',
-                this.imgs[i].file,
-                this.imgs[i].file.name
-            );
+            this.prepareFormData(formData, this.imgs[i].file, 'images', false);
         }
 
         return formData;
@@ -124,7 +119,7 @@ export class AddProduct implements OnInit {
         ];
         this.addProductForm.get('varietyAttributeList').setValue(listVariety);
         this.productService
-            .addNewProduct(this.prepareFormData(this.addProductForm))
+            .addNewProduct(this.setUpFormData(this.addProductForm))
             .subscribe({
                 next: (res) => {
                     if (res) {
