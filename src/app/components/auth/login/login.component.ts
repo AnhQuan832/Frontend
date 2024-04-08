@@ -14,6 +14,7 @@ import {
 import { LoginService } from 'src/app/services/login.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { BaseComponent } from 'src/app/base.component';
+import { defer } from 'rxjs';
 
 @Component({
     selector: 'app-login',
@@ -74,14 +75,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
                             return;
                         }
                         this.setInfo(res);
-                        switch (this.getRole()) {
-                            case 'MERCHANT':
-                            case 'ADMIN':
-                                this.router.navigate(['/merchant']);
-                                break;
-                            default:
-                                this.router.navigate(['/user/home']);
-                        }
+                        this.checkPermission(this.getRole());
                     },
                     error: (err) => console.log(err),
                 });
@@ -124,5 +118,17 @@ export class LoginComponent extends BaseComponent implements OnInit {
         this.setUserInfo(userInfo);
         this.setRole(userInfo.userRoles[0].roleName);
         this.storageService.setTimeResetTokenCookie('jwtToken', jwtToken);
+    }
+
+    checkPermission(roles) {
+        switch (roles) {
+            case 'ROLE_MERCHANT':
+            case 'ROLE_ADMIN':
+                this.router.navigate(['/merchant']);
+                break;
+            case 'ROLE_USER':
+                this.router.navigate(['/user/home']);
+                break;
+        }
     }
 }

@@ -15,7 +15,7 @@ export class StatisticService {
 
     getData(params) {
         return this.http
-            .post(API.STATISTIC.END_POINT.STATISITC, null, {
+            .post(API.STATISTIC.END_POINT.STATISTIC, null, {
                 params: params,
                 headers: this.storageService.getHttpHeader(),
             })
@@ -26,9 +26,8 @@ export class StatisticService {
                         API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
                     ) {
                         return data.data.data;
-                    } else {
-                        return [];
                     }
+                    return [];
                 }),
                 catchError((err) => {
                     throw new Error(err);

@@ -9,7 +9,8 @@ import { StorageService } from 'src/app/services/storage.service';
 })
 export class ProductCardComponent {
     @Input() product;
-    @Input() viewOnly = false;
+    @Input() viewOnly: boolean = false;
+    @Input() isLoading: boolean = false;
     constructor(
         private storageService: StorageService,
         private router: Router

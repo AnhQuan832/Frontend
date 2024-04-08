@@ -10,6 +10,7 @@ import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
 import { BaseComponent } from 'src/app/base.component';
 import { MerchantRequestComponent } from '../merchant-request/merchant-request.component';
+import { ToastMessageService } from 'src/app/services/toast-message.service';
 
 @Component({
     selector: 'app-user-profile',
@@ -51,7 +52,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         private dialogService: DialogService,
         private chat: ChatComponent,
         private router: Router,
-        private msgService: MessageService,
+        private msgService: ToastMessageService,
         private storageService: StorageService
     ) {
         super();
@@ -142,11 +143,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
     updateData() {
         this.userService.update(this.formGroup.getRawValue()).subscribe({
             next: (res) => {
-                this.msgService.add({
-                    key: 'toast',
-                    severity: 'success',
-                    detail: 'Updated',
-                });
+                this.msgService.showMessage('Updated', '', 'success');
             },
         });
         this.getData();
@@ -154,7 +151,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
 
     registerMerchant() {
         this.dialogService.open(MerchantRequestComponent, {
-
-        })
+            width: '50%',
+        });
     }
 }

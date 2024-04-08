@@ -38,7 +38,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MerchantRequestComponent } from './merchant-request/merchant-request.component';
 import { FileUploadModule } from 'primeng/fileupload';
-
+import { SkeletonModule } from 'primeng/skeleton';
 @NgModule({
     imports: [
         CommonModule,
@@ -76,6 +76,7 @@ import { FileUploadModule } from 'primeng/fileupload';
         TabViewModule,
         CheckboxModule,
         FileUploadModule,
+        SkeletonModule,
     ],
     declarations: [
         UserPageComponent,

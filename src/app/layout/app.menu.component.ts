@@ -30,18 +30,7 @@ export class AppMenuComponent extends BaseComponent implements OnInit {
                     {
                         label: 'Product',
                         icon: 'pi pi-fw pi-box',
-                        items: [
-                            {
-                                label: 'Manage',
-                                icon: 'pi pi-fw pi-box',
-                                routerLink: ['/merchant/product'],
-                            },
-                            {
-                                label: 'Import',
-                                icon: 'pi pi-fw pi-download',
-                                routerLink: ['/merchant/product/import'],
-                            },
-                        ],
+                        routerLink: ['/merchant/product'],
                     },
                     {
                         label: 'Order',

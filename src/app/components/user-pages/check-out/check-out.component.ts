@@ -135,7 +135,7 @@ export class CheckOutComponent implements OnInit {
             (item) => item.provName == selectedValue.provName
         );
         await this.apiAddress
-            .getDisctrictsByProvince(foundProvince.provCode)
+            .getDistrictsByProvince(foundProvince.provCode)
             .then((response: any) => {
                 const rListDistrict = response.data;
                 (this.listDistrict = rListDistrict.map((rListDistrict) => {

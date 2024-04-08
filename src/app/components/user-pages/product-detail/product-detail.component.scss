@@ -53,6 +53,8 @@
 }
 
 .grid-list {
+    display: flex;
+    flex-wrap: wrap;
     li {
         list-style: none;
         width: fit-content;

@@ -28,7 +28,7 @@ export class AddressService {
             .toPromise();
     }
 
-    async getDisctrictsByProvince(provinceCode: string) {
+    async getDistrictsByProvince(provinceCode: string) {
         return await this.http
             .get(this.baseUrl + `district`, {
                 params: { province_id: provinceCode },

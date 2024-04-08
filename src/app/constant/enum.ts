@@ -106,7 +106,7 @@ export const API = {
     },
     STATISTIC: {
         END_POINT: {
-            STATISITC: API_URL + 'statistic',
+            STATISTIC: API_URL + 'statistic',
         },
     },
     CART: {
@@ -129,16 +129,13 @@ export const API = {
             UPDATE: API_URL + 'user',
         },
     },
-    // PAYMENT: {
-    //     END_POINT: {
-    //         CHECK_OUT: API_URL + 'payment/user-cart-checkout',
-    //         SINGLE_CHECKOUT: API_URL + 'payment/single-item-checkout',
-    //         UNTAUTH_CHECK_OUT:
-    //             API_URL + 'payment/un-authenticate/user-cart-checkout',
-    //         UNTAUTH_SINGLE_CHECKOUT:
-    //             API_URL + 'payment/un-authenticate/single-item-checkout',
-    //     },
-    // },
+
+    MERCHANT: {
+        END_POINT: {
+            MERCHANT: API_URL + 'merchant',
+            SUSPEND_MERCHANT: API_URL + 'merchant/suspend',
+        },
+    },
     SEARCH: {
         ENDPOINT: API_URL + 'search/global',
     },
