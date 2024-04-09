@@ -92,12 +92,13 @@
           />
         </span>
       </ng-template> -->
-        <span *ngIf="!isLoading; else loading" class="w-100 shopView-list">
+        <div *ngIf="!isLoading; else loading" class="w-100 shopView-list">
             <app-product-card
                 *ngFor="let product of products"
                 [product]="product"
+                class="product"
             ></app-product-card>
-        </span>
+        </div>
         <ng-template #loading
             ><app-product-card
                 *ngFor="let _ of [].constructor(20)"

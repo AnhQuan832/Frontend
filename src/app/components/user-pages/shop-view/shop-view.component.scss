@@ -48,8 +48,10 @@
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
+    height: fit-content;
     .product {
         width: clamp(150px, 25%, 225px);
+        height: fit-content;
     }
 }
 
