@@ -8,6 +8,7 @@ import { AuthGuard } from './components/auth/auth.guard';
     imports: [
         RouterModule.forRoot(
             [
+                { path: '', redirectTo: '/user/home', pathMatch: 'full' },
                 {
                     path: 'merchant',
                     component: AppLayoutComponent,
