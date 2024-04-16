@@ -1,6 +1,5 @@
 <div class="container-fluid row">
-    <div class="col-sm-1 col-md-2"></div>
-    <div class="col-sm-10 col-md-8">
+    <div class="">
         <form
             class="bg-white w-100"
             id="form-container"
@@ -8,17 +7,24 @@
         >
             <div class="avatar d-flex justify-content-center mt-4">
                 <span
-                    class="m-4 my-2 rounded-1 d-flex justify-content-center align-items-center"
+                    class="m-4 my-2 rounded-1 d-flex justify-content-center align-items-center flex-column"
                 >
                     <label class="custom-file-upload">
+                        <input
+                            type="file"
+                            accept="image/png, image/jpeg"
+                            id="avatarInput"
+                            (change)="onSelectAvatar($event)"
+                        />
                         <img
                             src="https://firebasestorage.googleapis.com/v0/b/advance-totem-350103.appspot.com/o/Avatar%2Fimage-holder-icon.png?alt=media&token=2bc0bac5-ea17-4dd9-8c9e-4813316da679"
                             alt=""
-                            id="imgInput"
+                            id="merchantAvatar"
                             class="w-100"
                         />
                         <!-- <i class="pi pi-image" style="font-size: 2.5rem"></i> -->
                     </label>
+                    <p class="img-des">Avatar</p>
                 </span>
             </div>
 
@@ -29,26 +35,37 @@
                         class="w-100 rounded-2 p-2 mb-3"
                         pInputText
                         type="text"
-                        formControlName="shelterName"
+                        formControlName="merchantName"
                     />
                 </span>
             </div>
             <div class="input-textbox d-flex justify-content-center w-100">
                 <span class="m-4 my-2 w-100">
                     <h6 class="mb-1">Shop Description</h6>
+                    <textarea
+                        class="w-100 rounded-2 p-2 mb-3"
+                        row="5"
+                        pInputTextarea
+                        formControlName="merchantDescription"
+                    ></textarea>
+                </span>
+            </div>
+            <div class="input-textbox d-flex justify-content-center w-100">
+                <span class="m-4 my-2 w-100">
+                    <h6 class="mb-1">Phone Number</h6>
                     <input
                         class="w-100 rounded-2 p-2 mb-3"
                         type="text"
                         pInputText
-                        formControlName="shelterFacebookUrl"
+                        formControlName="phoneNumber"
                     />
                 </span>
             </div>
-            <div class="input-textbox d-flex justify-content-start w-100">
+            <!-- <div class="input-textbox d-flex justify-content-start w-100">
                 <span class="ms-4 mt-2">
-                    <h6 class="mb-1">Address</h6>
+                    <p-divider class="mb-1">Address</p-divider>
                 </span>
-            </div>
+            </div> -->
             <div class="d-flex justify-content-start w-100">
                 <div class="address-container m-4 my-2 w-100">
                     <span class="">
@@ -59,7 +76,7 @@
                             class="w-100 rounded-2 p-2 mb-3"
                             type="text"
                             pInputText
-                            formControlName="shelterNo"
+                            formControlName="address"
                         />
                     </span>
                     <span class="">
@@ -70,19 +87,10 @@
                             [autoDisplayFirst]="false"
                             optionLabel="provName"
                             filterBy="provName"
+                            [ngModelOptions]="{ standalone: true }"
+                            [(ngModel)]="selectedProvince"
                             (onChange)="provinceSelectedChange($event.value)"
-                            formControlName="shelterProvince"
                         >
-                            <!-- <ng-template pTemplate="selectedItem">
-                <div class="flex align-items-center">
-                  <div>{{ selectedCountry.name }}</div>
-                </div>
-              </ng-template>
-              <ng-template let-country pTemplate="item">
-                <div class="flex align-items-center gap-2">
-                  <div>{{ country.name }}</div>
-                </div>
-             </ng-template> -->
                         </p-dropdown>
                     </span>
                     <span class="">
@@ -95,8 +103,9 @@
                             optionLabel="distName"
                             filterBy="distName"
                             [options]="listDistrict"
+                            [ngModelOptions]="{ standalone: true }"
+                            [(ngModel)]="selectedDistrict"
                             (onChange)="districtSelectedChange($event.value)"
-                            formControlName="shelterDistrict"
                         >
                         </p-dropdown>
                     </span>
@@ -104,26 +113,17 @@
                         <h6 class="mb-1" class="addressLabel p-1 ps-0">Ward</h6>
                         <p-dropdown
                             [options]="listWard"
+                            [ngModelOptions]="{ standalone: true }"
+                            [(ngModel)]="selectedWard"
                             [autoDisplayFirst]="false"
                             filterBy="wardName"
                             optionLabel="wardName"
-                            formControlName="shelterWard"
                         >
                         </p-dropdown>
                     </span>
                 </div>
             </div>
-            <div class="input-textbox d-flex justify-content-center w-100">
-                <span class="m-4 my-2 w-100">
-                    <h6 class="mb-1">Phone Number</h6>
-                    <input
-                        class="w-100 rounded-2 p-2 mb-3"
-                        type="text"
-                        pInputText
-                        formControlName="shelterPhoneNum"
-                    />
-                </span>
-            </div>
+
             <h6 class="mb-1" class="ms-4 mt-4">Business document</h6>
             <div class="d-flex justify-content-center w-100">
                 <p-fileUpload
@@ -144,24 +144,45 @@
                     </ng-template>
                 </p-fileUpload>
             </div>
-
-            <!-- <h6 class="mb-1" class="ms-4 addressLabel">
-                Sau khi đăng ký bạn vui lòng đợi từ 3-5 ngày để chúng tôi có thể
-                xác thực các thông tin mà bạn đã cung cấp. Kết quả sẽ được gửi
-                đến mail của người đại diện.
-            </h6> -->
-
+            <h6 class="mb-1" class="ms-4 mt-4">Cover Image</h6>
+            <div class="avatar d-flex justify-content-center mt-4">
+                <span
+                    class="m-4 my-2 rounded-1 d-flex justify-content-center align-items-center flex-column"
+                >
+                    <label class="custom-file-upload cover">
+                        <input
+                            type="file"
+                            accept="image/png, image/jpeg"
+                            (change)="onSelectCoverImg($event)"
+                        />
+                        <img
+                            src="https://firebasestorage.googleapis.com/v0/b/advance-totem-350103.appspot.com/o/Avatar%2Fimage-holder-icon.png?alt=media&token=2bc0bac5-ea17-4dd9-8c9e-4813316da679"
+                            alt=""
+                            id="coverImg"
+                            class="w-100"
+                        />
+                        <!-- <i class="pi pi-image" style="font-size: 2.5rem"></i> -->
+                    </label>
+                    <p class="img-des">Cover Image</p>
+                </span>
+            </div>
             <div class="btn-container d-flex justify-content-center pt-4 mb-4">
                 <button
                     type="submit"
                     class="btn btn-primary text-nowrap rounded-3"
-                    [disabled]="requestForm.invalid"
-                    (click)="upload($event)"
+                    [disabled]="
+                        !requestForm.valid ||
+                        !coverImgFile ||
+                        !avatarFile ||
+                        !selectedWard ||
+                        !selectedDistrict ||
+                        !selectedProvince
+                    "
+                    (click)="sendRequest()"
                 >
                     Enroll
                 </button>
             </div>
         </form>
     </div>
-    <div class="col-sm-1 col-md-2"></div>
 </div>

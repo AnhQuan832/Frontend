@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { BaseComponent } from 'src/app/base.component';
+import { FileHandler } from 'src/app/model/FileHandler';
 import { AddressService } from 'src/app/services/address.service';
+import { MerchantService } from 'src/app/services/merchant.service';
 
 @Component({
     selector: 'app-merchant-request',
@@ -12,31 +15,36 @@ import { AddressService } from 'src/app/services/address.service';
 })
 export class MerchantRequestComponent extends BaseComponent {
     avatarFile: FileList;
+    coverImgFile: FileList;
     logoUrl: string;
     documentList: Array<File> = new Array();
-    relatedDoc: string[] = new Array();
     listProvince = new Array();
     listDistrict = new Array();
     listWard = new Array();
-
+    selectedProvince: any;
+    selectedDistrict: any;
+    selectedWard: any;
+    relatedDoc: FileHandler[] = [];
     constructor(
         private builder: FormBuilder,
         private router: Router,
         private messageService: MessageService,
-        private apiAddress: AddressService
+        private apiAddress: AddressService,
+        private merchantService: MerchantService,
+        private sanitizer: DomSanitizer
     ) {
         super();
     }
 
     requestForm = this.builder.group({
-        shelterName: this.builder.control('', Validators.required),
-        shelterFacebookUrl: this.builder.control('', Validators.required),
-        shelterNo: this.builder.control('', Validators.required),
-        shelterProvince: this.builder.control('', Validators.required),
-        shelterDistrict: this.builder.control('', Validators.required),
-        shelterWard: this.builder.control('', Validators.required),
-        shelterPhoneNum: this.builder.control('', [Validators.required]),
-        shelterRelatedDoc: this.builder.control(''),
+        merchantName: this.builder.control('', Validators.required),
+        merchantDescription: this.builder.control('', Validators.required),
+        address: this.builder.control('', Validators.required),
+        location: this.builder.control(''),
+        phoneNumber: this.builder.control('', Validators.required),
+        // relatedDocuments: this.builder.control(''),
+        // avatar: this.builder.control(''),
+        // coverImage: this.builder.control(''),
     });
 
     ngOnInit() {
@@ -45,40 +53,34 @@ export class MerchantRequestComponent extends BaseComponent {
 
     async upload(event: any) {}
 
-    public onSelectFiles(event) {
-        for (let i = 0; i < (event.files as FileList).length; i++) {
-            this.documentList.push((event.files as FileList).item(i));
-        }
-    }
-
     bindProvinces() {
         this.apiAddress.getProvinces().then((response: any) => {
             const rListProvince = response.data;
             this.listProvince = rListProvince.map((rListProvince) => {
                 return {
-                    provName: rListProvince.name_with_type,
-                    provCode: rListProvince.code,
+                    provName: rListProvince.ProvinceName,
+                    provCode: rListProvince.ProvinceID,
                 };
             });
-            console.log(this.listProvince);
         }),
             (err) => {
                 console.log(err.error.message);
             };
     }
 
-    provinceSelectedChange(selectedValue) {
+    async provinceSelectedChange(selectedValue) {
+        // this.checkOutForm.patchValue({ city: selectedValue.provName });
         let foundProvince = this.listProvince.find(
             (item) => item.provName == selectedValue.provName
         );
-        this.apiAddress
+        await this.apiAddress
             .getDistrictsByProvince(foundProvince.provCode)
             .then((response: any) => {
-                const rListDistrict = response.data.data;
+                const rListDistrict = response.data;
                 (this.listDistrict = rListDistrict.map((rListDistrict) => {
                     return {
-                        distName: rListDistrict.name_with_type,
-                        distCode: rListDistrict.code,
+                        distName: rListDistrict.DistrictName,
+                        distCode: rListDistrict.DistrictID,
                     };
                 })),
                     (err) => {
@@ -90,20 +92,115 @@ export class MerchantRequestComponent extends BaseComponent {
             };
     }
 
-    districtSelectedChange(selectedValue) {
-        this.apiAddress
+    async districtSelectedChange(selectedValue) {
+        // this.checkOutForm.patchValue({ district: selectedValue.distName });
+
+        await this.apiAddress
             .getWardsByDistrict(selectedValue.distCode)
             .then((response: any) => {
-                const rListWard = response.data.data;
+                const rListWard = response.data;
                 this.listWard = rListWard.map((rListWard) => {
                     return {
-                        wardName: rListWard.name_with_type,
-                        wardCode: rListWard.code,
+                        wardName: rListWard.WardName,
+                        wardCode: rListWard.WardCode,
                     };
                 });
             }),
             (err) => {
                 console.log(err.error.message);
             };
+    }
+
+    sendRequest() {
+        // if (this.requestForm.valid) {
+        //     this.messageService.add({
+        //         severity: 'success',
+        //         summary: 'Success',
+        //         detail: 'Request sent successfully',
+        //     });
+        //     this.router.navigate(['/']);
+        // } else {
+        //     this.messageService.add({
+        //         severity: 'error',
+        //         summary: 'Error',
+        //         detail: 'Please fill all required fields',
+        //     });
+        // }
+        this.requestForm.patchValue({
+            location:
+                this.requestForm.value?.address +
+                this.selectedWard.wardName +
+                ', ' +
+                this.selectedDistrict.distName +
+                ', ' +
+                this.selectedProvince.provName,
+        });
+        const { address, ...data } = this.requestForm.value;
+        data['userId'] = this.getUserInfo().userId;
+        const formData = this.setUpFormData(data);
+        this.merchantService.createMerchantRequest(formData).subscribe({
+            next: (res: any) => {
+                if (res) {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: 'Request sent successfully',
+                    });
+                } else {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Request failed',
+                    });
+                }
+            },
+        });
+    }
+
+    setUpFormData(data: any) {
+        const formData = new FormData();
+        this.prepareFormData(formData, data, 'createMerchantRequest', true);
+        this.prepareFormData(
+            formData,
+            this.relatedDoc,
+            'relatedDocuments',
+            false
+        );
+        this.prepareFormData(formData, this.avatarFile[0], 'avatar', false);
+        this.prepareFormData(
+            formData,
+            this.coverImgFile[0],
+            'coverImage',
+            false
+        );
+
+        return formData;
+    }
+
+    public onSelectFiles(event) {
+        this.relatedDoc = [];
+        for (let i = 0; i < event.currentFiles.length; i++) {
+            const file = event.currentFiles[i];
+            const fileHandler: FileHandler = {
+                file: file,
+                url: this.sanitizer.bypassSecurityTrustUrl(
+                    window.URL.createObjectURL(file)
+                ),
+            };
+            this.relatedDoc.push(fileHandler);
+        }
+    }
+
+    onSelectAvatar(event: any) {
+        this.avatarFile = event.target.files;
+        const imgInput = <HTMLImageElement>(
+            document.getElementById('merchantAvatar')
+        );
+        imgInput.src = URL.createObjectURL(this.avatarFile[0]);
+    }
+    onSelectCoverImg(event: any) {
+        this.coverImgFile = event.target.files;
+        const imgInput = <HTMLImageElement>document.getElementById('coverImg');
+        imgInput.src = URL.createObjectURL(this.coverImgFile[0]);
     }
 }

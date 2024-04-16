@@ -12,8 +12,8 @@ export class ProductService {
         private storageService: StorageService
     ) {}
 
-    getAllProduct() {
-        return this.http.get(API.PRODUCT.END_POINT.PRODUCT).pipe(
+    getAllProduct(params?) {
+        return this.http.get(API.PRODUCT.END_POINT.PRODUCT, { params }).pipe(
             map((data: any) => {
                 if (
                     data.meta.statusCode ===

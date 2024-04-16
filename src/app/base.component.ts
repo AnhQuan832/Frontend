@@ -56,7 +56,11 @@ export class BaseComponent {
                 new Blob([JSON.stringify(data)], { type: 'application/json' })
             );
         } else {
-            formData.append(name, data);
+            if (Array.isArray(data)) {
+                data.forEach((element) => {
+                    formData.append(name, element.file);
+                });
+            } else formData.append(name, data);
         }
         // return formData;
     }

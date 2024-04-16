@@ -150,6 +150,7 @@ export class AddProduct extends BaseComponent implements OnInit {
     }
 
     public onSelectFiles(event) {
+        this.imgs = [];
         for (let i = 0; i < event.currentFiles.length; i++) {
             const file = event.currentFiles[i];
             const fileHandler: FileHandler = {

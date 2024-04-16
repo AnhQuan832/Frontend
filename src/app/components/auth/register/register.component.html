@@ -155,7 +155,7 @@
 
     <form
         *ngIf="verifyEmail"
-        class="login_container_form d-flex flex-column col-12 col-sm-6 col-lg-3 p-4 rounded-2"
+        class="login_container_form d-flex flex-column col-12 lg:col-6 xl:col-4 p-4 rounded-2"
         [formGroup]="verifyForm"
         (ngSubmit)="verify()"
     >
