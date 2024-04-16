@@ -39,6 +39,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MerchantRequestComponent } from './merchant-request/merchant-request.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { SkeletonModule } from 'primeng/skeleton';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 @NgModule({
     imports: [
         CommonModule,
@@ -77,6 +78,7 @@ import { SkeletonModule } from 'primeng/skeleton';
         CheckboxModule,
         FileUploadModule,
         SkeletonModule,
+        InputTextareaModule,
     ],
     declarations: [
         UserPageComponent,

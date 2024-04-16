@@ -81,17 +81,6 @@
         </div>
     </div>
     <div class="shopView-list col-10">
-        <!-- <ng-template pTemplate="header">
-        <span class="w-100 p-input-icon-left">
-          <i class="pi pi-search"></i>
-          <input
-            type="search"
-            pInputText
-            placeholder="Search product..."
-            (input)="onFilter(dv, $event)"
-          />
-        </span>
-      </ng-template> -->
         <div *ngIf="!isLoading; else loading" class="w-100 shopView-list">
             <app-product-card
                 *ngFor="let product of products"

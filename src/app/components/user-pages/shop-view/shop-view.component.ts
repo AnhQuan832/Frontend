@@ -38,6 +38,8 @@ export class ShopViewComponent implements OnInit {
     listCate = [];
     listBrand;
     isLoading: boolean = false;
+    page = 1;
+    size = 20;
     constructor(private productService: ProductService) {}
     ngOnInit(): void {
         this.initialize();
@@ -46,7 +48,7 @@ export class ShopViewComponent implements OnInit {
     private initialize() {
         this.isLoading = true;
 
-        this.productService.getAllProduct().subscribe({
+        this.productService.getAllProduct({page: this.page, size: this.size}).subscribe({
             next: (res) => {
                 this.isLoading = false;
                 this.products = res;
