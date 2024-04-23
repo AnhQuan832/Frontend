@@ -6,23 +6,20 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./live.component.scss'],
 })
 export class LiveComponent implements OnInit {
-    ngOnInit(): void {
-        this.setupCamera();
-    }
+    ngOnInit(): void {}
 
-    async setupCamera() {
-        // Find the video element on our HTML page
-        let video = document.getElementById('video') as HTMLVideoElement;
+    getCamera() {
+        let video = document.querySelector('#videoElement') as HTMLVideoElement;
 
-        // Request the front-facing camera of the device
-        const stream = await navigator.mediaDevices.getUserMedia({
-            audio: false,
-            video: {
-                facingMode: 'user',
-                height: { ideal: 1920 },
-                width: { ideal: 1920 },
-            },
-        });
-        video.srcObject = stream;
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices
+                .getUserMedia({ video: true })
+                .then(function (stream) {
+                    video.srcObject = stream;
+                })
+                .catch(function (err0r) {
+                    console.log('Something went wrong!');
+                });
+        }
     }
 }

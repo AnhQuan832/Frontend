@@ -93,7 +93,10 @@
                         [max]="selectedVariety.stockAmount || 0"
                         (onInput)="onChangeQty($event)"
                     ></p-inputNumber> -->
-                    <app-quantity [quantity]="numberOfProduct"></app-quantity>
+                    <app-quantity
+                        [quantity]="numberOfProduct"
+                        (onQuantity)="onChangeQty($event)"
+                    ></app-quantity>
                     <small *ngIf="isDisableBuy" class="text-danger w-100"
                         >Over stock</small
                     >

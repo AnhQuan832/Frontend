@@ -1,11 +1,8 @@
 <div *ngIf="!isLoading; else loading" class="card m-2" (click)="onCardClick()">
     <img
         class="img"
-        src="{{
-            product.images
-                ? product.images[0]
-                : 'https://via.placeholder.com/320x300'
-        }}"
+        src="{{ product.image || 'https://via.placeholder.com/320x300' }}"
+        lazyload="true"
     />
     <div
         class="card-content w-100 d-flex flex-column p-3 justify-content-between"
