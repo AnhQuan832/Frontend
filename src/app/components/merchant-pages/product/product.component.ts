@@ -6,6 +6,7 @@ import { Table } from 'primeng/table';
 import { ProductService } from 'src/app/services/product.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { AddProduct } from '../../shared/add product/add-product.component';
+import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
     selector: 'app-product',
@@ -39,7 +40,8 @@ export class ProductComponent {
         private router: Router,
         private dialogService: DialogService,
         private storageSerive: StorageService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private layoutService: LayoutService
     ) {}
 
     ngOnInit() {
@@ -66,7 +68,7 @@ export class ProductComponent {
     addNewProduct() {
         this.ref = this.dialogService.open(AddProduct, {
             header: 'Add a new Product',
-            width: '50%',
+            width: this.layoutService.isDesktop() ? '50%' : '100%',
         });
 
         this.ref.onClose.subscribe((res) => {

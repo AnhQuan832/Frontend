@@ -7,6 +7,8 @@ import { ProductService } from 'src/app/services/product.service';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { CartService } from 'src/app/services/cart.service';
 import { BaseComponent } from 'src/app/base.component';
+import { Toast } from 'primeng/toast';
+import { ToastMessageService } from 'src/app/services/toast-message.service';
 @Component({
     selector: 'app-product-detail',
     templateUrl: './product-detail.component.html',
@@ -36,7 +38,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
         private router: Router,
         private productService: ProductService,
         private cartService: CartService,
-        private messageSerice: MessageService,
+        private messageService: ToastMessageService,
         private invoiceService: InvoiceService
     ) {
         super();
@@ -49,6 +51,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     }
 
     initialize() {
+        this.isLogin = this.getUserInfo() ? true : false;
         if (!this.isLogin)
             this.cartService.getUnauthCart().subscribe({
                 next: (res) => {
@@ -133,12 +136,12 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
         this.selectedVariety = this.listDetailVariety.find((item) => {
             if (this.selectedSize && this.selectedColor)
                 return (
-                    item[0].attributeId === this.selectedSize.attributeId &&
-                    item[1].attributeId === this.selectedColor.attributeId
+                    item[1].attributeId === this.selectedSize.attributeId &&
+                    item[0].attributeId === this.selectedColor.attributeId
                 );
             else if (this.selectedSize && !this.selectedColor)
                 return (
-                    item?.varietyAttributes[0]?.attributeId ===
+                    item?.varietyAttributes[1]?.attributeId ===
                     this.selectedSize.attributeId
                 );
             else if (!this.selectedSize && this.selectedColor)
@@ -162,11 +165,12 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     }
 
     onChangeQty(event) {
-        if (event.value > this.selectedVariety.stockAmount) {
+        if (event > this.selectedVariety.stockAmount) {
             this.numberOfProduct = this.selectedVariety.stockAmount;
             this.isDisableBuy = true;
         } else {
-            this.attPrice = this.selectedVariety.price * event.value;
+            this.attPrice = this.selectedVariety.price * event;
+            this.numberOfProduct = event;
             this.isDisableBuy = false;
         }
     }
@@ -182,17 +186,17 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                 .addToCart(this.numberOfProduct, this.selectedVariety.varietyId)
                 .subscribe({
                     next: (res) =>
-                        this.messageSerice.add({
-                            key: 'toast',
-                            severity: 'success',
-                            detail: 'Added to cart',
-                        }),
+                        this.messageService.showMessage(
+                            '',
+                            'Added to cart',
+                            'success'
+                        ),
                     error: () => {
-                        this.messageSerice.add({
-                            key: 'toast',
-                            severity: 'error',
-                            detail: 'Can not add to cart',
-                        });
+                        this.messageService.showMessage(
+                            '',
+                            'Cannot add to cart',
+                            'success'
+                        );
                     },
                 });
         } else {
@@ -206,17 +210,17 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                 )
                 .subscribe({
                     next: (res) =>
-                        this.messageSerice.add({
-                            key: 'toast',
-                            severity: 'success',
-                            detail: 'Added to cart',
-                        }),
+                        this.messageService.showMessage(
+                            '',
+                            'Added to cart',
+                            'success'
+                        ),
                     error: () => {
-                        this.messageSerice.add({
-                            key: 'toast',
-                            severity: 'error',
-                            detail: 'Can not add to cart',
-                        });
+                        this.messageService.showMessage(
+                            '',
+                            'Cannot add to cart',
+                            'success'
+                        );
                     },
                 });
         }

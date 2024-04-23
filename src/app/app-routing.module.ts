@@ -28,10 +28,10 @@ import { AuthGuard } from './components/auth/auth.guard';
                                 ).then((m) => m.PagesModule),
                         },
                     ],
-                    canActivate: [AuthGuard],
-                    data: {
-                        userRoles: ['ROLE_MERCHANT', 'ROLE_ADMIN'],
-                    },
+                    // canActivate: [AuthGuard],
+                    // data: {
+                    //     userRoles: ['ROLE_MERCHANT', 'ROLE_ADMIN'],
+                    // },
                 },
                 {
                     path: 'auth',

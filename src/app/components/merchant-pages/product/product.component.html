@@ -114,14 +114,8 @@
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-product>
+                <!-- <ng-template pTemplate="body" let-product>
                     <tr>
-                        <!-- <td>
-                            <p-tableCheckbox
-                                [value]="product"
-                            ></p-tableCheckbox>
-                        </td> -->
-
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Name</span>
                             {{ product.name }}
@@ -129,7 +123,7 @@
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Image</span>
                             <img
-                                [src]="product?.images[0]"
+                                [src]="product?.image"
                                 [alt]="product.name"
                                 width="100"
                                 class="shadow-4"
@@ -166,20 +160,10 @@
                                     class="p-button-rounded p-button-success mr-2"
                                     (click)="onRowSelect(product)"
                                 ></button>
-                                <!-- <button
-                                    pButton
-                                    pRipple
-                                    icon="pi pi-trash"
-                                    class="p-button-rounded p-button-warning"
-                                    (click)="
-                                        $event.stopPropagation();
-                                        deleteProduct(product)
-                                    "
-                                ></button> -->
                             </div>
                         </td>
                     </tr>
-                </ng-template>
+                </ng-template> -->
             </p-table>
         </div>
 

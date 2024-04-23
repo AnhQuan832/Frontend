@@ -2,13 +2,16 @@
     <div class="col-12">
         <div class="card px-6 py-6">
             <div class="col-12 xl:col-6">
-                <input
-                    type="file"
-                    accept="image/*"
-                    capture="camera"
-                    id="photo"
-                />
-                <label for="photo"> Open Camera </label>
+                <h1>Access the Camera</h1>
+
+                <video autoplay="true" id="videoElement"></video>
+                <button
+                    pButton
+                    pRipple
+                    label="New"
+                    class="p-button-success mr-2"
+                    (click)="getCamera()"
+                ></button>
             </div>
             <div class="col-12 xl:col-6">Shop</div>
         </div>
