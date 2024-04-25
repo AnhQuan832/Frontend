@@ -1,77 +1,41 @@
-<div
-    class="login_container w-100 h-100 d-flex justify-content-center align-items-center p-4"
->
-    <form
-        *ngIf="!verifyEmail"
-        class="login_container_form d-flex flex-column col-12 lg:col-6 xl:col-4 p-4 rounded-2"
-        [formGroup]="registerForm"
-        (ngSubmit)="registerNewUser()"
-    >
-        <img
-            class="my-4 mx-auto w-75"
-            src="https://i.ibb.co/3h7wrgX/logo-removebg-preview.png"
-            alt="Logo"
-        />
+<div class="login_container w-100 h-100 d-flex justify-content-center align-items-center p-4">
+    <form *ngIf="!verifyEmail" class="login_container_form d-flex flex-column col-12 lg:col-6 xl:col-4 p-4 rounded-2"
+        [formGroup]="registerForm" (ngSubmit)="registerNewUser()">
+        <img class="my-4 mx-auto w-75" src="https://i.ibb.co/3h7wrgX/logo-removebg-preview.png" alt="Logo" />
 
         <span class="my-2">
             <h6>Email</h6>
 
-            <input
-                class="inputtext w-100 ps-2 mt-1 form-control"
-                name="emailInput"
-                type="email"
-                pInputText
-                formControlName="userEmail"
-                (focus)="clearErrorNotification()"
-            />
+            <input class="inputtext w-100 ps-2 mt-1 form-control" name="emailInput" type="email" pInputText
+                formControlName="userEmail" (focus)="clearErrorNotification()" />
             <div *ngIf="isSubmitted">
-                <small
-                    class="text-danger"
-                    *ngIf="registerForm.get('userEmail')?.hasError('required')"
-                    >Email is required</small
-                >
-                <small
-                    class="text-danger"
-                    *ngIf="registerForm.get('userEmail')?.hasError('email')"
-                    >Please fill the correct email</small
-                >
+                <small class="text-danger" *ngIf="registerForm.get('userEmail')?.hasError('required')">Email is
+                    required</small>
+                <small class="text-danger" *ngIf="registerForm.get('userEmail')?.hasError('email')">Please fill the
+                    correct email</small>
             </div>
         </span>
         <span class="mb-1">
             <h6>Password</h6>
-            <p-password
-                class="inputtext w-100 mt-1 form-control"
-                [toggleMask]="true"
-                formControlName="userPassword"
-                (focus)="clearErrorNotification()"
-                [feedback]="false"
-            >
+            <p-password class="inputtext w-100 mt-1 form-control" [toggleMask]="true" formControlName="userPassword"
+                (focus)="clearErrorNotification()" [feedback]="false">
             </p-password>
             <div *ngIf="isSubmitted">
-                <small
-                    class="text-danger"
-                    *ngIf="
+                <small class="text-danger" *ngIf="
                         registerForm.get('userPassword')?.hasError('required')
-                    "
-                >
+                    ">
                     Password is required.
                 </small>
-                <small
-                    class="text-danger"
-                    *ngIf="
+                <small class="text-danger" *ngIf="
                         registerForm.get('userPassword')?.hasError('minlength')
-                    "
-                >
+                    ">
                     Password must be at least 6 characters long.
                 </small>
-                <small
-                    class="text-danger"
-                    *ngIf="
+                <small class="text-danger" *ngIf="
                         registerForm
                             .get('userPassword')
                             ?.hasError('passwordRequirements')
-                    "
-                >
+                    ">
                     Password must contain at least 1 letter and 1 number.
                 </small>
             </div>
@@ -80,65 +44,38 @@
         <span class="my-2">
             <h6>Fullname</h6>
 
-            <input
-                class="inputtext w-100 ps-2 mt-1 form-control"
-                pInputText
-                type="text"
-                formControlName="userFullName"
-                (focus)="clearErrorNotification()"
-            />
+            <input class="inputtext w-100 ps-2 mt-1 form-control" pInputText type="text" formControlName="userFullName"
+                (focus)="clearErrorNotification()" />
             <div *ngIf="isSubmitted">
-                <small
-                    class="text-danger"
-                    *ngIf="
+                <small class="text-danger" *ngIf="
                         registerForm.get('userFullName')?.hasError('required')
-                    "
-                    >Fullname is required</small
-                >
+                    ">Fullname is required</small>
             </div>
         </span>
         <span class="my-2">
             <h6>Phone number</h6>
 
-            <input
-                class="inputtext w-100 ps-2 mt-1 form-control"
-                type="tel"
-                maxlength="10"
-                formControlName="userPhoneNumber"
-                (focus)="clearErrorNotification()"
-            />
+            <input class="inputtext w-100 ps-2 mt-1 form-control" type="tel" maxlength="10"
+                formControlName="userPhoneNumber" (focus)="clearErrorNotification()" />
             <div *ngIf="isSubmitted">
-                <small
-                    class="text-danger"
-                    *ngIf="
+                <small class="text-danger" *ngIf="
                         registerForm.get('userPhoneNumber')?.hasError('pattern')
-                    "
-                    >Please fill the correct phone number</small
-                >
-                <small
-                    class="text-danger"
-                    *ngIf="
+                    ">Please fill the correct phone number</small>
+                <small class="text-danger" *ngIf="
                         registerForm
                             .get('userPhoneNumber')
                             ?.hasError('required')
-                    "
-                    >Phone number is required</small
-                >
+                    ">Phone number is required</small>
                 <small class="text-danger text-center" *ngIf="msgError">{{
                     msgError
-                }}</small>
-                <small class="text-success text-center" *ngIf="msgSuccess"
-                    >{{ msgSuccess }}
-                    <a href="/auth/login">Back to login</a></small
-                >
+                    }}</small>
+                <small class="text-success text-center" *ngIf="msgSuccess">{{ msgSuccess }}
+                    <a href="/auth/login">Back to login</a></small>
             </div>
         </span>
 
         <div class="btn-container d-flex justify-content-center pt-4">
-            <button
-                type="submit"
-                class="btn btn-primary w-100 text-nowrap rounded-3"
-            >
+            <button type="submit" class="btn btn-primary w-100 text-nowrap rounded-3">
                 Create account
             </button>
         </div>
@@ -146,80 +83,47 @@
             <a routerLink="/auth/login">Back to login</a>
         </p>
         <p-divider class="mx-auto mb-2">or</p-divider>
-        <asl-google-signin-button
-            class="mx-auto"
-            type="standard"
-            size="large"
-        ></asl-google-signin-button>
+        <asl-google-signin-button class="mx-auto" type="standard" size="large"></asl-google-signin-button>
     </form>
 
-    <form
-        *ngIf="verifyEmail"
-        class="login_container_form d-flex flex-column col-12 lg:col-6 xl:col-4 p-4 rounded-2"
-        [formGroup]="verifyForm"
-        (ngSubmit)="verify()"
-    >
-        <img
-            class="my-4 mx-auto w-75"
-            src="https://i.ibb.co/3h7wrgX/logo-removebg-preview.png"
-            alt="Logo"
-        />
+    <form *ngIf="verifyEmail" class="login_container_form d-flex flex-column col-12 lg:col-6 xl:col-4 p-4 rounded-2"
+        [formGroup]="verifyForm" (ngSubmit)="verify()">
+        <img class="my-4 mx-auto w-75" src="https://i.ibb.co/3h7wrgX/logo-removebg-preview.png" alt="Logo" />
 
         <span class="my-2">
             <h6>OTP</h6>
 
-            <input
-                class="inputtext w-100 ps-2 mt-1 form-control"
-                type="number"
-                maxlength="10"
-                formControlName="otp"
-                (focus)="clearErrorNotification()"
-            />
-            <p
-                class="text-end text-primary"
-                style="cursor: pointer"
-                (click)="sendOtp()"
-            >
+            <input class="inputtext w-100 ps-2 mt-1 form-control" type="number" maxlength="10" pKeyFilter="int"
+                formControlName="otp" (focus)="clearErrorNotification()" />
+            <p class="text-end text-primary" style="cursor: pointer" (click)="sendOtp()">
                 Resend
             </p>
             <div *ngIf="isSubmitted">
-                <small
-                    class="text-danger"
-                    *ngIf="
+                <small class="text-danger" *ngIf="
                         registerForm.get('userPhoneNumber')?.hasError('pattern')
-                    "
-                    >Please fill the correct phone number</small
-                >
-                <small
-                    class="text-danger"
-                    *ngIf="
+                    ">Please fill the correct phone number</small>
+                <small class="text-danger" *ngIf="
                         registerForm
                             .get('userPhoneNumber')
                             ?.hasError('required')
-                    "
-                    >OTP number is required</small
-                >
+                    ">OTP number is required</small>
                 <small class="text-danger text-center" *ngIf="msgError">{{
                     msgError
-                }}</small>
+                    }}</small>
             </div>
         </span>
 
         <div class="btn-container d-flex justify-content-center pt-4">
-            <button
-                type="submit"
-                class="btn btn-primary w-100 text-nowrap rounded-3"
-            >
+            <button type="submit" class="btn btn-primary w-100 text-nowrap rounded-3">
                 Verify account
             </button>
         </div>
         <p class="mx-auto my-2">
             <small class="text-danger text-center" *ngIf="msgErrorOTP">{{
                 msgErrorOTP
-            }}</small>
-            <small class="text-success text-center" *ngIf="msgSuccess"
-                >Account Created <a href="/auth/login">Back to login</a></small
-            >
+                }}</small>
+            <small class="text-success text-center" *ngIf="msgSuccess">Account Created <a href="/auth/login">Back to
+                    login</a></small>
         </p>
     </form>
 </div>

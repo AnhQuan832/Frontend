@@ -9,6 +9,7 @@ export class StorageService {
 
     setItemLocal(key: string, item: any) {
         localStorage.setItem(key, JSON.stringify(item));
+        sessionStorage.setItem(key, JSON.stringify(item));
     }
 
     getItemLocal(key: string) {

@@ -13,6 +13,7 @@ import { PasswordModule } from 'primeng/password';
 import { LoginComponent } from './login/login.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { SharedModule } from '../shared/shared.module';
+import { KeyFilterModule } from 'primeng/keyfilter';
 
 @NgModule({
     imports: [
@@ -26,6 +27,7 @@ import { SharedModule } from '../shared/shared.module';
         GoogleSigninButtonModule,
         InputTextModule,
         SharedModule,
+        KeyFilterModule,
     ],
     declarations: [LoginComponent, RegisterComponent, ForgotPasswordComponent],
     exports: [LoginComponent],
