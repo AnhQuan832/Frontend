@@ -66,7 +66,15 @@
     </div>
     <div class="shopView-list col-10">
         <div *ngIf="!isLoading; else loading" class="w-100 shopView-list">
-            <app-product-card *ngFor="let product of products" [product]="product" class="product"></app-product-card>
+            <div *ngIf="products.length" class="w-100 shopView-list">
+                <app-product-card *ngFor="let product of products" [product]="product"
+                    class="product"></app-product-card>
+            </div>
+            <div *ngIf="!products.length" class="w-100 d-flex justify-content-center">
+                <img style="height: 100vh;"
+                    src="https://firebasestorage.googleapis.com/v0/b/advance-totem-350103.appspot.com/o/General%2Fimage_2024-04-26_170435921.png?alt=media&token=0b3d1507-7192-49f9-8f21-50327d934caa"
+                    alt="">
+            </div>
         </div>
         <ng-template #loading><app-product-card *ngFor="let _ of [].constructor(20)"
                 [isLoading]="true"></app-product-card>
