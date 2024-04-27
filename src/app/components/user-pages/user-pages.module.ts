@@ -40,6 +40,7 @@ import { MerchantRequestComponent } from './merchant-request/merchant-request.co
 import { FileUploadModule } from 'primeng/fileupload';
 import { SkeletonModule } from 'primeng/skeleton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { LiveDetailComponent } from './live-detail/live-detail.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -91,6 +92,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
         InvoiceHistoryComponent,
         CompleteCheckoutComponent,
         MerchantRequestComponent,
+        LiveDetailComponent,
     ],
 })
 export class UserPageModule {}
