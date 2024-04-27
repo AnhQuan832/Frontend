@@ -19,7 +19,7 @@ export class NavBarComponent
     extends BaseComponent
     implements OnInit, AfterViewInit
 {
-    isLogin: boolean = !!this.getUserInfo();
+    isLogin: boolean;
     keySearch;
     searchRes;
     isShowSearch = true;
@@ -60,7 +60,9 @@ export class NavBarComponent
     ) {
         super();
     }
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.isLogin = !!this.getToken();
+    }
     ngAfterViewInit(): void {
         this.setActiveNav();
     }

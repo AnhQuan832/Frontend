@@ -22,7 +22,7 @@ export class BaseComponent {
 
     getUserInfo() {
         if (this.userInfo) return this.userInfo;
-        return JSON.parse(localStorage.getItem('currentUser'));
+        return JSON.parse(sessionStorage.getItem('currentUser'));
     }
 
     setUserInfo(user) {
@@ -34,7 +34,7 @@ export class BaseComponent {
     }
 
     getToken() {
-        return this.jwtToken;
+        return this.jwtToken || this.getDataFromCookie('jwtToken');
     }
 
     setRole(role) {
@@ -63,5 +63,16 @@ export class BaseComponent {
             } else formData.append(name, data);
         }
         // return formData;
+    }
+
+    getDataFromCookie(cName) {
+        const name = cName + '=';
+        const cDecoded = decodeURIComponent(document.cookie);
+        const cArr = cDecoded.split('; ');
+        let res;
+        cArr.forEach((val) => {
+            if (val.indexOf(name) === 0) res = val.substring(name.length);
+        });
+        return res;
     }
 }
