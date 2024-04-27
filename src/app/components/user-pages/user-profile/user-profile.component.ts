@@ -71,7 +71,8 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         });
         this.user = this.getUserInfo();
         this.formGroup.patchValue(this.user);
-        const info = this.storageService.getItemLocal('userInfo');
+        const info = this.storageService.getItemLocal('currentUser');
+        this.getData();
         // if (info?.userId) this.getData();
         // else this.router.navigate(['/user/home']);
         this.formGroup.get('userEmail').disable();

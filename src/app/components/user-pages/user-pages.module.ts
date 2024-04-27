@@ -40,6 +40,7 @@ import { MerchantRequestComponent } from './merchant-request/merchant-request.co
 import { FileUploadModule } from 'primeng/fileupload';
 import { SkeletonModule } from 'primeng/skeleton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { KeyFilterModule } from 'primeng/keyfilter';
 @NgModule({
     imports: [
         CommonModule,
@@ -79,6 +80,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
         FileUploadModule,
         SkeletonModule,
         InputTextareaModule,
+        KeyFilterModule,
     ],
     declarations: [
         UserPageComponent,

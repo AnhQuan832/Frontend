@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { BaseComponent } from 'src/app/base.component';
 import { AddressService } from 'src/app/services/address.service';
 import { CartService } from 'src/app/services/cart.service';
 import { InvoiceService } from 'src/app/services/invoice.service';
@@ -12,7 +13,7 @@ import { StorageService } from 'src/app/services/storage.service';
     templateUrl: './check-out.component.html',
     styleUrls: ['./check-out.component.less'],
 })
-export class CheckOutComponent implements OnInit {
+export class CheckOutComponent extends BaseComponent implements OnInit {
     shipService = [
         {
             service_type_id: 2,
@@ -57,12 +58,14 @@ export class CheckOutComponent implements OnInit {
     constructor(
         private apiAddress: AddressService,
         private cartService: CartService,
-        private storageSerive: StorageService,
+        private storageService: StorageService,
         private fb: FormBuilder,
         private invoiceService: InvoiceService,
         private router: Router,
         private msgService: MessageService
-    ) {}
+    ) {
+        super();
+    }
     ngOnInit(): void {
         this.checkOutForm = this.fb.group({
             recipientName: this.fb.control('', [Validators.required]),
@@ -81,7 +84,7 @@ export class CheckOutComponent implements OnInit {
                 wardName: this.fb.control('', [Validators.required]),
             }),
         });
-        this.isLogin = this.storageSerive.getItemLocal('userInfo');
+        this.isLogin = !!this.getToken();
         if (this.isLogin) {
             this.invoiceService.getVoucher().subscribe({
                 next: (res) => {
@@ -89,14 +92,14 @@ export class CheckOutComponent implements OnInit {
                 },
             });
             this.getListAddress();
-            const info = this.storageSerive.getItemLocal('userInfo');
+            const info = this.storageService.getItemLocal('currentUser');
 
             this.checkOutForm.patchValue({ recipientName: info.userFullName });
             this.checkOutForm.patchValue({ phoneNumber: info.userPhoneNumber });
             this.checkOutForm.patchValue({ userEmail: info.userEmail });
         }
         this.bindProvinces();
-        this.cartItem = this.storageSerive.getItemLocal('cart');
+        this.cartItem = this.storageService.getItemLocal('cart');
         this.totalPrice = this.cartItem.reduce((acc, currentItem) => {
             return (
                 acc +
@@ -250,7 +253,7 @@ export class CheckOutComponent implements OnInit {
                     // window.open(res);
                     if (res) {
                         window.location.href = res.paymentUrl;
-                        this.storageSerive.setItemLocal(
+                        this.storageService.setItemLocal(
                             'sucInvoice',
                             res.invoiceId
                         );
@@ -278,7 +281,7 @@ export class CheckOutComponent implements OnInit {
                         // window.open(res);
                         if (res) {
                             window.location.href = res.paymentUrl;
-                            this.storageSerive.setItemLocal(
+                            this.storageService.setItemLocal(
                                 'sucInvoice',
                                 res.invoiceId
                             );
@@ -300,7 +303,7 @@ export class CheckOutComponent implements OnInit {
                         // window.open(res);
                         if (res) {
                             window.location.href = res.paymentUrl;
-                            this.storageSerive.setItemLocal(
+                            this.storageService.setItemLocal(
                                 'sucInvoice',
                                 res.invoiceId
                             );
@@ -322,7 +325,7 @@ export class CheckOutComponent implements OnInit {
     onAddress() {
         if (this.isAddNewAddress) {
             const address = {
-                userId: this.storageSerive.getItemLocal('userInfo')?.userId,
+                userId: this.storageService.getItemLocal('userInfo')?.userId,
                 streetName: this.checkOutForm.value.address.streetName,
                 cityName: this.selectedProvince.provName,
                 districtName: this.selectedDistrict.distName,

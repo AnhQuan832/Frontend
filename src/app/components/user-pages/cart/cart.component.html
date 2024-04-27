@@ -4,64 +4,35 @@
         <div class="card px-6 py-6">
             <div *ngFor="let shop of cart">
                 <div class="d-flex align-items-center gap-4 my-4">
-                    <p-checkbox
-                        [binary]="true"
-                        (onChange)="selectItem(item)"
-                    ></p-checkbox>
+                    <p-checkbox [binary]="true" (onChange)="selectItem(item)"></p-checkbox>
                     <h5 class="my-auto">{{ shop.merchantName }}</h5>
                 </div>
                 <div *ngFor="let item of shop.cartItemDTOList">
                     <div class="cart-item">
-                        <span
-                            style="min-width: 10rem"
-                            class="d-flex align-items-center flex-wrap gap-4"
-                        >
-                            <p-checkbox
-                                [(ngModel)]="item.isSelected"
-                                [binary]="true"
-                                (onChange)="selectItem(item)"
-                            ></p-checkbox>
-                            <img
-                                [src]="item?.image"
-                                width="100"
-                                height="100"
-                                class="shadow-4 rounded-3"
-                            />
-                            <span
-                                class="d-flex flex-column"
-                                style="max-width: 50%"
-                            >
+                        <span style="min-width: 10rem" class="d-flex align-items-center flex-wrap gap-4">
+                            <p-checkbox [(ngModel)]="item.isSelected" [binary]="true"
+                                (onChange)="selectItem(item)"></p-checkbox>
+                            <img [src]="item?.image" width="100" height="100" class="shadow-4 rounded-3" />
+                            <span class="d-flex flex-column" style="max-width: 50%">
                                 <h5 class="mb-0">
                                     {{ item.name }}
                                 </h5>
                                 <small style="font-size: 12px">{{
                                     item.listAttributeName.join(", ")
-                                }}</small>
+                                    }}</small>
                                 <span style="width: 14%; min-width: 8rem">
                                     {{ item.unitPrice | currency : "VND" }}
                                 </span>
                             </span>
                         </span>
 
-                        <span
-                            style="width: 14%; min-width: 10rem"
-                            class="num-item"
-                        >
-                            <app-quantity
-                                [quantity]="item.quantity"
-                                [min]="1"
-                                [max]="item.stockAmount"
-                                (onQuantity)="onChangeQty(item, $event)"
-                            ></app-quantity>
-                            <button
-                                pButton
-                                pRipple
-                                icon="pi pi-trash"
-                                class="p-button-rounded p-button-danger p-button-text"
-                                (click)="
+                        <span style="width: 14%; min-width: 10rem" class="num-item">
+                            <app-quantity [quantity]="item.quantity" [min]="1" [max]="item.stockAmount"
+                                (onQuantity)="onChangeQty(item, $event)"></app-quantity>
+                            <button pButton pRipple icon="pi pi-trash"
+                                class="p-button-rounded p-button-danger p-button-text" (click)="
                                     $event.stopPropagation(); removeItem(item)
-                                "
-                            ></button>
+                                "></button>
                         </span>
                         <!-- <span style="width: 14%; min-width: 10rem">
                     {{ item.totalItemPrice | currency : "VND" }}
@@ -69,6 +40,12 @@
                     </div>
                     <p-divider></p-divider>
                 </div>
+                <div class="voucher d-flex gap-4 align-items-center">
+                    <h6>Select Voucher:</h6>
+                    <p-dropdown [options]="listVoucher" optionLabel="name"></p-dropdown>
+                </div>
+                <p-divider></p-divider>
+
             </div>
         </div>
     </div>
@@ -77,22 +54,19 @@
             <div class="title mb-2">Order Summary</div>
             <div class="detail">
                 <p>Subtotal</p>
-                <p>33.000</p>
+                <p>{{totalPrice | currency : "VND"}}</p>
             </div>
             <div class="detail">
                 <p>Discount</p>
-                <p>33.000</p>
+                <p>{{discountPrice | currency : "VND"}}</p>
+
             </div>
             <p-divider></p-divider>
             <div class="detail">
                 <p>Total</p>
-                <p>33.000</p>
+                <p>{{finalPrice | currency : "VND"}}</p>
             </div>
-            <button
-                [disabled]="selectedProducts.length === 0"
-                class="btn btn-primary w-100"
-                (click)="onCheckOut()"
-            >
+            <button [disabled]="selectedProducts.length === 0" class="btn btn-primary w-100" (click)="onCheckOut()">
                 Check out
             </button>
         </div>
