@@ -60,7 +60,7 @@
         </div>
         <p-button label="Add address" styleClass="p-button-outlined" class="rounded-2"
             (onClick)="onAddress()"></p-button>
-        <span *ngIf="selectedWard || selectedAdd" class="p-float-label">
+        <!-- <span *ngIf="selectedWard || selectedAdd" class="p-float-label">
             <h6 class="mt-2 p-1 ps-0">Shipping Serive</h6>
             <div class="d-flex align-items-center" *ngFor="let item of shipService">
                 <div *ngIf="item.price > 0">
@@ -72,7 +72,7 @@
                         }})</label>
                 </div>
             </div>
-        </span>
+        </span> -->
     </div>
     <div *ngIf="cartItem" class="col-5 card p-4">
         <div class="items">
@@ -87,11 +87,10 @@
                 </p>
             </div>
         </div>
-        <p-divider *ngIf="voucherOption.length" type="solid" class="my-4"></p-divider>
-        <div *ngIf="voucherOption.length" class="voucher">
+        <!-- <p-divider *ngIf="voucherOption.length" type="solid" class="my-4"></p-divider> -->
+        <!-- <div *ngIf="voucherOption.length" class="voucher">
             <span class="my-4">
                 <h6>Voucher</h6>
-                <!-- <input class="inputtext w-50 ps-2 mt-0" name="emailInput" type="email" pInputText /> -->
                 <div class="d-flex align-items-center gap-2 field-checkbox" *ngFor="let item of voucherOption">
                     <p-radioButton name="item" [value]="item" [ngModelOptions]="{ standalone: true }"
                         [(ngModel)]="selectedVoucher" [inputId]="item.voucherId"
@@ -120,7 +119,7 @@
                     </label>
                 </div>
             </span>
-        </div>
+        </div> -->
         <p-divider type="solid" class="my-4"></p-divider>
         <div class="shipping">
             <span class="d-flex justify-content-between">
@@ -132,7 +131,7 @@
                     }}
                 </h6>
             </span>
-            <span class="d-flex justify-content-between">
+            <!-- <span class="d-flex justify-content-between">
                 <h6>Shipping Fee</h6>
                 <h6>
                     {{
@@ -140,7 +139,7 @@
                     | currency : "VND"
                     }}
                 </h6>
-            </span>
+            </span> -->
             <span class="d-flex justify-content-between">
                 <h6>Discount</h6>
                 <h6>

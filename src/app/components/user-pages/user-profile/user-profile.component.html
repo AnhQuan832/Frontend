@@ -1,7 +1,5 @@
-<div
-    *ngIf="isLoading"
-    class="loading w-100 h-100 position-absolute d-flex d-flex justify-content-center align-items-center flex-column gap-2 bg-body z-3"
->
+<div *ngIf="isLoading"
+    class="loading w-100 h-100 position-absolute d-flex d-flex justify-content-center align-items-center flex-column gap-2 bg-body z-3">
     <div class="spinner-border" role="status">
         <span class="sr-only"></span>
     </div>
@@ -13,29 +11,16 @@
         <!-- card-info -->
         <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
             <div class="card card-profile p-4 shadow" [formGroup]="formGroup">
-                <div
-                    class="d-flex justify-content-between align-items-center mb-4"
-                >
+                <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5>My Account</h5>
-                    <button
-                        class="btn btn-secondary w-fit"
-                        (click)="registerMerchant()"
-                    >
+                    <button class="btn btn-secondary w-fit" (click)="registerMerchant()">
                         Register for Merchant
                     </button>
                 </div>
                 <div class="row justify-content-center">
-                    <div
-                        class="card-profile-image rounded-circle d-flex justify-content-center"
-                    >
-                        <img
-                            width="120px"
-                            height="120px"
-                            id="imgInput"
-                            src="{{ formGroup.value.userAvatar }}"
-                            onerror="this.onerror=null;this.src='/assets/imgs/no_user.png';"
-                            class="rounded-circle"
-                        />
+                    <div class="card-profile-image rounded-circle d-flex justify-content-center">
+                        <img width="120px" height="120px" id="imgInput" src="{{ formGroup.value.userAvatar }}"
+                            onerror="this.onerror=null;this.src='/assets/imgs/no_user.png';" class="rounded-circle" />
                     </div>
                 </div>
                 <div class="change-logo d-flex justify-content-center my-2">
@@ -46,50 +31,30 @@
           >
             Select avatar
           </button> -->
-                    <input
-                        type="file"
-                        accept="image/png, image/jpeg"
-                        #avatarInput
-                        (change)="selectedAvatar($event)"
-                        style="display: none"
-                    />
+                    <input type="file" accept="image/png, image/jpeg" #avatarInput (change)="selectedAvatar($event)"
+                        style="display: none" />
                 </div>
                 <div class="pl-lg-4 position-relative px-4">
                     <div class="row">
                         <div class="col-lg-12">
                             <div>
                                 <h6>Email</h6>
-                                <input
-                                    class="w-100 rounded-2 p-2 mb-3"
-                                    type="text"
-                                    placeholder="Username"
-                                    pInputText
-                                    formControlName="userEmail"
-                                />
+                                <input class="w-100 rounded-2 p-2 mb-3" type="text" placeholder="Username" pInputText
+                                    formControlName="userEmail" />
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div>
                                 <h6>First Name</h6>
-                                <input
-                                    type="email"
-                                    class="w-100 rounded-2 p-2 mb-3"
-                                    id="input-email"
-                                    pInputText
-                                    formControlName="userFirstName"
-                                />
+                                <input type="email" class="w-100 rounded-2 p-2 mb-3" id="input-email" pInputText
+                                    formControlName="userFirstName" />
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div>
                                 <h6>Last Name</h6>
-                                <input
-                                    type="email"
-                                    class="w-100 rounded-2 p-2 mb-3"
-                                    id="input-email"
-                                    pInputText
-                                    formControlName="userLastName"
-                                />
+                                <input type="email" class="w-100 rounded-2 p-2 mb-3" id="input-email" pInputText
+                                    formControlName="userLastName" />
                             </div>
                         </div>
                     </div>
@@ -97,30 +62,16 @@
                         <div class="col-lg-12">
                             <div>
                                 <h6>Phone number</h6>
-                                <input
-                                    type="text"
-                                    pattern="[0-9]+"
-                                    minlength="10"
-                                    maxlength="11"
-                                    pInputText
-                                    class="w-100 rounded-2 p-2 mb-3"
-                                    placeholder="Enter your Phone number"
-                                    formControlName="userPhoneNumber"
-                                />
+                                <input type="text" pattern="[0-9]+" minlength="10" maxlength="11" pInputText
+                                    class="w-100 rounded-2 p-2 mb-3" placeholder="Enter your Phone number"
+                                    formControlName="userPhoneNumber" />
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div>
                                 <h6>Member point</h6>
-                                <input
-                                    type="text"
-                                    pattern="[0-9]+"
-                                    minlength="10"
-                                    pInputText
-                                    maxlength="11"
-                                    class="w-100 rounded-2 p-2 mb-3"
-                                    formControlName="memberPoint"
-                                />
+                                <input type="text" pattern="[0-9]+" minlength="10" pInputText maxlength="11"
+                                    class="w-100 rounded-2 p-2 mb-3" formControlName="memberPoint" />
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -129,10 +80,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-center mt-2">
-                            <button
-                                class="btn btn-primary m-auto"
-                                (click)="updateData()"
-                            >
+                            <button class="btn btn-primary m-auto" (click)="updateData()">
                                 Update
                             </button>
                         </div>
@@ -149,22 +97,133 @@
                         <div class="row">
                             <p-tabView>
                                 <p-tabPanel header="All">
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna
-                                        aliqua. Ut enim ad minim veniam, quis
-                                        nostrud exercitation ullamco laboris
-                                        nisi ut aliquip ex ea commodo consequat.
-                                        Duis aute irure dolor in reprehenderit
-                                        in voluptate velit esse cillum dolore eu
-                                        fugiat nulla pariatur. Excepteur sint
-                                        occaecat cupidatat non proident, sunt in
-                                        culpa qui officia deserunt mollit anim
-                                        id est laborum.
-                                    </p>
+                                    <p-table #dt [value]="listTransactions" [rows]="5" [paginator]="true"
+                                        [tableStyle]="{ 'min-width': '75rem' }" [rowHover]="true" dataKey="id"
+                                        styleClass="p-datatable-striped" [tableStyle]="{ 'min-width': '25rem' }">
+                                        <ng-template pTemplate="header">
+                                            <tr class="py-5">
+                                                <th pSortableColumn="totalPrice">
+                                                    Invoice ID <p-sortIcon field="totalPrice"></p-sortIcon>
+                                                </th>
+                                                <th pSortableColumn="createdDate" style="min-width: 6rem" class="ps-4">
+                                                    Date <p-sortIcon field="createdDate"></p-sortIcon>
+                                                </th>
+
+                                                <th pSortableColumn="finalPrice">
+                                                    Price <p-sortIcon field="finalPrice"></p-sortIcon>
+                                                </th>
+
+                                                <th pSortableColumn="paymentType">
+                                                    Payment <p-sortIcon field="paymentType"></p-sortIcon>
+                                                </th>
+                                                <th pSortableColumn="status">
+                                                    Status <p-sortIcon field="status"></p-sortIcon>
+                                                </th>
+                                                <th></th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-invoice>
+                                            <tr (click)="onRowSelect(invoice)" style="cursor: pointer">
+                                                <td class="ps-4">
+                                                    {{ invoice.invoiceId }}
+                                                </td>
+                                                <td class="">
+                                                    {{ invoice.createdDate | date : "dd/MM/yyyy" }}
+                                                </td>
+                                                <td>{{ invoice.finalPrice | currency : "VND" }}</td>
+                                                <td>
+                                                    {{
+                                                    invoice.paymentType === "CREDIT_CARD"
+                                                    ? "Banking"
+                                                    : "COD"
+                                                    }}
+                                                </td>
+                                                <td>
+                                                    <p-tag [value]="invoice.status"
+                                                        [severity]="getSeverity(invoice.status)"></p-tag>
+                                                </td>
+                                                <td>
+                                                    <p-button *ngIf="
+                                                              invoice.status === 'PENDING' ||
+                                                              invoice.status === 'CANCEL'
+                                                            " styleClass="p-button-secondary" label="Contact"
+                                                        (onClick)="$event.stopPropagation(); contactAdmin()"></p-button>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+
+                                    <hr *ngIf="cart" class="mt-4" />
+                                    <h4 *ngIf="cart">Detail</h4>
+                                    <p-table *ngIf="cart" #dt [value]="cart" responsiveLayout="scroll"
+                                        [(selection)]="selectedProducts" dataKey="cartItemId" [rows]="8"
+                                        [globalFilterFields]="[
+                                                      'name',
+                                                      'price',
+                                                      'brand.name',
+                                                      'subCategory.category.name'
+                                                    ]" [paginator]="true" [showCurrentPageReport]="true"
+                                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                        [rowHover]="true">
+                                        <!-- <ng-template pTemplate="caption">
+                                              <div class="d-flex justify-content-end">
+                                                <span class="block p-input-icon-left">
+                                                  <i class="pi pi-search"></i>
+                                                  <input
+                                                    pInputText
+                                                    type="text"
+                                                    (input)="onGlobalFilter(dt, $event)"
+                                                    placeholder="Search..."
+                                                    class="w-full sm:w-auto"
+                                                  />
+                                                </span>
+                                              </div>
+                                            </ng-template> -->
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th>Product</th>
+                                                <th pSortableColumn="unitPrice">
+                                                    Price <p-sortIcon field="unitPrice"></p-sortIcon>
+                                                </th>
+                                                <th pSortableColumn="quantity">
+                                                    Quantity <p-sortIcon field="quantity"></p-sortIcon>
+                                                </th>
+                                                <th pSortableColumn="totalItemPrice">
+                                                    Total <p-sortIcon field="totalItemPrice"></p-sortIcon>
+                                                </th>
+                                                <th></th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-product>
+                                            <tr>
+                                                <td style="min-width: 10rem">
+                                                    <span class="p-column-title">Name</span>
+                                                    <img [src]="product?.image" width="100" class="shadow-4" />
+                                                    {{ product.name }}
+                                                </td>
+
+                                                <td style="width: 14%; min-width: 8rem">
+                                                    <span class="p-column-title">Price</span>
+                                                    {{ product.unitPrice | currency : "VND" }}
+                                                </td>
+                                                <td style="width: 14%; min-width: 10rem" class="num-product">
+                                                    <span class="p-column-title">Quantity</span>
+                                                    {{ product.quantity }}
+                                                </td>
+                                                <td style="width: 14%; min-width: 10rem">
+                                                    <span class="p-column-title">Total</span>
+                                                    {{ product.total_price | currency : "VND" }}
+                                                </td>
+                                                <td>
+                                                    <p-button *ngIf="isBought" icon="pi pi-pencil"
+                                                        styleClass="p-button-secondary" label="Review"
+                                                        (onClick)="addRating(product)"></p-button>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
                                 </p-tabPanel>
-                                <p-tabPanel header="To Pay">
+                                <!-- <p-tabPanel header="To Pay">
                                     <p>
                                         Sed ut perspiciatis unde omnis iste
                                         natus error sit voluptatem accusantium
@@ -259,7 +318,7 @@
                                         soluta nobis est eligendi optio cumque
                                         nihil impedit quo minus.
                                     </p>
-                                </p-tabPanel>
+                                </p-tabPanel> -->
                             </p-tabView>
                             <!-- <p-table
                                 #dt
@@ -384,45 +443,29 @@
 
                             <hr *ngIf="cart" class="mt-4" />
                             <h4 *ngIf="cart">Detail</h4>
-                            <p-table
-                                *ngIf="cart"
-                                #dt
-                                [value]="cart"
-                                responsiveLayout="scroll"
-                                [(selection)]="selectedProducts"
-                                dataKey="cartItemId"
-                                [rows]="8"
-                                [globalFilterFields]="[
+                            <p-table *ngIf="cart" #dt [value]="cart" responsiveLayout="scroll"
+                                [(selection)]="selectedProducts" dataKey="cartItemId" [rows]="8" [globalFilterFields]="[
                                     'name',
                                     'price',
                                     'brand.name',
                                     'subCategory.category.name'
-                                ]"
-                                [paginator]="true"
-                                [showCurrentPageReport]="true"
+                                ]" [paginator]="true" [showCurrentPageReport]="true"
                                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                [rowHover]="true"
-                            >
+                                [rowHover]="true">
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th>Product</th>
                                         <th pSortableColumn="unitPrice">
                                             Price
-                                            <p-sortIcon
-                                                field="unitPrice"
-                                            ></p-sortIcon>
+                                            <p-sortIcon field="unitPrice"></p-sortIcon>
                                         </th>
                                         <th pSortableColumn="quantity">
                                             Quantity
-                                            <p-sortIcon
-                                                field="quantity"
-                                            ></p-sortIcon>
+                                            <p-sortIcon field="quantity"></p-sortIcon>
                                         </th>
                                         <th pSortableColumn="totalItemPrice">
                                             Total
-                                            <p-sortIcon
-                                                field="totalItemPrice"
-                                            ></p-sortIcon>
+                                            <p-sortIcon field="totalItemPrice"></p-sortIcon>
                                         </th>
                                         <th></th>
                                     </tr>
@@ -430,54 +473,33 @@
                                 <ng-template pTemplate="body" let-product>
                                     <tr>
                                         <td style="min-width: 10rem">
-                                            <span class="p-column-title"
-                                                >Name</span
-                                            >
-                                            <img
-                                                [src]="product?.image"
-                                                width="100"
-                                                class="shadow-4"
-                                            />
+                                            <span class="p-column-title">Name</span>
+                                            <img [src]="product?.image" width="100" class="shadow-4" />
                                             {{ product.name }}
                                         </td>
 
                                         <td style="width: 14%; min-width: 8rem">
-                                            <span class="p-column-title"
-                                                >Price</span
-                                            >
+                                            <span class="p-column-title">Price</span>
                                             {{
-                                                product.unitPrice
-                                                    | currency : "VND"
+                                            product.unitPrice
+                                            | currency : "VND"
                                             }}
                                         </td>
-                                        <td
-                                            style="width: 14%; min-width: 10rem"
-                                            class="num-product"
-                                        >
-                                            <span class="p-column-title"
-                                                >Quantity</span
-                                            >
+                                        <td style="width: 14%; min-width: 10rem" class="num-product">
+                                            <span class="p-column-title">Quantity</span>
                                             {{ product.quantity }}
                                         </td>
-                                        <td
-                                            style="width: 14%; min-width: 10rem"
-                                        >
-                                            <span class="p-column-title"
-                                                >Total</span
-                                            >
+                                        <td style="width: 14%; min-width: 10rem">
+                                            <span class="p-column-title">Total</span>
                                             {{
-                                                product.total_price
-                                                    | currency : "VND"
+                                            product.total_price
+                                            | currency : "VND"
                                             }}
                                         </td>
                                         <td>
-                                            <p-button
-                                                *ngIf="isBought"
-                                                icon="pi pi-pencil"
-                                                styleClass="p-button-secondary"
-                                                label="Review"
-                                                (onClick)="addRating(product)"
-                                            ></p-button>
+                                            <p-button *ngIf="isBought" icon="pi pi-pencil"
+                                                styleClass="p-button-secondary" label="Review"
+                                                (onClick)="addRating(product)"></p-button>
                                         </td>
                                     </tr>
                                 </ng-template>

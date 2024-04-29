@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { di } from '@fullcalendar/core/internal-common';
 import { MessageService } from 'primeng/api';
 import { BaseComponent } from 'src/app/base.component';
 import { AddressService } from 'src/app/services/address.service';
@@ -73,8 +74,6 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
             paymentType: this.fb.control('CREDIT_CARD'),
             userEmail: this.fb.control('', Validators.required),
             returnUrl: this.fb.control(''),
-            voucher: this.fb.control(''),
-            shippingFee: this.fb.control(''),
             address: this.fb.group({
                 userId: this.fb.control(''),
                 addressId: this.fb.control(''),
@@ -82,7 +81,10 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
                 cityName: this.fb.control('', [Validators.required]),
                 districtName: this.fb.control('', [Validators.required]),
                 wardName: this.fb.control('', [Validators.required]),
+                districtId: this.fb.control('', [Validators.required]),
+                wardCode: this.fb.control('', [Validators.required]),
             }),
+            voucherByMerchantMap: this.fb.control(null),
         });
         this.isLogin = !!this.getToken();
         if (this.isLogin) {
@@ -223,6 +225,13 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
         if (this.isLogin)
             this.checkOutForm.patchValue({ address: this.selectedAdd });
         else {
+            const dist = this.listDistrict.find(
+                (item) => item.distName === this.selectedAdd.districtName
+            );
+            this.districtSelectedChange({ distCode: dist.distCode });
+            const ward = this.listWard.find(
+                (item) => item.wardName === this.selectedAdd.wardName
+            );
             const address = {
                 streetName: this.checkOutForm.value.address.streetName,
                 cityName: this.selectedProvince.provName,
@@ -237,10 +246,7 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
             returnUrl: 'https://pescue-shop.vercel.app/user/complete-checkout',
         });
 
-        this.checkOutForm.patchValue({
-            shippingFee:
-                this.selectedShipping?.price || this.shipService[0].price,
-        });
+        this.checkOutForm.patchValue({ voucherByMerchantMap: {} });
 
         let data;
         if (this.cartItem[0]?.cartId) {
@@ -325,11 +331,13 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
     onAddress() {
         if (this.isAddNewAddress) {
             const address = {
-                userId: this.storageService.getItemLocal('userInfo')?.userId,
+                userId: this.storageService.getItemLocal('currentUser')?.userId,
                 streetName: this.checkOutForm.value.address.streetName,
                 cityName: this.selectedProvince.provName,
                 districtName: this.selectedDistrict.distName,
                 wardName: this.selectedWard.wardName,
+                districtId: this.selectedDistrict.distCode,
+                wardCode: this.selectedWard.wardCode,
             };
             this.apiAddress.addAddress(address).subscribe({
                 next: (res) => {
