@@ -1,1 +1,87 @@
-<p>live-detail works!</p>
+<div class="grid">
+
+
+    <div class="col-12 xl:col-8">
+        Live here
+    </div>
+    <div class="col-12 xl:col-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Our product</h3>
+            </div>
+            <div class="card-body">
+                <div *ngIf="!isSelectVariety">
+                    <div *ngFor="let item of  listProduct" class="mb-2">
+                        <div class="item-name d-flex justify-content-between align-items-center gap-4">
+                            <img width="60px" [src]="item?.image || item?.images[0]" alt="" />
+                            <div class="flex-grow-1">
+
+                                <h6 class="mb-0">{{ item.name }}</h6>
+                                <!-- <h6 class="mb-0">{{ item.quantity }}</h6> -->
+                                <p class="mb-0">
+                                    {{ item?.totalItemPrice || item?.price | currency : "VND" }}
+                                </p>
+                            </div>
+                            <div>
+                                <button pButton pRipple class="btn btn-primary" icon="pi pi-shopping-cart"
+                                    (click)="isSelectVariety= true; onSelectProduct(item)"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="isSelectVariety && selectedProduct">
+                    <div class="item-name d-flex justify-content-between align-items-center gap-4">
+                        <i class="bi bi-chevron-left" style="font-size: 24px; cursor: pointer;"
+                            (click)="isSelectVariety = false"></i>
+                        <img width="60px" [src]="selectedProduct?.image || selectedProduct?.images[0]" alt="" />
+                        <div class="flex-grow-1">
+
+                            <h6 class="mb-0">{{ selectedProduct.name }}</h6>
+                            <!-- <h6 class="mb-0">{{ selectedProduct.quantity }}</h6> -->
+                            <p class="mb-0">
+                                {{ selectedProduct?.totalselectedProductPrice || selectedProduct?.price | currency :
+                                "VND" }}
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="ps-4 mt-2">
+
+                        <div class="size attribute" *ngIf="listSize.length > 0">
+                            <h6 class="mt-2"><b>Size</b></h6>
+                            <div class="size" *ngFor="let size of listSize" [id]="size.attributeId"
+                                [ngClass]="{ disabled: !size.active }" (click)="
+                                                size.active
+                                                    ? onAttribute($event, size, 'size')
+                                                    : null
+                                            ">
+                                {{ size.name }}
+                            </div>
+                        </div>
+                        <div class="color attribute" *ngIf="listColor.length > 0">
+                            <h6 class="mt-2"><b>Color</b></h6>
+
+                            <div class="color" *ngFor="let color of listColor" [id]="color.attributeId"
+                                [ngClass]="{ disabled: !color.active }" (click)="
+                                                color.active
+                                                    ? onAttribute($event, color, 'color')
+                                                    : null
+                                            ">
+                                {{ color.name }}
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <h6 class="mt-2 me-2"><b>Amount</b></h6>
+                            <app-quantity [quantity]="numberOfProduct" [max]="selectedVariety?.stockAmount || 0"
+                                (onQuantity)="onChangeQty($event)"></app-quantity>
+                        </div>
+                    </div>
+                    <div class="px-4 pt-4">
+                        <button pButton pRipple [disabled]="isDisableBuy" class="btn btn-primary w-100"
+                            label="Add to Cart" (click)="addToCart(); "></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
