@@ -41,6 +41,10 @@ export class AddProduct extends BaseComponent implements OnInit {
         size: this.builder.control(''),
         color: this.builder.control(''),
         varietyAttributeList: this.builder.control([]),
+        length: this.builder.control(''),
+        width: this.builder.control(''),
+        height: this.builder.control(''),
+        weight: this.builder.control(''),
     });
 
     constructor(

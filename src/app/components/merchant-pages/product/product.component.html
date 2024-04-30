@@ -4,14 +4,8 @@
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
-                        <button
-                            pButton
-                            pRipple
-                            label="New"
-                            icon="pi pi-plus"
-                            class="p-button-success mr-2"
-                            (click)="addNewProduct()"
-                        ></button>
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                            (click)="addNewProduct()"></button>
                         <!-- <button
                             pButton
                             pRipple
@@ -46,41 +40,21 @@
                 </ng-template> -->
             </p-toolbar>
 
-            <p-table
-                #dt
-                [value]="products"
-                [columns]="cols"
-                responsiveLayout="scroll"
-                [rows]="10"
-                [globalFilterFields]="[
+            <p-table #dt [value]="products" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="[
                     'name',
                     'price',
                     'brand.name',
                     'subCategory.category.name'
-                ]"
-                [paginator]="true"
-                [rowsPerPageOptions]="[10, 20, 30]"
-                [showCurrentPageReport]="true"
+                ]" [paginator]="true" [rowsPerPageOptions]="[10, 20, 30]" [showCurrentPageReport]="true"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                [(selection)]="selectedProducts"
-                selectionMode="multiple"
-                [rowHover]="true"
-                dataKey="id"
-            >
+                [(selection)]="selectedProducts" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
-                    <div
-                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
-                    >
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Manage Products</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input
-                                pInputText
-                                type="text"
-                                (input)="onGlobalFilter(dt, $event)"
-                                placeholder="Search..."
-                                class="w-full sm:w-auto"
-                            />
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."
+                                class="w-full sm:w-auto" />
                         </span>
                     </div>
                 </ng-template>
@@ -103,9 +77,7 @@
 
                         <th pSortableColumn="subCategory.category.name">
                             Category
-                            <p-sortIcon
-                                field="subCategory.category.name"
-                            ></p-sortIcon>
+                            <p-sortIcon field="subCategory.category.name"></p-sortIcon>
                         </th>
                         <th pSortableColumn="avgRating">
                             Reviews <p-sortIcon field="avgRating"></p-sortIcon>
@@ -114,7 +86,7 @@
                         <th></th>
                     </tr>
                 </ng-template>
-                <!-- <ng-template pTemplate="body" let-product>
+                <ng-template pTemplate="body" let-product>
                     <tr>
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Name</span>
@@ -122,16 +94,11 @@
                         </td>
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Image</span>
-                            <img
-                                [src]="product?.image"
-                                [alt]="product.name"
-                                width="100"
-                                class="shadow-4"
-                            />
+                            <img [src]="product?.image" [alt]="product.name" width="100" class="shadow-4" />
                         </td>
                         <td>
                             <span>
-                                {{ product.brand.name }}
+                                {{ product.brandName }}
                             </span>
                         </td>
                         <td style="width: 14%; min-width: 8rem">
@@ -140,99 +107,48 @@
                         </td>
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Category</span>
-                            {{ product.subCategory.category.name }}
+                            {{ product.categoryName }}
                         </td>
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Reviews</span>
-                            <p-rating
-                                [ngModel]="product.avgRating"
-                                [readonly]="true"
-                                [cancel]="false"
-                            ></p-rating>
+                            <p-rating [ngModel]="product.avgRating" [readonly]="true" [cancel]="false"></p-rating>
                         </td>
 
                         <td>
                             <div class="flex">
-                                <button
-                                    pButton
-                                    pRipple
-                                    icon="pi pi-pencil"
+                                <button pButton pRipple icon="pi pi-pencil"
                                     class="p-button-rounded p-button-success mr-2"
-                                    (click)="onRowSelect(product)"
-                                ></button>
+                                    (click)="onRowSelect(product)"></button>
                             </div>
                         </td>
                     </tr>
-                </ng-template> -->
+                </ng-template>
             </p-table>
         </div>
 
-        <p-dialog
-            [(visible)]="deleteProductDialog"
-            header="Confirm"
-            [modal]="true"
-            [style]="{ width: '450px' }"
-        >
+        <p-dialog [(visible)]="deleteProductDialog" header="Confirm" [modal]="true" [style]="{ width: '450px' }">
             <div class="flex align-items-center justify-content-center">
-                <i
-                    class="pi pi-exclamation-triangle mr-3"
-                    style="font-size: 2rem"
-                ></i>
-                <span *ngIf="product"
-                    >Are you sure you want to delete <b>{{ product.name }}</b
-                    >?</span
-                >
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="product">Are you sure you want to delete <b>{{ product.name }}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button
-                    pButton
-                    pRipple
-                    icon="pi pi-times"
-                    class="p-button-text"
-                    label="No"
-                    (click)="deleteProductDialog = false"
-                ></button>
-                <button
-                    pButton
-                    pRipple
-                    icon="pi pi-check"
-                    class="p-button-text"
-                    label="Yes"
-                    (click)="confirmDelete()"
-                ></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteProductDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
+                    (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
 
-        <p-dialog
-            [(visible)]="deleteProductsDialog"
-            header="Confirm"
-            [modal]="true"
-            [style]="{ width: '450px' }"
-        >
+        <p-dialog [(visible)]="deleteProductsDialog" header="Confirm" [modal]="true" [style]="{ width: '450px' }">
             <div class="flex align-items-center justify-content-center">
-                <i
-                    class="pi pi-exclamation-triangle mr-3"
-                    style="font-size: 2rem"
-                ></i>
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 <span>Are you sure you want to delete selected products?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button
-                    pButton
-                    pRipple
-                    icon="pi pi-times"
-                    class="p-button-text"
-                    label="No"
-                    (click)="deleteProductsDialog = false"
-                ></button>
-                <button
-                    pButton
-                    pRipple
-                    icon="pi pi-check"
-                    class="p-button-text"
-                    label="Yes"
-                    (click)="confirmDeleteSelected()"
-                ></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteProductsDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Yes"
+                    (click)="confirmDeleteSelected()"></button>
             </ng-template>
         </p-dialog>
     </div>
