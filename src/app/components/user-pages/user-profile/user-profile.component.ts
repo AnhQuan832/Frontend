@@ -42,7 +42,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
     formGroup: FormGroup;
     cart;
     cartId;
-    selectedProducts: any[] = [];
+    selectedInvoice;
     isLogin: boolean = false;
     originalData: any;
     constructor(
@@ -101,10 +101,12 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
     }
 
     onRowSelect(row) {
-        console.log(row);
+        this.selectedInvoice = row;
         this.invoiceService.getPaymentDetail(row.invoiceId).subscribe({
             next: (res) => {
                 this.cart = res;
+                const element = document.getElementById('invoice');
+                element.scrollIntoView();
             },
         });
         this.isBought = row.status === 'COMPLETED';
@@ -154,5 +156,23 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         this.dialogService.open(MerchantRequestComponent, {
             width: '50%',
         });
+    }
+
+    updateStatus(status) {
+        this.invoiceService
+            .updateStatus({
+                invoiceId: this.selectedInvoice.invoiceId,
+                status: status,
+            })
+            .subscribe({
+                next: (res) => {
+                    this.msgService.showMessage(
+                        'Marked as received',
+                        '',
+                        'success'
+                    );
+                    this.getData();
+                },
+            });
     }
 }

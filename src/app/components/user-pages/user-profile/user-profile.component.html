@@ -154,31 +154,15 @@
                                     </p-table>
 
                                     <hr *ngIf="cart" class="mt-4" />
-                                    <h4 *ngIf="cart">Detail</h4>
+                                    <div *ngIf="selectedInvoice" class="d-flex align-items-center">
+                                        <h4 id='invoice'>Invoice ID: {{selectedInvoice.invoiceId}}</h4>
+                                        <p-button *ngIf=" cart && selectedInvoice.status === 'PAID'"
+                                            styleClass="p-button-secondary" label="Received"
+                                            (onClick)="$event.stopPropagation(); updateStatus('COMPLETED')"></p-button>
+                                    </div>
                                     <p-table *ngIf="cart" #dt [value]="cart" responsiveLayout="scroll"
                                         [(selection)]="selectedProducts" dataKey="cartItemId" [rows]="8"
-                                        [globalFilterFields]="[
-                                                      'name',
-                                                      'price',
-                                                      'brand.name',
-                                                      'subCategory.category.name'
-                                                    ]" [paginator]="true" [showCurrentPageReport]="true"
-                                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                        [rowHover]="true">
-                                        <!-- <ng-template pTemplate="caption">
-                                              <div class="d-flex justify-content-end">
-                                                <span class="block p-input-icon-left">
-                                                  <i class="pi pi-search"></i>
-                                                  <input
-                                                    pInputText
-                                                    type="text"
-                                                    (input)="onGlobalFilter(dt, $event)"
-                                                    placeholder="Search..."
-                                                    class="w-full sm:w-auto"
-                                                  />
-                                                </span>
-                                              </div>
-                                            </ng-template> -->
+                                        [paginator]="true" [rowHover]="true">
                                         <ng-template pTemplate="header">
                                             <tr>
                                                 <th>Product</th>
@@ -198,7 +182,7 @@
                                             <tr>
                                                 <td style="min-width: 10rem">
                                                     <span class="p-column-title">Name</span>
-                                                    <img [src]="product?.image" width="100" class="shadow-4" />
+                                                    <img [src]="product?.image" width="100" class="shadow-4 me-2" />
                                                     {{ product.name }}
                                                 </td>
 
@@ -212,7 +196,7 @@
                                                 </td>
                                                 <td style="width: 14%; min-width: 10rem">
                                                     <span class="p-column-title">Total</span>
-                                                    {{ product.total_price | currency : "VND" }}
+                                                    {{ product.totalPrice | currency : "VND" }}
                                                 </td>
                                                 <td>
                                                     <p-button *ngIf="isBought" icon="pi pi-pencil"
@@ -320,190 +304,7 @@
                                     </p>
                                 </p-tabPanel> -->
                             </p-tabView>
-                            <!-- <p-table
-                                #dt
-                                [value]="listTransactions"
-                                [rows]="5"
-                                [paginator]="true"
-                                [tableStyle]="{ 'min-width': '75rem' }"
-                                [rowHover]="true"
-                                dataKey="id"
-                                styleClass="p-datatable-striped"
-                                [tableStyle]="{ 'min-width': '25rem' }"
-                            >
-                                <ng-template pTemplate="header">
-                                    <tr class="py-5">
-                                        <th
-                                            pSortableColumn="createdDate"
-                                            style="min-width: 6rem"
-                                            class="ps-4"
-                                        >
-                                            Date
-                                            <p-sortIcon
-                                                field="createdDate"
-                                            ></p-sortIcon>
-                                        </th>
-                                        <th pSortableColumn="totalPrice">
-                                            Total
-                                            <p-sortIcon
-                                                field="totalPrice"
-                                            ></p-sortIcon>
-                                        </th>
-                                        <th pSortableColumn="discountPrice">
-                                            Discount
-                                            <p-sortIcon
-                                                field="discountPrice"
-                                            ></p-sortIcon>
-                                        </th>
-                                        <th pSortableColumn="finalPrice">
-                                            Final Price
-                                            <p-sortIcon
-                                                field="finalPrice"
-                                            ></p-sortIcon>
-                                        </th>
 
-                                        <th pSortableColumn="paymentType">
-                                            Payment Type
-                                            <p-sortIcon
-                                                field="paymentType"
-                                            ></p-sortIcon>
-                                        </th>
-                                        <th pSortableColumn="status">
-                                            Status
-                                            <p-sortIcon
-                                                field="status"
-                                            ></p-sortIcon>
-                                        </th>
-                                        <th></th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-invoice>
-                                    <tr
-                                        (click)="onRowSelect(invoice)"
-                                        style="cursor: pointer"
-                                    >
-                                        <td class="ps-4">
-                                            {{
-                                                invoice.createdDate
-                                                    | date : "dd/MM/yyyy"
-                                            }}
-                                        </td>
-                                        <td>
-                                            {{
-                                                invoice.totalPrice
-                                                    | currency : "VND"
-                                            }}
-                                        </td>
-                                        <td>
-                                            {{
-                                                invoice.discountPrice
-                                                    | currency : "VND"
-                                            }}
-                                        </td>
-                                        <td>
-                                            {{
-                                                invoice.finalPrice
-                                                    | currency : "VND"
-                                            }}
-                                        </td>
-                                        <td>
-                                            {{
-                                                invoice.paymentType ===
-                                                "CREDIT_CARD"
-                                                    ? "Banking"
-                                                    : "COD"
-                                            }}
-                                        </td>
-                                        <td>
-                                            <p-tag
-                                                [value]="invoice.status"
-                                                [severity]="
-                                                    getSeverity(invoice.status)
-                                                "
-                                            ></p-tag>
-                                        </td>
-                                        <td>
-                                            <p-button
-                                                *ngIf="
-                                                    invoice.status ===
-                                                        'PENDING' ||
-                                                    invoice.status === 'CANCEL'
-                                                "
-                                                styleClass="p-button-secondary"
-                                                label="Contact"
-                                                (onClick)="
-                                                    $event.stopPropagation();
-                                                    contactAdmin()
-                                                "
-                                            ></p-button>
-                                        </td>
-                                    </tr>
-                                </ng-template>
-                            </p-table> -->
-
-                            <hr *ngIf="cart" class="mt-4" />
-                            <h4 *ngIf="cart">Detail</h4>
-                            <p-table *ngIf="cart" #dt [value]="cart" responsiveLayout="scroll"
-                                [(selection)]="selectedProducts" dataKey="cartItemId" [rows]="8" [globalFilterFields]="[
-                                    'name',
-                                    'price',
-                                    'brand.name',
-                                    'subCategory.category.name'
-                                ]" [paginator]="true" [showCurrentPageReport]="true"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                [rowHover]="true">
-                                <ng-template pTemplate="header">
-                                    <tr>
-                                        <th>Product</th>
-                                        <th pSortableColumn="unitPrice">
-                                            Price
-                                            <p-sortIcon field="unitPrice"></p-sortIcon>
-                                        </th>
-                                        <th pSortableColumn="quantity">
-                                            Quantity
-                                            <p-sortIcon field="quantity"></p-sortIcon>
-                                        </th>
-                                        <th pSortableColumn="totalItemPrice">
-                                            Total
-                                            <p-sortIcon field="totalItemPrice"></p-sortIcon>
-                                        </th>
-                                        <th></th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-product>
-                                    <tr>
-                                        <td style="min-width: 10rem">
-                                            <span class="p-column-title">Name</span>
-                                            <img [src]="product?.image" width="100" class="shadow-4" />
-                                            {{ product.name }}
-                                        </td>
-
-                                        <td style="width: 14%; min-width: 8rem">
-                                            <span class="p-column-title">Price</span>
-                                            {{
-                                            product.unitPrice
-                                            | currency : "VND"
-                                            }}
-                                        </td>
-                                        <td style="width: 14%; min-width: 10rem" class="num-product">
-                                            <span class="p-column-title">Quantity</span>
-                                            {{ product.quantity }}
-                                        </td>
-                                        <td style="width: 14%; min-width: 10rem">
-                                            <span class="p-column-title">Total</span>
-                                            {{
-                                            product.total_price
-                                            | currency : "VND"
-                                            }}
-                                        </td>
-                                        <td>
-                                            <p-button *ngIf="isBought" icon="pi pi-pencil"
-                                                styleClass="p-button-secondary" label="Review"
-                                                (onClick)="addRating(product)"></p-button>
-                                        </td>
-                                    </tr>
-                                </ng-template>
-                            </p-table>
                         </div>
                     </div>
                 </div>
