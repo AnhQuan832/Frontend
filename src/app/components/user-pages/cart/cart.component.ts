@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { CartService } from 'src/app/services/cart.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { VoucherService } from 'src/app/services/voucher.service';
 
 @Component({
     selector: 'app-cart',
@@ -27,39 +28,41 @@ export class CartComponent implements OnInit {
     ];
     isLogin: boolean = false;
     originalData: any;
+    totalPrice: number = 0;
+    discountPrice: number = 0;
+    finalPrice: number = 0;
+    listVoucher: any[] = [];
     constructor(
         private cartService: CartService,
         private storageService: StorageService,
         private router: Router,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private voucherService: VoucherService
     ) {}
 
     ngOnInit(): void {
         this.isLogin = this.storageService.getDataFromCookie('jwtToken');
-        if (this.isLogin) this.getCart();
-        else {
+        if (this.isLogin) {
+            this.getCart();
+        } else {
             const cart = this.storageService.getItemLocal('cart');
             this.cartService.getUnauthCart(cart?.cartId).subscribe({
                 next: (res) => {
                     this.storageService.setItemLocal('cart', res);
                     this.cart = res.cartItemList;
-                    this.originalData = _.cloneDeep(res.cartItemList);
-                    this.selectedProducts = this.originalData.filter(
-                        (item) => item.isSelected
-                    );
+                    this.onSelectedItemsChange();
                 },
             });
         }
+        this.getVoucher();
     }
 
     getCart() {
         this.cartService.getCart().subscribe({
             next: (res) => {
                 this.cart = res;
-                this.originalData = _.cloneDeep(res);
-                this.selectedProducts = this.originalData.filter(
-                    (item) => item.isSelected
-                );
+                this.calculateTotal();
+                this.onSelectedItemsChange();
             },
             error: () => {
                 this.cart = [
@@ -100,24 +103,17 @@ export class CartComponent implements OnInit {
         });
     }
 
-    onGlobalFilter(cart: any, event: Event) {
-        cart.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-    }
-
     onCheckOut() {
         this.storageService.setItemLocal('cart', this.selectedProducts);
         this.router.navigate(['/user/check-out']);
     }
+
     onChangeQty(data, value) {
-        const current = this.originalData.find(
-            (item) => item.cartItemId === data.cartItemId
-        );
-        if (current.stockAmount < data.quantity) {
-            data.quantity = current.quantity;
-            console.log(data.quantity);
+        if (data.stockAmount < data.quantity) {
+            data.quantity = data.quantity;
         } else
             this.cartService
-                .addToCart(data.quantity - current.quantity, data.varietyId)
+                .addToCart(value - data.quantity, data.varietyId)
                 .subscribe({
                     next: () => {
                         this.getCart();
@@ -127,9 +123,45 @@ export class CartComponent implements OnInit {
     }
 
     selectItem(item) {
-        console.log(item);
         this.cartService.selectItem(item.cartItemId).subscribe({
             next: (res) => {},
+        });
+        this.calculateTotal();
+        this.onSelectedItemsChange();
+    }
+
+    calculateTotal() {
+        this.totalPrice = 0;
+        this.cart.forEach((merchant) => {
+            let totalSelectedPrice = 0;
+            merchant.cartItemDTOList.forEach((item) => {
+                if (item.isSelected) {
+                    totalSelectedPrice += item.totalItemPrice;
+                }
+            });
+            merchant.totalSelectedPrice = totalSelectedPrice;
+            this.totalPrice += totalSelectedPrice;
+            this.finalPrice = this.totalPrice;
+        });
+        console.log(this.cart);
+    }
+
+    onSelectedItemsChange() {
+        this.selectedProducts = [];
+        this.cart.forEach((merchant) => {
+            merchant.cartItemDTOList.forEach((item) => {
+                if (item.isSelected) {
+                    this.selectedProducts.push(item);
+                }
+            });
+        });
+    }
+
+    getVoucher() {
+        this.voucherService.getVoucher().subscribe({
+            next: (res) => {
+                this.listVoucher = res;
+            },
         });
     }
 }
