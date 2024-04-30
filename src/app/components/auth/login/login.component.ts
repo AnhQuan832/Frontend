@@ -60,8 +60,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
     login() {
         this.isSubmitted = true;
-        this.router.navigate(['/user/home']);
-
         if (this.loginForm.valid)
             this.authService
                 .login(

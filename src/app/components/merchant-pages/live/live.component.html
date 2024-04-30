@@ -1,19 +1,21 @@
 <div class="grid">
     <div class="col-12">
-        <div class="card px-6 py-6">
-            <div class="col-12 xl:col-6">
-                <h1>Access the Camera</h1>
+        <div class="card">
+            <div class="d-flex flex-wrap">
 
-                <video autoplay="true" id="videoElement"></video>
-                <button
-                    pButton
-                    pRipple
-                    label="New"
-                    class="p-button-success mr-2"
-                    (click)="getCamera()"
-                ></button>
+                <div class="col-12 xl:col-6">
+                    There is no live stream available at the moment.
+
+                    <h1>Access the Camera</h1>
+
+                    <video autoplay="true" id="videoElement"></video>
+                    <button *ngIf="!isOnLive" pButton pRipple label="Start Live Stream" class="p-button-success mr-2"
+                        (click)="isOnLive = true;getCamera()"></button>
+
+                </div>
+                <div class="col-12 xl:col-6">Select Product for Live</div>
             </div>
-            <div class="col-12 xl:col-6">Shop</div>
         </div>
+
     </div>
 </div>

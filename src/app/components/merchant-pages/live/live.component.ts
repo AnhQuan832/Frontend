@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
     selector: 'app-live',
@@ -6,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./live.component.scss'],
 })
 export class LiveComponent implements OnInit {
+    listAllProduct = [];
+    listProductForLive = [];
+    isOnLive = false;
+    constructor(private productService: ProductService) {}
     ngOnInit(): void {}
 
     getCamera() {
@@ -21,5 +26,19 @@ export class LiveComponent implements OnInit {
                     console.log('Something went wrong!');
                 });
         }
+    }
+
+    getProductForLive() {
+        this.productService.getAllProduct().subscribe({
+            next: (res) => {
+                this.listAllProduct = res;
+                this.listProductForLive = this.listAllProduct.filter(
+                    (item) => item.isLive === true
+                );
+            },
+            error: (err) => {
+                console.log(err);
+            },
+        });
     }
 }
