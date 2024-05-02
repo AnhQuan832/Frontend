@@ -11,6 +11,7 @@ export class LiveComponent extends BaseComponent implements OnInit {
     listAllProduct = [];
     listProductForLive = [];
     isOnLive = false;
+    cameraFound = false;
     constructor(private productService: ProductService) {
         super();
     }
