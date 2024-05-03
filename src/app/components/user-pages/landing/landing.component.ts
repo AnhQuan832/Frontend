@@ -38,4 +38,8 @@ export class HomeComponent implements OnInit {
     onProdClick(id) {
         this.router.navigate([`/user/product-detail/${id}`]);
     }
+
+    onLiveClick(id?) {
+        this.router.navigate([`/user/live/${id}`]);
+    }
 }

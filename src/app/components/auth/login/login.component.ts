@@ -125,7 +125,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
             case 'ROLE_ADMIN':
                 this.router.navigate(['/merchant']);
                 break;
-            case 'ROLE_USER':
+            case 'ROLE_CUSTOMER':
                 this.router.navigate(['/user/home']);
                 break;
         }

@@ -10,6 +10,7 @@ import { HomeComponent } from './landing/landing.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ShopViewComponent } from './shop-view/shop-view.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { LiveDetailComponent } from './live-detail/live-detail.component';
 
 @NgModule({
     imports: [
@@ -58,6 +59,10 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
                     {
                         path: 'complete-checkout',
                         component: CompleteCheckoutComponent,
+                    },
+                    {
+                        path: 'live/:id',
+                        component: LiveDetailComponent,
                     },
                 ],
             },
