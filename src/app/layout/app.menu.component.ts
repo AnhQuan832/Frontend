@@ -15,55 +15,107 @@ export class AppMenuComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.model = [
-            {
-                items: [
-                    {
-                        label: 'Dashboard',
-                        icon: 'pi pi-fw pi-home',
-                        routerLink: ['/merchant'],
-                    },
-                ],
-            },
-            {
-                items: [
-                    {
-                        label: 'Product',
-                        icon: 'pi pi-fw pi-box',
-                        routerLink: ['/merchant/product'],
-                    },
-                    {
-                        label: 'Order',
-                        icon: 'pi pi-fw pi-shopping-cart',
-                        routerLink: ['/merchant/order'],
-                    },
-                    {
-                        label: 'Voucher',
-                        icon: 'pi pi-fw pi-ticket',
-                        routerLink: ['/merchant/voucher'],
-                    },
-                    {
-                        label: 'Live',
-                        icon: 'pi pi-fw pi-chart-line',
-                        routerLink: ['/merchant/live'],
-                    },
-                    {
-                        label: 'Message',
-                        icon: 'pi pi-fw pi-comment',
-                        routerLink: ['/merchant/message'],
-                    },
-                    {
-                        label: 'Statistic',
-                        icon: 'pi pi-fw pi-chart-line',
-                        routerLink: ['/merchant/sale'],
-                    },
-                    {
-                        label: 'Log out',
-                        icon: 'pi pi-fw pi-sign-in',
-                        routerLink: ['/auth/login'],
-                    },
-                ],
-            },
-        ];
+        if (this.getRole() === 'ROLE_MERCHANT')
+            this.model = [
+                {
+                    items: [
+                        {
+                            label: 'Dashboard',
+                            icon: 'pi pi-fw pi-home',
+                            routerLink: ['/merchant'],
+                        },
+                    ],
+                },
+                {
+                    items: [
+                        {
+                            label: 'Product',
+                            icon: 'pi pi-fw pi-box',
+                            routerLink: ['/merchant/product'],
+                        },
+                        {
+                            label: 'Order',
+                            icon: 'pi pi-fw pi-shopping-cart',
+                            routerLink: ['/merchant/order'],
+                        },
+                        {
+                            label: 'Voucher',
+                            icon: 'pi pi-fw pi-ticket',
+                            routerLink: ['/merchant/voucher'],
+                        },
+                        {
+                            label: 'Live',
+                            icon: 'pi pi-fw pi-chart-line',
+                            routerLink: ['/merchant/live'],
+                        },
+                        {
+                            label: 'Message',
+                            icon: 'pi pi-fw pi-comment',
+                            routerLink: ['/merchant/message'],
+                        },
+                        {
+                            label: 'Statistic',
+                            icon: 'pi pi-fw pi-chart-line',
+                            routerLink: ['/merchant/sale'],
+                        },
+                        {
+                            label: 'Log out',
+                            icon: 'pi pi-fw pi-sign-in',
+                            routerLink: ['/auth/login'],
+                        },
+                    ],
+                },
+            ];
+        else
+            this.model = [
+                {
+                    items: [
+                        {
+                            label: 'Dashboard',
+                            icon: 'pi pi-fw pi-home',
+                            routerLink: ['/merchant'],
+                        },
+                    ],
+                },
+                {
+                    items: [
+                        //  {
+                        //      label: 'Product',
+                        //      icon: 'pi pi-fw pi-box',
+                        //      routerLink: ['/merchant/product'],
+                        //  },
+                        //  {
+                        //      label: 'Order',
+                        //      icon: 'pi pi-fw pi-shopping-cart',
+                        //      routerLink: ['/merchant/order'],
+                        //  },
+                        //  {
+                        //      label: 'Voucher',
+                        //      icon: 'pi pi-fw pi-ticket',
+                        //      routerLink: ['/merchant/voucher'],
+                        //  },
+                        {
+                            label: 'Live',
+                            icon: 'pi pi-fw pi-chart-line',
+                            routerLink: ['/merchant/live'],
+                        },
+                        {
+                            label: 'Message',
+                            icon: 'pi pi-fw pi-comment',
+                            routerLink: ['/merchant/message'],
+                        },
+                        {
+                            label: 'Statistic',
+                            icon: 'pi pi-fw pi-chart-line',
+                            routerLink: ['/merchant/sale'],
+                        },
+                        {
+                            label: 'Log out',
+                            icon: 'pi pi-fw pi-sign-in',
+                            routerLink: ['/auth/login'],
+                        },
+                    ],
+                },
+            ];
     }
 }
