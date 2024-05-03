@@ -51,10 +51,14 @@ export class ProductDetailComponent implements OnInit {
         size: this.builder.control(''),
         color: this.builder.control(''),
         varieties: this.builder.control([]),
+        length: this.builder.control(''),
+        width: this.builder.control(''),
+        height: this.builder.control(''),
+        weight: this.builder.control(''),
     });
 
     constructor(
-        private productSerivce: ProductService,
+        private productService: ProductService,
         private builder: FormBuilder,
         private sanitizer: DomSanitizer,
         private dialogService: DialogService,
@@ -66,39 +70,46 @@ export class ProductDetailComponent implements OnInit {
         this.initialize();
     }
 
-    private initialize() {
+    private async initialize() {
         this.product = this.storageService.getItemLocal('currentProduct');
-        this.listImages = this.product.images;
-        this.addProductForm.patchValue(this.product);
-        this.addProductForm.patchValue({
-            category: this.product.subCategory.category,
-        });
+        await this.productService
+            .getProductDetail(this.product.productId)
+            .subscribe({
+                next: (res) => {
+                    this.product = res;
+                    this.listImages = this.product.images;
+                    this.addProductForm.patchValue(this.product);
+                    this.addProductForm.patchValue({
+                        category: this.product.subCategory.category,
+                    });
 
-        this.productSerivce.getAttribute().subscribe({
-            next: (res) => {
-                this.attribute = res;
-            },
-        });
-        this.getBrand();
-        this.getCate();
-        this.getSubCate();
-        this.getProduct();
+                    this.productService.getAttribute().subscribe({
+                        next: (res) => {
+                            this.attribute = res;
+                        },
+                    });
+                    this.getBrand();
+                    this.getCate();
+                    this.getSubCate();
+                    this.getProduct();
+                },
+            });
     }
 
     public getBrand() {
-        this.productSerivce.getBrand().subscribe({
+        this.productService.getBrand().subscribe({
             next: (res) => (this.brandOption = res),
         });
     }
 
     public getCate() {
-        this.productSerivce.getCategory().subscribe({
+        this.productService.getCategory().subscribe({
             next: (res) => (this.categoryOption = res),
         });
     }
 
     public getSubCate() {
-        this.productSerivce
+        this.productService
             .getSubCategory(this.product.subCategory.category.categoryId)
             .subscribe({
                 next: (res) => (this.subCategoryOption = res),
@@ -106,7 +117,7 @@ export class ProductDetailComponent implements OnInit {
     }
 
     getProduct() {
-        this.productSerivce.getProduct(this.product.productId).subscribe({
+        this.productService.getProduct(this.product.productId).subscribe({
             next: (res) => {
                 this.product = res;
                 this.product.varieties.forEach((item) => {
@@ -200,7 +211,7 @@ export class ProductDetailComponent implements OnInit {
         });
 
         this.ref.onClose.subscribe((res) => {
-            this.productSerivce.getBrand().subscribe({
+            this.productService.getBrand().subscribe({
                 next: (res) => (this.brandOption = res),
             });
         });
@@ -212,7 +223,7 @@ export class ProductDetailComponent implements OnInit {
         });
 
         this.ref.onClose.subscribe((res) => {
-            this.productSerivce.getCategory().subscribe({
+            this.productService.getCategory().subscribe({
                 next: (res) => (this.categoryOption = res),
             });
         });
@@ -224,7 +235,7 @@ export class ProductDetailComponent implements OnInit {
         });
 
         this.ref.onClose.subscribe((res) => {
-            this.productSerivce
+            this.productService
                 .getSubCategory(this.product.subCategory.category.categoryId)
                 .subscribe({
                     next: (res) => (this.subCategoryOption = res),
@@ -233,7 +244,7 @@ export class ProductDetailComponent implements OnInit {
     }
 
     onAddAttribute(type: string) {
-        this.productSerivce
+        this.productService
             .addNewAttribute(
                 this.addProductForm.get(`${type}`).value,
                 this.product.productId
@@ -260,13 +271,13 @@ export class ProductDetailComponent implements OnInit {
 
     onSaveProduct() {
         console.log(this.product);
-        // this.productSerivce.updateImages(this.addProductForm.get('productId').value, this.toBlobImgs()).subscribe({
+        // this.productService.updateImages(this.addProductForm.get('productId').value, this.toBlobImgs()).subscribe({
         //   next: (res) => {
         //     console.log(res)
         //   }
         // })
         this.addProductForm.patchValue({ varieties: this.product.varieties });
-        this.productSerivce.updateProduct(this.addProductForm.value).subscribe({
+        this.productService.updateProduct(this.addProductForm.value).subscribe({
             next: (res) => {
                 this.messageService.add({
                     key: 'toast',
@@ -289,7 +300,7 @@ export class ProductDetailComponent implements OnInit {
     }
 
     getProductDetail(id) {
-        this.productSerivce.getProduct(id).subscribe({
+        this.productService.getProduct(id).subscribe({
             next: (res) => {
                 this.storageService.setItemLocal('currentProduct', res);
             },
@@ -327,7 +338,7 @@ export class ProductDetailComponent implements OnInit {
 
     onDeleteAtt(vari) {
         console.log(vari);
-        this.productSerivce.deleteAttribute(vari).subscribe({
+        this.productService.deleteAttribute(vari).subscribe({
             next: () =>
                 this.messageService.add({
                     key: 'toast',

@@ -1,9 +1,6 @@
 <div class="grid">
     <div class="col-12">
-        <form
-            class="container p-4 px-6 py-6 grid card mt-1"
-            [formGroup]="addProductForm"
-        >
+        <form class="container p-4 px-6 py-6 grid card mt-1" [formGroup]="addProductForm">
             <div class="d-flex flex-row gap-4">
                 <div class="d-flex flex-column w-50 me-4">
                     <p-divider align="left">
@@ -13,31 +10,18 @@
                     </p-divider>
                     <span class="p-float-label col-11">
                         <h6 class="addressLabel ps-0">Name</h6>
-                        <input
-                            pInputText
-                            class="inputtext ps-3 w-100"
-                            type="text"
-                            formControlName="name"
-                        />
+                        <input pInputText class="inputtext ps-3 w-100" type="text" formControlName="name" />
                     </span>
                     <span class="p-float-label">
                         <h6 class="addressLabel ps-3">Brand</h6>
                         <div class="d-flex gap-2">
                             <div class="col-11 px-3 pt-0">
-                                <p-dropdown
-                                    [options]="brandOption"
-                                    optionLabel="name"
-                                    [autoDisplayFirst]="false"
-                                    formControlName="brand"
-                                >
+                                <p-dropdown [options]="brandOption" optionLabel="name" [autoDisplayFirst]="false"
+                                    formControlName="brand">
                                 </p-dropdown>
                             </div>
                             <div class="col-1 pt-1">
-                                <i
-                                    class="bi bi-plus-circle-dotted"
-                                    (click)="onAddBrand()"
-                                    pTooltip="Add new Brand"
-                                ></i>
+                                <i class="bi bi-plus-circle-dotted" (click)="onAddBrand()" pTooltip="Add new Brand"></i>
                             </div>
                         </div>
                     </span>
@@ -45,20 +29,13 @@
                         <h6 class="addressLabel ps-3">Category</h6>
                         <div class="d-flex gap-2">
                             <div class="col-11 px-3 pt-0">
-                                <p-dropdown
-                                    [options]="categoryOption"
-                                    optionLabel="name"
-                                    [autoDisplayFirst]="false"
-                                    formControlName="category"
-                                >
+                                <p-dropdown [options]="categoryOption" optionLabel="name" [autoDisplayFirst]="false"
+                                    formControlName="category">
                                 </p-dropdown>
                             </div>
                             <div class="col-1 pt-1">
-                                <i
-                                    class="bi bi-plus-circle-dotted"
-                                    (click)="onAddCategory()"
-                                    pTooltip="Add new Category"
-                                ></i>
+                                <i class="bi bi-plus-circle-dotted" (click)="onAddCategory()"
+                                    pTooltip="Add new Category"></i>
                             </div>
                         </div>
                     </span>
@@ -66,57 +43,57 @@
                         <h6 class="addressLabel ps-3">Sub category</h6>
                         <div class="d-flex gap-2">
                             <div class="col-11 px-3 pt-0">
-                                <p-dropdown
-                                    [options]="subCategoryOption"
-                                    optionLabel="name"
-                                    [autoDisplayFirst]="false"
-                                    formControlName="subCategory"
-                                >
+                                <p-dropdown [options]="subCategoryOption" optionLabel="name" [autoDisplayFirst]="false"
+                                    formControlName="subCategory">
                                 </p-dropdown>
                             </div>
                             <div class="col-1 pt-1">
-                                <i
-                                    class="bi bi-plus-circle-dotted"
-                                    (click)="onAddSubCategory()"
-                                    pTooltip="Add new Sub Category"
-                                ></i>
+                                <i class="bi bi-plus-circle-dotted" (click)="onAddSubCategory()"
+                                    pTooltip="Add new Sub Category"></i>
                             </div>
                         </div>
                     </span>
                     <span class="p-float-label col-11">
                         <h6 class="addressLabel ps-0">Price</h6>
-                        <p-inputNumber
-                            class="inputtext ps-1 w-100"
-                            formControlName="price"
-                            mode="currency"
-                            min="0"
-                            currency="VND"
-                            locale="jp-JP"
-                        ></p-inputNumber>
+                        <p-inputNumber class="inputtext ps-1 w-100" formControlName="price" mode="currency" min="0"
+                            currency="VND" locale="jp-JP"></p-inputNumber>
                     </span>
+                    <span class="p-float-label col-11 mb-0">
+                        <h6 class="addressLabel ps-0">Package Size</h6>
+                        <div></div>
+                        <div class="row px-2">
+                            <div class="col-6 p-1">
+                                <p class="mb-1">Length</p>
+                                <input type="text" pInputText class="w-full" formControlName="length" />
+                            </div>
 
+                            <div class="col-6 p-1">
+                                <p class="mb-1">Height</p>
+                                <input type="text" pInputText class="w-full" formControlName="height" />
+                            </div>
+                        </div>
+                        <div class="row px-2">
+                            <div class="col-6 p-1">
+                                <p class="mb-1">Width</p>
+                                <input type="text" pInputText class="w-full" formControlName="width" />
+                            </div>
+
+                            <div class="col-6 p-1">
+                                <p class="mb-1">Weight</p>
+                                <input type="text" pInputText class="w-full" formControlName="weight" />
+                            </div>
+                        </div>
+                    </span>
                     <span class="p-float-label col-11">
                         <h6 class="addressLabel ps-0">Detail</h6>
-                        <textarea
-                            formControlName="detail"
-                            class="w-100"
-                            name=""
-                            id="textarea"
-                            pInputTextarea
-                            [autoResize]="true"
-                        ></textarea>
+                        <textarea formControlName="detail" class="w-100" name="" id="textarea" pInputTextarea
+                            [autoResize]="true"></textarea>
                     </span>
 
                     <span class="p-float-label col-11">
                         <h6 class="addressLabel ps-0">Description</h6>
-                        <textarea
-                            formControlName="description"
-                            class="w-100"
-                            name=""
-                            id="textarea"
-                            pInputTextarea
-                            [autoResize]="true"
-                        ></textarea>
+                        <textarea formControlName="description" class="w-100" name="" id="textarea" pInputTextarea
+                            [autoResize]="true"></textarea>
                     </span>
                 </div>
                 <div class="w-50 ms-4">
@@ -157,11 +134,7 @@
         />
       </span> -->
 
-                    <p-table
-                        [value]="product.varieties"
-                        dataKey="id"
-                        [tableStyle]="{ 'min-width': '20rem' }"
-                    >
+                    <p-table [value]="product.varieties" dataKey="id" [tableStyle]="{ 'min-width': '20rem' }">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th width="100px" *ngIf="listSize.length > 0">
@@ -175,31 +148,25 @@
                                 <!-- <th width="80px"></th> -->
                             </tr>
                         </ng-template>
-                        <ng-template
-                            pTemplate="body"
-                            let-variety
-                            let-editing="editing"
-                        >
-                            <tr
-                                *ngIf="
+                        <ng-template pTemplate="body" let-variety let-editing="editing">
+                            <tr *ngIf="
                                     variety.varietyAttributes[0]?.name ||
                                     variety.varietyAttributes[1]?.name
-                                "
-                            >
+                                ">
                                 <td *ngIf="listSize.length > 0">
                                     {{
-                                        variety.varietyAttributes[0]?.type ==
-                                        "SIZE"
-                                            ? variety.varietyAttributes[0]?.name
-                                            : variety.varietyAttributes[1]?.name
+                                    variety.varietyAttributes[0]?.type ==
+                                    "SIZE"
+                                    ? variety.varietyAttributes[0]?.name
+                                    : variety.varietyAttributes[1]?.name
                                     }}
                                 </td>
                                 <td *ngIf="listColor.length > 0">
                                     {{
-                                        variety.varietyAttributes[0]?.type !=
-                                        "SIZE"
-                                            ? variety.varietyAttributes[0]?.name
-                                            : variety.varietyAttributes[1]?.name
+                                    variety.varietyAttributes[0]?.type !=
+                                    "SIZE"
+                                    ? variety.varietyAttributes[0]?.name
+                                    : variety.varietyAttributes[1]?.name
                                     }}
                                 </td>
                                 <td class="text-center">
@@ -255,42 +222,25 @@
                     </p-table>
 
                     <span *ngIf="!isAddAtt">
-                        <div
-                            class="add-attribute d-flex"
-                            (click)="onShowAttribute()"
-                        >
+                        <div class="add-attribute d-flex" (click)="onShowAttribute()">
                             <i class="bi bi-plus"></i>
                             <p class="my-auto">Add more attribute</p>
                         </div>
                     </span>
-                    <span
-                        *ngIf="
+                    <span *ngIf="
                             isAddAtt &&
                             product.subCategory.category.name !== 'Food'
-                        "
-                        class="p-float-label col-11"
-                    >
+                        " class="p-float-label col-11">
                         <h6 class="addressLabel ps-0">Color</h6>
                         <div class="d-flex gap-2">
                             <div class="col-11 ps-0 pt-0">
-                                <p-dropdown
-                                    [options]="attribute.COLOR"
-                                    optionLabel="name"
-                                    [autoDisplayFirst]="false"
-                                    formControlName="color"
-                                >
+                                <p-dropdown [options]="attribute.COLOR" optionLabel="name" [autoDisplayFirst]="false"
+                                    formControlName="color">
                                 </p-dropdown>
                             </div>
-                            <div
-                                *ngIf="addProductForm.get('color').value"
-                                class="col-1 pt-1"
-                            >
-                                <i
-                                    style="color: green"
-                                    class="bi bi-check-circle"
-                                    (click)="onAddAttribute('color')"
-                                    pTooltip="Confirm"
-                                ></i>
+                            <div *ngIf="addProductForm.get('color').value" class="col-1 pt-1">
+                                <i style="color: green" class="bi bi-check-circle" (click)="onAddAttribute('color')"
+                                    pTooltip="Confirm"></i>
                             </div>
                         </div>
                     </span>
@@ -299,24 +249,13 @@
                         <h6 class="addressLabel ps-0">Size</h6>
                         <div class="d-flex gap-2">
                             <div class="col-11 ps-0 pt-0">
-                                <p-dropdown
-                                    [options]="attribute.SIZE"
-                                    optionLabel="name"
-                                    [autoDisplayFirst]="false"
-                                    formControlName="size"
-                                >
+                                <p-dropdown [options]="attribute.SIZE" optionLabel="name" [autoDisplayFirst]="false"
+                                    formControlName="size">
                                 </p-dropdown>
                             </div>
-                            <div
-                                *ngIf="addProductForm.get('size').value"
-                                class="col-1 pt-1"
-                            >
-                                <i
-                                    style="color: green"
-                                    class="bi bi-check-circle"
-                                    (click)="onAddAttribute('size')"
-                                    pTooltip="Confirm"
-                                ></i>
+                            <div *ngIf="addProductForm.get('size').value" class="col-1 pt-1">
+                                <i style="color: green" class="bi bi-check-circle" (click)="onAddAttribute('size')"
+                                    pTooltip="Confirm"></i>
                             </div>
                         </div>
                     </span>
@@ -328,33 +267,19 @@
                         <b>Product Image</b>
                     </div>
                 </p-divider>
-                <div
-                    class="img-container d-flex gap-4 m-4 my-1"
-                    *ngIf="listImages"
-                >
+                <div class="img-container d-flex gap-4 m-4 my-1" *ngIf="listImages">
                     <div class="img-content" *ngFor="let img of listImages">
-                        <div
-                            class="btn-delete rounded-circle d-flex justify-content-center align-items-center"
-                            (click)="deleteImg(img)"
-                        >
+                        <div class="btn-delete rounded-circle d-flex justify-content-center align-items-center"
+                            (click)="deleteImg(img)">
                             <i class="bi bi-x" style="color: #f5f5f5"></i>
                         </div>
                         <img src="{{ img }}" alt="" />
                     </div>
                 </div>
                 <div class="d-flex justify-content-center w-100">
-                    <p-fileUpload
-                        name="file[]"
-                        class="w-100 my-1"
-                        name="demo[]"
-                        chooseLabel="Select image"
-                        cancelLabel="Cancel"
-                        [showUploadButton]="false"
-                        [multiple]="true"
-                        [maxFileSize]="10000000"
-                        (onSelect)="onSelectFiles($event)"
-                        (onRemove)="onRemoveFile($event)"
-                    >
+                    <p-fileUpload name="file[]" class="w-100 my-1" name="demo[]" chooseLabel="Select image"
+                        cancelLabel="Cancel" [showUploadButton]="false" [multiple]="true" [maxFileSize]="10000000"
+                        (onSelect)="onSelectFiles($event)" (onRemove)="onRemoveFile($event)">
                         <ng-template pTemplate="content">
                             <!-- <ul *ngIf="uploadedFiles.length">
             <li *ngFor="let file of uploadedFiles">
@@ -374,16 +299,9 @@
                 >
                     Save
                 </button> -->
-                <button
-                    style="width: fit-content"
-                    pButton
-                    pRipple
-                    label="Save"
-                    icon="pi pi-save"
-                    class="p-button-success px-4"
-                    (click)="onSaveProduct()"
-                    [disabled]="addProductForm.invalid"
-                ></button>
+                <button style="width: fit-content" pButton pRipple label="Save" icon="pi pi-save"
+                    class="p-button-success px-4" (click)="onSaveProduct()"
+                    [disabled]="addProductForm.invalid"></button>
             </div>
         </form>
     </div>
