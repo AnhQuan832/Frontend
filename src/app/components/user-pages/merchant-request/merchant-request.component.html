@@ -1,27 +1,13 @@
 <div class="container-fluid row">
     <div class="">
-        <form
-            class="bg-white w-100"
-            id="form-container"
-            [formGroup]="requestForm"
-        >
+        <form class="bg-white w-100" id="form-container" [formGroup]="requestForm">
             <div class="avatar d-flex justify-content-center mt-4">
-                <span
-                    class="m-4 my-2 rounded-1 d-flex justify-content-center align-items-center flex-column"
-                >
+                <span class="m-4 my-2 rounded-1 d-flex justify-content-center align-items-center flex-column">
                     <label class="custom-file-upload">
-                        <input
-                            type="file"
-                            accept="image/png, image/jpeg"
-                            id="avatarInput"
-                            (change)="onSelectAvatar($event)"
-                        />
-                        <img
-                            src="https://firebasestorage.googleapis.com/v0/b/advance-totem-350103.appspot.com/o/Avatar%2Fimage-holder-icon.png?alt=media&token=2bc0bac5-ea17-4dd9-8c9e-4813316da679"
-                            alt=""
-                            id="merchantAvatar"
-                            class="w-100"
-                        />
+                        <input type="file" accept="image/png, image/jpeg" id="avatarInput"
+                            (change)="onSelectAvatar($event)" />
+                        <img src="https://firebasestorage.googleapis.com/v0/b/advance-totem-350103.appspot.com/o/Avatar%2Fimage-holder-icon.png?alt=media&token=2bc0bac5-ea17-4dd9-8c9e-4813316da679"
+                            alt="" id="merchantAvatar" class="w-100" />
                         <!-- <i class="pi pi-image" style="font-size: 2.5rem"></i> -->
                     </label>
                     <p class="img-des">Avatar</p>
@@ -31,34 +17,20 @@
             <div class="input-textbox d-flex justify-content-center w-100">
                 <span class="m-4 my-2 w-100">
                     <h6 class="mb-1">Shop Name</h6>
-                    <input
-                        class="w-100 rounded-2 p-2 mb-3"
-                        pInputText
-                        type="text"
-                        formControlName="merchantName"
-                    />
+                    <input class="w-100 rounded-2 p-2 mb-3" pInputText type="text" formControlName="merchantName" />
                 </span>
             </div>
             <div class="input-textbox d-flex justify-content-center w-100">
                 <span class="m-4 my-2 w-100">
                     <h6 class="mb-1">Shop Description</h6>
-                    <textarea
-                        class="w-100 rounded-2 p-2 mb-3"
-                        row="5"
-                        pInputTextarea
-                        formControlName="merchantDescription"
-                    ></textarea>
+                    <textarea class="w-100 rounded-2 p-2 mb-3" row="5" pInputTextarea
+                        formControlName="merchantDescription"></textarea>
                 </span>
             </div>
             <div class="input-textbox d-flex justify-content-center w-100">
                 <span class="m-4 my-2 w-100">
                     <h6 class="mb-1">Phone Number</h6>
-                    <input
-                        class="w-100 rounded-2 p-2 mb-3"
-                        type="text"
-                        pInputText
-                        formControlName="phoneNumber"
-                    />
+                    <input class="w-100 rounded-2 p-2 mb-3" type="text" pInputText formControlName="phoneNumber" />
                 </span>
             </div>
             <!-- <div class="input-textbox d-flex justify-content-start w-100">
@@ -72,53 +44,29 @@
                         <h6 class="mb-1" class="addressLabel p-1 ps-0">
                             Address
                         </h6>
-                        <input
-                            class="w-100 rounded-2 p-2 mb-3"
-                            type="text"
-                            pInputText
-                            formControlName="address"
-                        />
+                        <input class="w-100 rounded-2 p-2 mb-3" type="text" pInputText formControlName="address" />
                     </span>
                     <span class="">
                         <h6 class="mb-1" class="addressLabel p-1 ps-0">City</h6>
-                        <p-dropdown
-                            [options]="listProvince"
-                            [filter]="true"
-                            [autoDisplayFirst]="false"
-                            optionLabel="provName"
-                            filterBy="provName"
-                            [ngModelOptions]="{ standalone: true }"
-                            [(ngModel)]="selectedProvince"
-                            (onChange)="provinceSelectedChange($event.value)"
-                        >
+                        <p-dropdown [options]="listProvince" [filter]="true" [autoDisplayFirst]="false"
+                            optionLabel="provName" filterBy="provName" [ngModelOptions]="{ standalone: true }"
+                            [(ngModel)]="selectedProvince" (onChange)="provinceSelectedChange($event.value)">
                         </p-dropdown>
                     </span>
                     <span class="">
                         <h6 class="mb-1" class="addressLabel p-1 ps-0">
                             District
                         </h6>
-                        <p-dropdown
-                            [filter]="true"
-                            [autoDisplayFirst]="false"
-                            optionLabel="distName"
-                            filterBy="distName"
-                            [options]="listDistrict"
-                            [ngModelOptions]="{ standalone: true }"
-                            [(ngModel)]="selectedDistrict"
-                            (onChange)="districtSelectedChange($event.value)"
-                        >
+                        <p-dropdown [filter]="true" [autoDisplayFirst]="false" optionLabel="distName"
+                            filterBy="distName" [options]="listDistrict" [ngModelOptions]="{ standalone: true }"
+                            [(ngModel)]="selectedDistrict" (onChange)="districtSelectedChange($event.value)">
                         </p-dropdown>
                     </span>
                     <span class="">
                         <h6 class="mb-1" class="addressLabel p-1 ps-0">Ward</h6>
-                        <p-dropdown
-                            [options]="listWard"
-                            [ngModelOptions]="{ standalone: true }"
-                            [(ngModel)]="selectedWard"
-                            [autoDisplayFirst]="false"
-                            filterBy="wardName"
-                            optionLabel="wardName"
-                        >
+                        <p-dropdown [options]="listWard" [ngModelOptions]="{ standalone: true }"
+                            [(ngModel)]="selectedWard" [autoDisplayFirst]="false" filterBy="wardName"
+                            optionLabel="wardName" (onChange)="wardChange()">
                         </p-dropdown>
                     </span>
                 </div>
@@ -126,15 +74,8 @@
 
             <h6 class="mb-1" class="ms-4 mt-4">Business document</h6>
             <div class="d-flex justify-content-center w-100">
-                <p-fileUpload
-                    name="file[]"
-                    (onSelect)="onSelectFiles($event)"
-                    class="w-100 m-4 my-1"
-                    name="demo[]"
-                    [multiple]="true"
-                    [maxFileSize]="10000000"
-                    [showUploadButton]="false"
-                >
+                <p-fileUpload name="file[]" (onSelect)="onSelectFiles($event)" class="w-100 m-4 my-1" name="demo[]"
+                    [multiple]="true" [maxFileSize]="10000000" [showUploadButton]="false">
                     <ng-template pTemplate="content">
                         <!-- <ul *ngIf="uploadedFiles.length">
               <li *ngFor="let file of uploadedFiles">
@@ -146,40 +87,20 @@
             </div>
             <h6 class="mb-1" class="ms-4 mt-4">Cover Image</h6>
             <div class="avatar d-flex justify-content-center mt-4">
-                <span
-                    class="m-4 my-2 rounded-1 d-flex justify-content-center align-items-center flex-column"
-                >
+                <span class="m-4 my-2 rounded-1 d-flex justify-content-center align-items-center flex-column">
                     <label class="custom-file-upload cover">
-                        <input
-                            type="file"
-                            accept="image/png, image/jpeg"
-                            (change)="onSelectCoverImg($event)"
-                        />
-                        <img
-                            src="https://firebasestorage.googleapis.com/v0/b/advance-totem-350103.appspot.com/o/Avatar%2Fimage-holder-icon.png?alt=media&token=2bc0bac5-ea17-4dd9-8c9e-4813316da679"
-                            alt=""
-                            id="coverImg"
-                            class="w-100"
-                        />
+                        <input type="file" accept="image/png, image/jpeg" (change)="onSelectCoverImg($event)" />
+                        <img src="https://firebasestorage.googleapis.com/v0/b/advance-totem-350103.appspot.com/o/Avatar%2Fimage-holder-icon.png?alt=media&token=2bc0bac5-ea17-4dd9-8c9e-4813316da679"
+                            alt="" id="coverImg" class="w-100" />
                         <!-- <i class="pi pi-image" style="font-size: 2.5rem"></i> -->
                     </label>
                     <p class="img-des">Cover Image</p>
                 </span>
             </div>
             <div class="btn-container d-flex justify-content-center pt-4 mb-4">
-                <button
-                    type="submit"
-                    class="btn btn-primary text-nowrap rounded-3"
-                    [disabled]="
-                        !requestForm.valid ||
-                        !coverImgFile ||
-                        !avatarFile ||
-                        !selectedWard ||
-                        !selectedDistrict ||
-                        !selectedProvince
-                    "
-                    (click)="sendRequest()"
-                >
+                <button type="submit" class="btn btn-primary text-nowrap rounded-3" [disabled]="
+                        requestForm.invalid || relatedDoc.length === 0 || coverImgFile.length === 0 || avatarFile.length === 0
+                    " (click)="sendRequest()">
                     Enroll
                 </button>
             </div>

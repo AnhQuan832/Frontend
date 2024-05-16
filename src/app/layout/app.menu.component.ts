@@ -110,6 +110,23 @@ export class AppMenuComponent extends BaseComponent implements OnInit {
                             routerLink: ['/merchant/sale'],
                         },
                         {
+                            label: 'Merchant',
+                            icon: 'pi pi-fw pi-chart-line',
+                            routerLink: ['/merchant/merchant'],
+                            items: [
+                                {
+                                    label: 'Manage',
+                                    icon: 'pi pi-fw pi-chart-line',
+                                    routerLink: ['/merchant/merchant'],
+                                },
+                                {
+                                    label: 'Merchant Request',
+                                    icon: 'pi pi-fw pi-chart-line',
+                                    routerLink: ['/merchant/merchant'],
+                                },
+                            ],
+                        },
+                        {
                             label: 'Log out',
                             icon: 'pi pi-fw pi-sign-in',
                             routerLink: ['/auth/login'],

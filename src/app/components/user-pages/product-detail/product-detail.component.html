@@ -1,7 +1,5 @@
-<div
-    *ngIf="isLoading"
-    class="loading w-100 h-100 position-absolute d-flex d-flex justify-content-center align-items-center flex-column gap-2 bg-body rounded-3 z-3"
->
+<div *ngIf="isLoading"
+    class="loading w-100 h-100 position-absolute d-flex d-flex justify-content-center align-items-center flex-column gap-2 bg-body rounded-3 z-3">
     <div class="spinner-border" role="status">
         <span class="sr-only"></span>
     </div>
@@ -13,21 +11,14 @@
 </p>
 <div class="container-fluid p-4" *ngIf="!isLoading">
     <div class="row">
-        <app-product-image
-            class="col-xl-7 order-xl-1"
-            [images]="product.images"
-        ></app-product-image>
+        <app-product-image class="col-xl-7 order-xl-1" [images]="product.images"></app-product-image>
         <div class="product-info col-xl-5 order-xl-2">
             <div class="basic-info ps-4">
                 <div class="product-name d-flex">
                     <h1 class="py-2 mb-0">{{ product?.name }}</h1>
                 </div>
                 <div class="product-rating">
-                    <p-rating
-                        [(ngModel)]="product.avgRating"
-                        [readonly]="true"
-                        [cancel]="false"
-                    ></p-rating>
+                    <p-rating [(ngModel)]="product.avgRating" [readonly]="true" [cancel]="false"></p-rating>
                 </div>
 
                 <h5 class="mt-2">{{ attPrice | number : "1.0-0" }} VND</h5>
@@ -45,34 +36,24 @@
                 <p-divider></p-divider>
                 <div class="size attribute" *ngIf="listSize.length > 0">
                     <h5 class="mt-2"><b>Size</b></h5>
-                    <div
-                        class="size"
-                        *ngFor="let size of listSize"
-                        [id]="size.attributeId"
-                        [ngClass]="{ disabled: !size.active }"
-                        (click)="
+                    <div class="size" *ngFor="let size of listSize" [id]="size.attributeId"
+                        [ngClass]="{ disabled: !size.active }" (click)="
                             size.active
                                 ? onAttribute($event, size, 'size')
                                 : null
-                        "
-                    >
+                        ">
                         {{ size.name }}
                     </div>
                 </div>
                 <div class="color attribute" *ngIf="listColor.length > 0">
                     <h5 class="mt-2"><b>Color</b></h5>
 
-                    <div
-                        class="color"
-                        *ngFor="let color of listColor"
-                        [id]="color.attributeId"
-                        [ngClass]="{ disabled: !color.active }"
-                        (click)="
+                    <div class="color" *ngFor="let color of listColor" [id]="color.attributeId"
+                        [ngClass]="{ disabled: !color.active }" (click)="
                             color.active
                                 ? onAttribute($event, color, 'color')
                                 : null
-                        "
-                    >
+                        ">
                         {{ color.name }}
                     </div>
                 </div>
@@ -93,32 +74,18 @@
                         [max]="selectedVariety.stockAmount || 0"
                         (onInput)="onChangeQty($event)"
                     ></p-inputNumber> -->
-                    <app-quantity
-                        [quantity]="numberOfProduct"
-                        (onQuantity)="onChangeQty($event)"
-                    ></app-quantity>
-                    <small *ngIf="isDisableBuy" class="text-danger w-100"
-                        >Over stock</small
-                    >
+                    <app-quantity [quantity]="numberOfProduct" (onQuantity)="onChangeQty($event)"
+                        [max]="selectedVariety?.stockAmount || 0"></app-quantity>
+                    <small *ngIf="isDisableBuy" class="text-danger w-100">Over stock</small>
                 </div>
             </div>
 
             <div class="button-group pt-4 ps-4 d-flex gap-2">
-                <button
-                    [disabled]="!numberOfProduct"
-                    class="btn btn-primary"
-                    (click)="buyNow()"
-                >
+                <button [disabled]="!numberOfProduct" class="btn btn-primary" (click)="buyNow()">
                     Buy now
                 </button>
-                <button
-                    pButton
-                    pRipple
-                    [disabled]="!numberOfProduct"
-                    class="btn btn-secondary"
-                    icon="pi pi-shopping-cart"
-                    (click)="addToCart()"
-                ></button>
+                <button pButton pRipple [disabled]="!numberOfProduct" class="btn btn-secondary"
+                    icon="pi pi-shopping-cart" (click)="addToCart()"></button>
             </div>
         </div>
     </div>
@@ -195,24 +162,11 @@
             <h4 class="h4 section-title">Best Seller</h4>
 
             <ul class="grid-list d-flex gap-4">
-                <li
-                    *ngFor="let item of mostBuy"
-                    style="cursor: pointer"
-                    (click)="onProdClick(item)"
-                >
+                <li *ngFor="let item of mostBuy" style="cursor: pointer" (click)="onProdClick(item)">
                     <div class="product-card">
-                        <div
-                            class="card-banner img-holder"
-                            style="--width: 360; --height: 360"
-                        >
-                            <img
-                                width="120px"
-                                [src]="item.images[0]"
-                                height="120px"
-                                loading="lazy"
-                                alt="Commodo leo sed porta"
-                                class="img-cover default"
-                            />
+                        <div class="card-banner img-holder" style="--width: 360; --height: 360">
+                            <img width="120px" [src]="item.images[0]" height="120px" loading="lazy"
+                                alt="Commodo leo sed porta" class="img-cover default" />
                         </div>
 
                         <div class="card-content">
@@ -240,11 +194,7 @@
             <h4 class="h4 section-title">Most View</h4>
 
             <ul class="grid-list d-flex gap-4">
-                <li
-                    *ngFor="let item of mostProd"
-                    style="cursor: pointer"
-                    (click)="onProdClick(item)"
-                >
+                <li *ngFor="let item of mostProd" style="cursor: pointer" (click)="onProdClick(item)">
                     <app-product-card [product]="item"></app-product-card>
                     <!-- <div class="product-card">
                         <div

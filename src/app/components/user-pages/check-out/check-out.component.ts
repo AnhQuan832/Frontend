@@ -243,7 +243,8 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
 
         this.checkOutForm.patchValue({ voucher: this.selectedVoucher });
         this.checkOutForm.patchValue({
-            returnUrl: 'https://pescue-shop.vercel.app/user/complete-checkout',
+            // returnUrl: 'https://pescue-shop.vercel.app/user/complete-checkout',
+            returnUrl: 'http://localhost:4200/user/complete-checkout',
         });
 
         this.checkOutForm.patchValue({ voucherByMerchantMap: {} });

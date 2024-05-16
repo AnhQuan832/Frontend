@@ -38,6 +38,13 @@ import { RouterModule } from '@angular/router';
                 loadChildren: () =>
                     import('./live/live.module').then((m) => m.LiveModule),
             },
+            {
+                path: 'merchant',
+                loadChildren: () =>
+                    import('./merchant/merchant.module').then(
+                        (m) => m.MerchantModule
+                    ),
+            },
             { path: '**', redirectTo: '/notfound' },
         ]),
     ],

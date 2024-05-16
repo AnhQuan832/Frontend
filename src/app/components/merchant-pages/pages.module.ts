@@ -14,6 +14,7 @@ import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
 import { VoucherManagementComponent } from './voucher-management/voucher-management.component';
+import { MerchantComponent } from './merchant/merchant.component';
 
 @NgModule({
     declarations: [],

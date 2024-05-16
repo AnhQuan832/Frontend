@@ -32,4 +32,20 @@ export class MerchantService {
                 })
             );
     }
+
+    getAllMerchant() {
+        return this.http.get(API.MERCHANT.END_POINT.MERCHANT).pipe(
+            map((data: any) => {
+                if (
+                    data.meta.statusCode ===
+                    API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
+                ) {
+                    return true;
+                } else return false;
+            }),
+            catchError((err) => {
+                throw new Error(err);
+            })
+        );
+    }
 }

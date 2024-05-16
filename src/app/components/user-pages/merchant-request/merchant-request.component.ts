@@ -39,12 +39,13 @@ export class MerchantRequestComponent extends BaseComponent {
     requestForm = this.builder.group({
         merchantName: this.builder.control('', Validators.required),
         merchantDescription: this.builder.control('', Validators.required),
-        address: this.builder.control('', Validators.required),
-        location: this.builder.control(''),
         phoneNumber: this.builder.control('', Validators.required),
-        // relatedDocuments: this.builder.control(''),
-        // avatar: this.builder.control(''),
-        // coverImage: this.builder.control(''),
+        districtId: this.builder.control('', Validators.required),
+        districtName: this.builder.control('', Validators.required),
+        wardName: this.builder.control('', Validators.required),
+        wardCode: this.builder.control('', Validators.required),
+        cityCode: this.builder.control('', Validators.required),
+        cityName: this.builder.control('', Validators.required),
     });
 
     ngOnInit() {
@@ -126,16 +127,8 @@ export class MerchantRequestComponent extends BaseComponent {
         //         detail: 'Please fill all required fields',
         //     });
         // }
-        this.requestForm.patchValue({
-            location:
-                this.requestForm.value?.address +
-                this.selectedWard.wardName +
-                ', ' +
-                this.selectedDistrict.distName +
-                ', ' +
-                this.selectedProvince.provName,
-        });
-        const { address, ...data } = this.requestForm.value;
+
+        const data = this.requestForm.value;
         data['userId'] = this.getUserInfo().userId;
         const formData = this.setUpFormData(data);
         this.merchantService.createMerchantRequest(formData).subscribe({
@@ -202,5 +195,26 @@ export class MerchantRequestComponent extends BaseComponent {
         this.coverImgFile = event.target.files;
         const imgInput = <HTMLImageElement>document.getElementById('coverImg');
         imgInput.src = URL.createObjectURL(this.coverImgFile[0]);
+    }
+
+    wardChange() {
+        this.requestForm.patchValue({
+            wardName: this.selectedWard.wardName,
+        });
+        this.requestForm.patchValue({
+            wardCode: this.selectedWard.wardCode.toString(),
+        });
+        this.requestForm.patchValue({
+            districtId: this.selectedDistrict.distCode,
+        });
+        this.requestForm.patchValue({
+            districtName: this.selectedDistrict.distName,
+        });
+        this.requestForm.patchValue({
+            cityCode: this.selectedProvince.provCode.toString(),
+        });
+        this.requestForm.patchValue({
+            cityName: this.selectedProvince.provName,
+        });
     }
 }

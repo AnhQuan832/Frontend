@@ -17,7 +17,7 @@
                         />
                     </span>
                 </div> -->
-                <div class="cate-type w-100 p-2">
+                <div class="cate-type w-100 p-2 h-limit">
                     <h5>Category</h5>
                     <!-- <p-tree
                         [value]="listCate"
@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <p-divider></p-divider>
-                <div class="brand-type w-100 p-2">
+                <div class="brand-type w-100 p-2 h-limit">
                     <h5>Brand</h5>
                     <div *ngFor="let brand of listBrand" class="field-checkbox p-1">
                         <p-radioButton name="group" [value]="brand.brandId" [inputId]="brand.brandId"
