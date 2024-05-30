@@ -1,8 +1,17 @@
 import { BootstrapOptions, Component, OnInit } from '@angular/core';
+import {
+    OpenVidu,
+    Publisher,
+    Session,
+    StreamEvent,
+    StreamManager,
+    Subscriber,
+} from 'openvidu-browser';
 import { BaseComponent } from 'src/app/base.component';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { StreamService } from 'src/app/services/stream.service';
 import { ToastMessageService } from 'src/app/services/toast-message.service';
 
 @Component({
@@ -24,18 +33,45 @@ export class LiveDetailComponent extends BaseComponent implements OnInit {
     selectedColor: any;
     selectedSize: any;
     isDisableBuy: boolean = true;
+    stream: StreamManager;
+    merchantId: string;
+    OV: OpenVidu;
+    session: Session;
+    subscribers: StreamManager;
+    isOnLive = false;
+    listComment = [];
+    commentContent;
     constructor(
         private productService: ProductService,
         private cartService: CartService,
         private storageService: StorageService,
-        private messageService: ToastMessageService
+        private messageService: ToastMessageService,
+        private streamService: StreamService
     ) {
         super();
     }
 
     ngOnInit(): void {
+        this.listComment = [
+            {
+                userName: 'user1',
+                content: 'comment 1',
+            },
+            {
+                userName: 'user2',
+                content: 'comment 2',
+            },
+            {
+                userName: 'user3',
+                content: 'comment 3',
+            },
+        ];
         this.getAllProduct();
         this.isLogin = !!this.getToken();
+        this.merchantId = window.location.href.slice(
+            window.location.href.lastIndexOf('/') + 1
+        );
+        this.publishStream(this.merchantId);
     }
 
     getAllProduct() {
@@ -200,5 +236,76 @@ export class LiveDetailComponent extends BaseComponent implements OnInit {
             this.numberOfProduct = event;
             this.isDisableBuy = false;
         }
+    }
+
+    async getStreamToken(id): Promise<string> {
+        const sessionId = await this.streamService.createSession(id);
+        return await this.streamService.createToken(sessionId);
+    }
+
+    publishStream(id) {
+        this.OV = new OpenVidu();
+
+        this.session = this.OV.initSession();
+
+        this.session.on('streamCreated', (event: StreamEvent) => {
+            let subscriber: Subscriber = this.session.subscribe(
+                event.stream,
+                undefined
+            );
+
+            this.subscribers = subscriber;
+            this.isOnLive = true;
+        });
+
+        this.session.on('exception', (exception) => {
+            console.warn(exception);
+        });
+        this.getStreamToken(id).then((token) => {
+            this.session
+                .connect(token, { clientData: '' })
+                .then(() => {
+                    let publisher: Publisher = this.OV.initPublisher(
+                        undefined,
+                        {
+                            audioSource: undefined,
+                            videoSource: undefined,
+                            publishAudio: true,
+                            publishVideo: true,
+                            resolution: '640x480',
+                            frameRate: 30,
+                            insertMode: 'APPEND',
+                            mirror: false,
+                        }
+                    );
+                    this.session.publish(publisher);
+                })
+                .catch((error) => {
+                    console.log(
+                        'There was an error connecting to the session:',
+                        error.code,
+                        error.message
+                    );
+                });
+            this.session.on('signal', (event) => {
+                console.log(event.data); // Message
+                console.log(event.from); // Connection object of the sender
+                console.log(event.type); // The type of message
+            });
+        });
+    }
+
+    onComment() {
+        this.session
+            .signal({
+                data: this.commentContent, // Any string (optional)
+                to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+            })
+            .then(() => {
+                console.log('Message successfully sent');
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 }

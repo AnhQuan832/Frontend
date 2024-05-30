@@ -1,8 +1,25 @@
 <div class="grid">
 
 
-    <div class="col-12 xl:col-8">
-        Live here
+    <div class="col-12 xl:col-8 position-relative">
+        <app-stream-video *ngIf="isOnLive" [streamManager]="subscribers" [session]="session"></app-stream-video>
+        <!-- <div class="comment-container">
+            <div class="comment-list">
+                <div class="comment-item" *ngFor="let comment of listComment">
+                    <div class="d-flex align-items-center">
+                        <img src="assets/images/avatar.png" alt="" />
+                        <div class="ms-2">
+                            <h6 class="mb-0">{{ comment?.userName }}</h6>
+                            <p class="mb-0">{{ comment?.content }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="comment-input">
+                <input type="text" class="form-control" placeholder="Enter your comment" [(ngModel)]="commentContent"
+                    (keyup.enter)="onComment()" />
+            </div>
+        </div> -->
     </div>
     <div class="col-12 xl:col-4">
         <div class="card">
