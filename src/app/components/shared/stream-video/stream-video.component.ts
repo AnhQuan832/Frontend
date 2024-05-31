@@ -57,7 +57,7 @@ export class StreamVideoComponent
         super();
     }
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes['session']) {
+        if (changes['session'] && this.session) {
             this.session.on('signal', (event) => {
                 const data = JSON.parse(event.data);
                 const cmt = {
