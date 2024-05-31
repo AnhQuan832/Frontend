@@ -41,6 +41,7 @@ import { LogoComponent } from './logo/logo.component';
 import { QuantityComponent } from './quantity/quantity.component';
 import { ProductImageComponent } from './product-image/product-image.component';
 import { SkeletonModule } from 'primeng/skeleton';
+import { StreamVideoComponent } from './stream-video/stream-video.component';
 
 @NgModule({
     declarations: [
@@ -55,6 +56,7 @@ import { SkeletonModule } from 'primeng/skeleton';
         LogoComponent,
         QuantityComponent,
         ProductImageComponent,
+        StreamVideoComponent,
     ],
     imports: [
         CommonModule,
@@ -101,6 +103,7 @@ import { SkeletonModule } from 'primeng/skeleton';
         LogoComponent,
         QuantityComponent,
         ProductImageComponent,
+        StreamVideoComponent,
     ],
     providers: [MessageService, DialogService, ProductComponent],
 })

@@ -1,33 +1,17 @@
 <div class="grid">
     <div class="col-12">
         <div class="card">
-            <div *ngIf="isOnLive" class="d-flex flex-wrap">
-                <div class="col-12 xl:col-8">
-                    <video *ngIf="cameraFound" autoplay="true" id="videoElement"></video>
-                </div>
-                <div class="col-12 xl:col-4">
-                    <div *ngFor="let item of  listProductForLive" class="mb-2">
-                        <div class="item-name d-flex justify-content-between align-items-center gap-4">
-                            <img width="60px" [src]="item?.image || item?.images[0]" alt="" />
-                            <div class="flex-grow-1">
 
-                                <h6 class="mb-0">{{ item.name }}</h6>
-                                <!-- <h6 class="mb-0">{{ item.quantity }}</h6> -->
-                                <p class="mb-0">
-                                    {{ item?.totalItemPrice || item?.price | currency : "VND" }}
-                                </p>
-                            </div>
-                            <div>
-                                <i class="bi bi-pin-angle cursor-pointer"></i>
-                            </div>
-                        </div>
-                    </div>
+            <div class="w-100 d-flex flex-wrap">
+                <div class="col-12 " [ngClass]="{'xl:col-6': !isOnLive, 'xl:col-8' : isOnLive}">
+                    <app-stream-video #streamVideo [streamManager]="mainStreamManager"
+                        [session]="session"></app-stream-video>
+
+                    <button pButton pRipple label="Start Live Stream" class="p-button-success mr-2"
+                        (click)=" publishStream()"></button>
                 </div>
-            </div>
-            <div *ngIf="!isOnLive" class="w-100 d-flex flex-wrap">
-                <div class="col-12 xl:col-6">
+                <div *ngIf="!isOnLive" class="col-12 xl:col-6">
                     <h5>
-
                         Select Product for Live
                     </h5>
                     <div *ngFor="let item of  listAllProduct" class="mb-2">
@@ -46,16 +30,25 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 xl:col-6">
-                    <h5>
+                <div *ngIf="isOnLive" class="col-12 xl:col-4">
+                    <div *ngFor="let item of  listProductForLive" class="mb-2">
+                        <div class="item-name d-flex justify-content-between align-items-center gap-4">
+                            <img width="60px" [src]="item?.image || item?.images[0]" alt="" />
+                            <div class="flex-grow-1">
 
-                        There is no live stream available at the moment.
-                    </h5>
-
-
-                    <button pButton pRipple label="Start Live Stream" class="p-button-success mr-2"
-                        (click)="isOnLive = true;getCamera()"></button>
+                                <h6 class="mb-0">{{ item.name }}</h6>
+                                <!-- <h6 class="mb-0">{{ item.quantity }}</h6> -->
+                                <p class="mb-0">
+                                    {{ item?.totalItemPrice || item?.price | currency : "VND" }}
+                                </p>
+                            </div>
+                            <div>
+                                <i class="bi bi-pin-angle cursor-pointer"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
 
             </div>
         </div>

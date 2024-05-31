@@ -22,7 +22,7 @@ export class BaseComponent {
 
     getUserInfo() {
         if (this.userInfo) return this.userInfo;
-        return JSON.parse(sessionStorage.getItem('currentUser'));
+        return JSON.parse(localStorage.getItem('currentUser'));
     }
 
     setUserInfo(user) {

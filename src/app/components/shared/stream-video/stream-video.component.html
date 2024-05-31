@@ -1,0 +1,24 @@
+<div class="video-container">
+
+    <video #videoElement class="w-100"></video>
+    <div *ngIf="_streamManager" class="comment-container">
+        <div class="comment-list">
+            <div class="comment-item" *ngFor="let comment of listComment">
+                <div class="d-flex align-items-center mt-2">
+                    <img width="25" height="25" src="{{ comment?.userAvatar }}"
+                        onerror="this.onerror=null;this.src='/assets/no_user.png';" alt=""
+                        class="rounded-circle ms-2" />
+                    <div class="ms-2">
+                        <h6 class="mb-0">{{ comment?.userName }}</h6>
+                        <p class="mb-0">{{ comment?.content }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!isPublisher" class="comment-input mt-2">
+            <input type="text" class="form-control" placeholder="Enter your comment" [(ngModel)]="commentContent"
+                (keyup.enter)="onComment()" />
+        </div>
+
+    </div>
+</div>
