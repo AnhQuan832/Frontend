@@ -4,19 +4,31 @@
     }
     position: relative;
     .comment-container {
-        background-color: aliceblue;
-        opacity: 0.6;
-        width: 100%;
+        background-color: transparent;
         position: absolute;
+        width: 100%;
+
+        max-height: 40%;
         bottom: 0.25rem;
         padding: 1rem;
-        max-height: 40%;
-        scrollbar-width: 0px;
-        overflow: auto;
+        bottom: 0;
+        .comment-list {
+            position: relative;
+            bottom: 48px;
+            max-height: 120px;
+            overflow: auto;
+            scroll-behavior: smooth;
+        }
         .comment-item {
             // max-height: 80%;
+            .text-white {
+                color: white;
+            }
         }
         .comment-input {
+            bottom: 10px;
+            position: absolute;
+            width: 90%;
             input {
                 width: 100%;
                 border-radius: 20px;
@@ -25,4 +37,8 @@
             }
         }
     }
+}
+
+::-webkit-scrollbar {
+    display: none;
 }

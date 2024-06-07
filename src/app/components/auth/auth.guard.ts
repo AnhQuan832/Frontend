@@ -35,7 +35,7 @@ export class AuthGuard extends BaseComponent {
             if (!currentRole) {
                 this.userService.getProfile().subscribe({
                     next: (res) => {
-                        this.setRole(res.userRoles[0].roleName);
+                        // this.setRole(res.userRoles[0].roleName);
                         currentRole = this.getRole();
                         if (role.includes(currentRole)) return true;
                         else {

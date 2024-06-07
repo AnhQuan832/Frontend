@@ -248,6 +248,10 @@ export class LiveDetailComponent extends BaseComponent implements OnInit {
 
         this.session = this.OV.initSession();
 
+        this.session.on('streamDestroyed', (event: StreamEvent) => {
+            console.log('Stream destroyed: ' + event);
+        });
+
         this.session.on('streamCreated', (event: StreamEvent) => {
             let subscriber: Subscriber = this.session.subscribe(
                 event.stream,
@@ -262,21 +266,13 @@ export class LiveDetailComponent extends BaseComponent implements OnInit {
             console.warn(exception);
         });
         this.getStreamToken(id).then((token) => {
+            console.log(token);
             this.session
                 .connect(token, { clientData: '' })
                 .then(() => {
                     let publisher: Publisher = this.OV.initPublisher(
                         undefined,
-                        {
-                            audioSource: undefined,
-                            videoSource: undefined,
-                            publishAudio: true,
-                            publishVideo: true,
-                            resolution: '640x480',
-                            frameRate: 30,
-                            insertMode: 'APPEND',
-                            mirror: false,
-                        }
+                        {}
                     );
                     this.session.publish(publisher);
                 })
@@ -307,5 +303,12 @@ export class LiveDetailComponent extends BaseComponent implements OnInit {
             .catch((error) => {
                 console.error(error);
             });
+    }
+
+    turnOffLive() {
+        this.isOnLive = false;
+        this.session.forceUnpublish(
+            this.subscribers.stream.streamManager.stream
+        );
     }
 }

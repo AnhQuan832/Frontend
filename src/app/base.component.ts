@@ -44,7 +44,13 @@ export class BaseComponent {
     getRole() {
         if (!this.userRole) {
             const info = JSON.parse(localStorage.getItem('currentUser'));
-            this.setRole(info.userRoles[0].roleName);
+            const roles = info.userRoles.map((role) => role.roleName);
+            const highRole = roles.includes('ROLE_ADMIN')
+                ? 'ROLE_ADMIN'
+                : roles.includes('ROLE_MERCHANT')
+                ? 'ROLE_MERCHANT'
+                : 'ROLE_CUSTOMER';
+            this.setRole(highRole);
         }
         return this.userRole;
     }

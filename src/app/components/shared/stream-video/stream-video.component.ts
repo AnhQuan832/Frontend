@@ -1,3 +1,4 @@
+import { query } from '@angular/animations';
 import {
     AfterViewInit,
     Component,
@@ -66,6 +67,7 @@ export class StreamVideoComponent
                     content: data.content,
                 };
                 this.listComment.push(cmt);
+                this.autoScrollToNewMessage();
             });
         }
     }
@@ -74,7 +76,9 @@ export class StreamVideoComponent
         if (this._streamManager) {
             this._streamManager.addVideoElement(this.elementRef.nativeElement);
         } else {
-            let video = this.elementRef.nativeElement;
+            let video = document.getElementById(
+                '#videoElement'
+            ) as HTMLVideoElement;
 
             if (navigator.mediaDevices.getUserMedia) {
                 navigator.mediaDevices
@@ -87,20 +91,6 @@ export class StreamVideoComponent
                     });
             }
         }
-        this.listComment = [
-            {
-                userName: 'user1',
-                content: 'comment 1',
-            },
-            {
-                userName: 'user2',
-                content: 'comment 2',
-            },
-            {
-                userName: 'user3',
-                content: 'comment 3',
-            },
-        ];
     }
     onComment() {
         if (this.commentContent) {
@@ -117,12 +107,17 @@ export class StreamVideoComponent
                     to: [],
                 })
                 .then(() => {
-                    console.log('Message successfully sent');
+                    this.autoScrollToNewMessage();
                 })
                 .catch((error) => {
                     console.error(error);
                 });
             this.commentContent = '';
         }
+    }
+
+    autoScrollToNewMessage() {
+        const cmtContent = document.getElementById('comments');
+        cmtContent.scrollTop = cmtContent.scrollHeight;
     }
 }

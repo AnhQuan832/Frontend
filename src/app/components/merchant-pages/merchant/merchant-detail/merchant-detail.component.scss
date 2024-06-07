@@ -1,0 +1,56 @@
+.container {
+    background-color: #fff;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    .info {
+        display: block;
+        gap: 20px;
+    }
+    .status-info,
+    .basic-info {
+        display: grid;
+    }
+    .doc-container {
+        margin: 0;
+        width: fit-content;
+        box-sizing: border-box;
+        .doc-info {
+            margin: 0;
+            width: 100px;
+            height: 130px;
+
+            cursor: pointer;
+
+            .doc-icon {
+                border-radius: 10px;
+                background-color: #f3f1f1;
+                width: 100%;
+                height: calc(100% - 30px);
+                i {
+                    font-size: 3rem;
+                }
+            }
+        }
+    }
+
+    .logo {
+        margin: 0 20px;
+        img {
+            max-width: 250px;
+        }
+        button {
+            width: fit-content;
+            padding: 0 2rem;
+        }
+    }
+    button {
+        margin-top: 20px;
+    }
+    h1 {
+        font-weight: 500;
+    }
+    h5 {
+        font-weight: 345;
+    }
+}

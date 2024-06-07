@@ -11,6 +11,7 @@ import {
     Subscriber,
 } from 'openvidu-browser';
 import { StreamVideoComponent } from '../../shared/stream-video/stream-video.component';
+import { MenuItem } from 'primeng/api';
 
 @Component({
     selector: 'app-live',
@@ -28,6 +29,10 @@ export class LiveComponent extends BaseComponent implements OnInit {
     OV: OpenVidu;
     session: Session;
     mainStreamManager: StreamManager;
+    items: MenuItem[];
+    selectedProduct = null;
+    indexSelectedProduct = 0;
+    isLiveSuccess: boolean = false;
     constructor(
         private productService: ProductService,
         private streamService: StreamService
@@ -37,6 +42,29 @@ export class LiveComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         this.mySessionId = this.getUserInfo().merchantId;
         this.getProductForLive();
+        this.items = [
+            {
+                label: 'Highlight',
+                command: () => {
+                    this.listProductForLive.splice(
+                        this.indexSelectedProduct,
+                        1
+                    );
+                    this.removeHighlight(this.listProductForLive);
+                    this.selectedProduct.isPinned = true;
+                    this.listProductForLive.unshift(this.selectedProduct);
+                },
+            },
+            {
+                label: 'Remove',
+                command: () => {
+                    this.listProductForLive.splice(
+                        this.indexSelectedProduct,
+                        1
+                    );
+                },
+            },
+        ];
     }
 
     getProductForLive() {
@@ -46,7 +74,12 @@ export class LiveComponent extends BaseComponent implements OnInit {
             .subscribe({
                 next: (res) => {
                     this.listAllProduct = res;
-                    this.listProductForLive = res;
+                    this.listProductForLive = res.map((item) => ({
+                        ...item,
+                        isSelected: false,
+                        isPinned: false,
+                    }));
+                    this.listProductForLive[0].isPinned = true;
                 },
                 error: (err) => {
                     console.log(err);
@@ -86,6 +119,7 @@ export class LiveComponent extends BaseComponent implements OnInit {
                     );
                     this.session.publish(publisher);
                     this.mainStreamManager = publisher;
+                    this.isLiveSuccess = true;
                 })
                 .catch((error) => {
                     console.log(
@@ -101,5 +135,21 @@ export class LiveComponent extends BaseComponent implements OnInit {
             this.mySessionId
         );
         return await this.streamService.createToken(sessionId);
+    }
+
+    removeHighlight(products, index?) {
+        if (index) {
+            products[index].isPinned = false;
+        } else {
+            products.forEach((product) => {
+                product.isPinned = false;
+            });
+        }
+    }
+
+    shutDownLive() {
+        this.isOnLive = false;
+        this.session.disconnect();
+        this.session.unpublish(this.mainStreamManager[0]);
     }
 }

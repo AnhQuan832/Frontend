@@ -97,7 +97,7 @@ export class AppMenuComponent extends BaseComponent implements OnInit {
                         {
                             label: 'Live',
                             icon: 'pi pi-fw pi-chart-line',
-                            routerLink: ['/merchant/live'],
+                            routerLink: ['/merchant/admin-live'],
                         },
                         {
                             label: 'Message',
@@ -122,7 +122,7 @@ export class AppMenuComponent extends BaseComponent implements OnInit {
                                 {
                                     label: 'Merchant Request',
                                     icon: 'pi pi-fw pi-chart-line',
-                                    routerLink: ['/merchant/merchant'],
+                                    routerLink: ['/merchant/merchant/request'],
                                 },
                             ],
                         },

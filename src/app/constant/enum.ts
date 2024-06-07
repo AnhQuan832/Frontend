@@ -133,7 +133,11 @@ export const API = {
     MERCHANT: {
         END_POINT: {
             MERCHANT: API_URL + 'merchant',
+            ADMIN_MERCHANT: API_URL + 'merchant/admin',
             SUSPEND_MERCHANT: API_URL + 'merchant/suspend',
+            UNSUSPEND_MERCHANT: API_URL + 'merchant/un-suspend',
+            APPROVE_MERCHANT: API_URL + 'merchant/approve',
+            UN_APPROVE_MERCHANT: API_URL + 'merchant/un-approve',
         },
     },
     SEARCH: {

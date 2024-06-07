@@ -4,11 +4,11 @@ import { MerchantService } from 'src/app/services/merchant.service';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
-    selector: 'app-merchant',
-    templateUrl: './merchant.component.html',
-    styleUrls: ['./merchant.component.scss'],
+    selector: 'app-merchant-request',
+    templateUrl: './merchant-request.component.html',
+    styleUrls: ['./merchant-request.component.scss'],
 })
-export class MerchantComponent {
+export class MerchantRequestComponent {
     listMerchant: any;
 
     constructor(
@@ -21,7 +21,7 @@ export class MerchantComponent {
         this.getMerchantList();
     }
     getMerchantList() {
-        this.merchantService.getAllMerchant({ isApproved: true }).subscribe({
+        this.merchantService.getAllMerchant().subscribe({
             next: (data) => {
                 this.listMerchant = data;
             },

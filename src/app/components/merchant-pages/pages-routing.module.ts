@@ -45,6 +45,13 @@ import { RouterModule } from '@angular/router';
                         (m) => m.MerchantModule
                     ),
             },
+            {
+                path: 'admin-live',
+                loadChildren: () =>
+                    import('./admin-live/admin-live.module').then(
+                        (m) => m.AdminLiveModule
+                    ),
+            },
             { path: '**', redirectTo: '/notfound' },
         ]),
     ],

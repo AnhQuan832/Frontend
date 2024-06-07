@@ -34,36 +34,36 @@
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-product>
-                    <tr>
+                <ng-template pTemplate="body" let-merchant>
+                    <tr (click)="onMerchantSelected(merchant)">
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Name</span>
-                            {{ product.merchantId }}
+                            {{ merchant.merchantId }}
                         </td>
 
                         <td>
                             <span>
-                                {{ product.merchantName }}
+                                {{ merchant.merchantName }}
                             </span>
                         </td>
                         <td style="width: 14%; min-width: 8rem">
                             <span class="p-column-title">Created Date</span>
-                            {{ product.createdDate | date }}
+                            {{ merchant.createdDate | date }}
                         </td>
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Phone Number</span>
-                            {{ product.phoneNumber }}
+                            {{ merchant.phoneNumber }}
                         </td>
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Rating</span>
-                            <p-rating [ngModel]="product.rating || 0" [readonly]="true" [cancel]="false"></p-rating>
+                            <p-rating [ngModel]="merchant.rating || 0" [readonly]="true" [cancel]="false"></p-rating>
                         </td>
 
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
                                     class="p-button-rounded p-button-success mr-2"
-                                    (click)="onRowSelect(product)"></button>
+                                    (click)="onRowSelect(merchant)"></button>
                             </div>
                         </td>
                     </tr>

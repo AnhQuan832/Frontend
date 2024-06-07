@@ -115,7 +115,13 @@ export class LoginComponent extends BaseComponent implements OnInit {
         const { jwtToken, ...userInfo } = data;
         this.storageService.setItemLocal('currentUser', userInfo);
         this.setUserInfo(userInfo);
-        this.setRole(userInfo.userRoles[0].roleName);
+        const roles = userInfo.userRoles.map((role) => role.roleName);
+        const highRole = roles.includes('ROLE_ADMIN')
+            ? 'ROLE_ADMIN'
+            : roles.includes('ROLE_MERCHANT')
+            ? 'ROLE_MERCHANT'
+            : 'ROLE_CUSTOMER';
+        this.setRole(highRole);
         this.storageService.setTimeResetTokenCookie('jwtToken', jwtToken);
     }
 

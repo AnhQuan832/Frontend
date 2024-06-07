@@ -1,0 +1,70 @@
+<div class="container p-4">
+    <div class="info col-sm-8">
+        <div class="pet-info my-auto">
+            <h1 class="ps-4">{{ merchantDetail.shelterName }}</h1>
+            <div class="basic-info ps-4">
+                <h5><b>Email: </b> {{ merchantDetail.representativeEmailAddress }}</h5>
+                <h5>
+                    <b>Số điện thoại: </b>
+                    {{ merchantDetail.shelterPhoneNo }}
+                </h5>
+
+                <h5>
+                    <b>Địa chỉ: </b>
+                    {{
+                    merchantDetail.unitNoAndStreet +
+                    ", " +
+                    merchantDetail.ward +
+                    ", " +
+                    merchantDetail.district +
+                    ", " +
+                    merchantDetail.city
+                    }}
+                </h5>
+                <h5>
+                    <b>Mạng xã hội: </b>
+                    <a href="{{ merchantDetail.representativeFacebookLink }}">{{
+                        merchantDetail.representativeFacebookLink
+                        }}</a>
+                </h5>
+                <h5><b>Thông tin chứng chỉ: </b></h5>
+                <h6 style="font-weight: 400" *ngIf="merchantDetail.relatedDocuments.length == 0">
+                    (Chưa có chứng chỉ nào)
+                </h6>
+            </div>
+            <div class="doc-container ps-4 d-flex gap-3">
+                <div class="doc-info" *ngFor="let item of merchantDetail.relatedDocuments">
+                    <a href="{{ item }}">
+                        <div class="doc-icon d-flex justify-content-center align-items-center">
+                            <i *ngIf="
+                  urlToFileType(item) != 'pdf' &&
+                  urlToFileType(item) != 'doc' &&
+                  urlToFileType(item) != 'docx'
+                " class="bi bi-file-earmark"></i>
+                            <i *ngIf="urlToFileType(item) == 'pdf'" class="bi bi-file-earmark-pdf"></i>
+                            <i *ngIf="
+                  urlToFileType(item) == 'doc' || urlToFileType(item) == 'docx'
+                " class="bi bi-file-earmark-word"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="button ps-4 d-flex gap-3">
+            <button class="btn btn-primary" (click)="acceptRequest()">
+                Chấp nhận
+            </button>
+
+            <button class="btn btn-secondary" (click)="rejectRequest()">
+                Từ chối
+            </button>
+        </div>
+    </div>
+    <!-- <div class="logo col-sm-4 d-flex justify-content-center align-items-center flex-column">
+        <img src="{{ merchantDetail.shelterLogo }}" alt="" class="rounded-circle" />
+        <button class="btn btn-primary" (click)="contactRequestor()">
+            Liên hệ
+        </button>
+    </div> -->
+</div>

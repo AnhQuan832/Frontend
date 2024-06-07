@@ -11,6 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 import { BaseComponent } from 'src/app/base.component';
 import { MerchantRequestComponent } from '../merchant-request/merchant-request.component';
 import { ToastMessageService } from 'src/app/services/toast-message.service';
+import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
     selector: 'app-user-profile',
@@ -53,7 +54,8 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         private chat: ChatComponent,
         private router: Router,
         private msgService: ToastMessageService,
-        private storageService: StorageService
+        private storageService: StorageService,
+        private layoutService: LayoutService
     ) {
         super();
     }
@@ -154,7 +156,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
 
     registerMerchant() {
         this.dialogService.open(MerchantRequestComponent, {
-            width: '50%',
+            width: this.layoutService.isDesktop() ? '50%' : '100%',
         });
     }
 

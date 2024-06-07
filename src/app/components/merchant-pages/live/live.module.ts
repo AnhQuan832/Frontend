@@ -6,6 +6,8 @@ import { LiveComponent } from './live.component';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SharedModule } from '../../shared/shared.module';
+import { MenuModule } from 'primeng/menu';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
     declarations: [LiveComponent],
@@ -15,6 +17,8 @@ import { SharedModule } from '../../shared/shared.module';
         ButtonModule,
         CheckboxModule,
         SharedModule,
+        MenuModule,
+        TooltipModule,
     ],
 })
 export class LiveModule {}
