@@ -278,8 +278,8 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
         if (!product.detail) this.getProductDetail(product);
     }
 
-    onChangeQty(event) {
-        console.log(event);
+    onChangeQty(vari, value) {
+        vari.liveStock = value;
     }
 
     editWholeVariety(product, value) {

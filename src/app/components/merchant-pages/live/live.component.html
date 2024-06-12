@@ -84,7 +84,7 @@
                                 <tr pRowGroupHeader pTooltip="View Detail" style="cursor: pointer">
                                     <td>
                                         <p-checkbox [(ngModel)]="product.isSelected" [binary]="true" inputId="binary"
-                                            (ngModelChange)="editWholeVariety(product,product.isSelected)"></p-checkbox>
+                                            (ngModelChange)="editWholeVariety(product, product.isSelected)"></p-checkbox>
                                     </td>
                                     <td colspan="2">
                                         <button type="button" pButton pRipple [pRowToggler]="product"
@@ -138,7 +138,7 @@
                                             </ng-template> -->
                                             <app-quantity class="ms-2" [quantity]="variety.liveStock"
                                                 [max]="variety.stockAmount" [min]="0"
-                                                (onQuantity)="onChangeQty($event)"></app-quantity>
+                                                (onQuantity)="onChangeQty(variety, $event)"></app-quantity>
                                             <!-- </p-cellEditor> -->
                                         </td>
                                         <td [pEditableColumn]="variety.price" pEditableColumnField="price"
