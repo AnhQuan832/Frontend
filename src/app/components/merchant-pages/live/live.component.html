@@ -2,6 +2,13 @@
     <div class="col-12">
         <div class="card">
             <div class="w-100 d-flex flex-wrap">
+                <div *ngIf="isLoading"
+                    class="loading  position-absolute d-flex justify-content-center align-items-center flex-column gap-2">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only"></span>
+                    </div>
+                    <p><b>Creating Live Stream </b></p>
+                </div>
                 <div *ngIf="isLiveSuccess" class="col-12 xl:col-8">
                     <app-stream-video #streamVideo [streamManager]="mainStreamManager"
                         [session]="session"></app-stream-video>
@@ -33,8 +40,13 @@
                     " class="p-button-success mr-2" (click)="nextStep()"></button>
                     </div>
                     <div *ngIf="!isSelectTitleLive">
+                        <div class="d-flex align-items-center">
 
-                        <h5>Select Product for Live</h5>
+                            <button type="button" pButton pRipple
+                                class="p-button-text p-button-rounded p-button-plain mr-2" [icon]="'pi pi-chevron-left'"
+                                (click)="isSelectTitleLive = true" pTooltip="Back to Select Title"></button>
+                            <h5 class="my-auto">Select Product for Live</h5>
+                        </div>
                         <!-- <div *ngFor="let item of  listAllProduct" class="mb-2">
                         <div class="item-name d-flex justify-content-between align-items-center gap-4">
                             <p-checkbox [binary]="true" (onChange)="selectItem(item)"></p-checkbox>

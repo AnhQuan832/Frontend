@@ -53,3 +53,11 @@
 input[type="file"] {
     display: none;
 }
+
+.loading {
+    height: 95%;
+    width: 95%;
+    z-index: 2;
+    opacity: 0.8;
+    background-color: white;
+}

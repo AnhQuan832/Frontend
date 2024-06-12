@@ -39,6 +39,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     coverImgFile: FileList;
     isSelectTitleLive = true;
     liveTitle;
+    isLoading: boolean = false;
     constructor(
         private productService: ProductService,
         private streamService: StreamService,
@@ -102,6 +103,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
 
     publishStream() {
         this.isOnLive = true;
+        this.isLoading = true;
         this.OV = new OpenVidu();
 
         this.session = this.OV.initSession();
@@ -200,12 +202,19 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
                     this.session.publish(publisher);
                     this.mainStreamManager = publisher;
                     this.isLiveSuccess = true;
+                    this.isLoading = false;
                 })
                 .catch((error) => {
                     console.log(
                         'There was an error connecting to the session:',
                         error.code,
                         error.message
+                    );
+                    this.isLoading = false;
+                    this.messageService.showMessage(
+                        '',
+                        'Can not connect to Server. Please try again later!',
+                        'error'
                     );
                 });
         });
@@ -214,16 +223,14 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
         const sessionId = await this.streamService.createSession(
             this.createLiveData()
         );
-        setTimeout(() => {
-            if (!sessionId) {
-                this.messageService.showMessage(
-                    '',
-                    'Can not connect to Server. Please try again!',
-                    'error'
-                );
-            }
-        }, 3000);
-        return await this.streamService.createToken(sessionId);
+        if (!sessionId) {
+            this.messageService.showMessage(
+                '',
+                'Can not connect to Server. Please try again!',
+                'error'
+            );
+        }
+        return await this.streamService.createToken(sessionId, 'PUBLISHER');
     }
 
     removeHighlight(products, index?) {
