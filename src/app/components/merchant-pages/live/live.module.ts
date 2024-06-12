@@ -1,3 +1,4 @@
+import { TableModule } from 'primeng/table';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -8,6 +9,10 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { SharedModule } from '../../shared/shared.module';
 import { MenuModule } from 'primeng/menu';
 import { TooltipModule } from 'primeng/tooltip';
+import { TabViewModule } from 'primeng/tabview';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
     declarations: [LiveComponent],
@@ -19,6 +24,12 @@ import { TooltipModule } from 'primeng/tooltip';
         SharedModule,
         MenuModule,
         TooltipModule,
+        TabViewModule,
+        TableModule,
+        InputNumberModule,
+        FormsModule,
+        ReactiveFormsModule,
+        InputTextModule,
     ],
 })
 export class LiveModule {}

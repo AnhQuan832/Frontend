@@ -1,4 +1,10 @@
-import { BootstrapOptions, Component, OnInit } from '@angular/core';
+import {
+    BootstrapOptions,
+    Component,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import {
     OpenVidu,
     Publisher,
@@ -13,13 +19,18 @@ import { ProductService } from 'src/app/services/product.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { StreamService } from 'src/app/services/stream.service';
 import { ToastMessageService } from 'src/app/services/toast-message.service';
+import { StreamVideoComponent } from '../../shared/stream-video/stream-video.component';
 
 @Component({
     selector: 'app-live-detail',
     templateUrl: './live-detail.component.html',
     styleUrls: ['./live-detail.component.scss'],
 })
-export class LiveDetailComponent extends BaseComponent implements OnInit {
+export class LiveDetailComponent
+    extends BaseComponent
+    implements OnInit, OnDestroy
+{
+    @ViewChild('stream') streamVideo: StreamVideoComponent;
     listProduct = [];
     isLogin: boolean;
     numberOfProduct = 0;
@@ -50,22 +61,11 @@ export class LiveDetailComponent extends BaseComponent implements OnInit {
     ) {
         super();
     }
+    ngOnDestroy(): void {
+        this.session.disconnect();
+    }
 
     ngOnInit(): void {
-        this.listComment = [
-            {
-                userName: 'user1',
-                content: 'comment 1',
-            },
-            {
-                userName: 'user2',
-                content: 'comment 2',
-            },
-            {
-                userName: 'user3',
-                content: 'comment 3',
-            },
-        ];
         this.getAllProduct();
         this.isLogin = !!this.getToken();
         this.merchantId = window.location.href.slice(
@@ -265,14 +265,34 @@ export class LiveDetailComponent extends BaseComponent implements OnInit {
         this.session.on('exception', (exception) => {
             console.warn(exception);
         });
+        this.session.on('signal', (event) => {
+            const data = JSON.parse(event.data);
+            const cmt = {
+                userName: data.userFullName,
+                userAvatar: data.userAvatar,
+                content: data.content,
+            };
+            this.listComment.push(cmt);
+            this.autoScrollToNewMessage();
+        });
         this.getStreamToken(id).then((token) => {
             console.log(token);
+            const user = JSON.stringify(this.getUserInfo());
             this.session
-                .connect(token, { clientData: '' })
+                .connect(token, { clientData: user })
                 .then(() => {
                     let publisher: Publisher = this.OV.initPublisher(
                         undefined,
-                        {}
+                        {
+                            audioSource: undefined,
+                            videoSource: undefined,
+                            publishAudio: false,
+                            publishVideo: false,
+                            resolution: '640x480',
+                            frameRate: 30,
+                            insertMode: 'APPEND',
+                            mirror: false,
+                        }
                     );
                     this.session.publish(publisher);
                 })
@@ -292,17 +312,27 @@ export class LiveDetailComponent extends BaseComponent implements OnInit {
     }
 
     onComment() {
-        this.session
-            .signal({
-                data: this.commentContent, // Any string (optional)
-                to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-            })
-            .then(() => {
-                console.log('Message successfully sent');
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        if (this.commentContent) {
+            const info = this.getUserInfo();
+            const { userAvatar, userFullName } = info;
+            const data = {
+                userAvatar,
+                userFullName,
+                content: this.commentContent,
+            };
+            this.session
+                .signal({
+                    data: JSON.stringify(data),
+                    to: [],
+                })
+                .then(() => {
+                    this.autoScrollToNewMessage();
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+            this.commentContent = '';
+        }
     }
 
     turnOffLive() {
@@ -310,5 +340,10 @@ export class LiveDetailComponent extends BaseComponent implements OnInit {
         this.session.forceUnpublish(
             this.subscribers.stream.streamManager.stream
         );
+    }
+
+    autoScrollToNewMessage() {
+        const cmtContent = document.getElementById('comments');
+        cmtContent.scrollTop = cmtContent.scrollHeight;
     }
 }

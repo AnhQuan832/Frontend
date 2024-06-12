@@ -1,63 +1,231 @@
 <div class="grid">
     <div class="col-12">
         <div class="card">
-
             <div class="w-100 d-flex flex-wrap">
                 <div *ngIf="isLiveSuccess" class="col-12 xl:col-8">
                     <app-stream-video #streamVideo [streamManager]="mainStreamManager"
                         [session]="session"></app-stream-video>
-
-
                 </div>
                 <div *ngIf="!isLiveSuccess" class="col-12">
-                    <h5>
-                        Select Product for Live
-                    </h5>
-                    <div *ngFor="let item of  listAllProduct" class="mb-2">
+                    <div *ngIf="isSelectTitleLive">
+                        <h5>Live Description</h5>
+                        <span class="p-float-label col-11">
+                            <h6 class="addressLabel ps-0">Live Title</h6>
+                            <input type="text" pInputText class="w-full" [(ngModel)]="liveTitle" />
+                        </span>
+                        <h6 class="mb-1" class="ms-4 mt-4">Live Thumbnail</h6>
+                        <div class="avatar d-flex justify-content-center mt-4">
+                            <span
+                                class="m-4 my-2 rounded-1 d-flex justify-content-center align-items-center flex-column">
+                                <label class="custom-file-upload cover">
+                                    <input type="file" accept="image/png, image/jpeg"
+                                        (change)="onSelectCoverImg($event)" />
+                                    <img src="https://firebasestorage.googleapis.com/v0/b/advance-totem-350103.appspot.com/o/Avatar%2Fimage-holder-icon.png?alt=media&token=2bc0bac5-ea17-4dd9-8c9e-4813316da679"
+                                        alt="" id="coverImg" class="w-100 cursor-pointer"
+                                        pTooltip="Click here to upload image" style="max-width: 300px;" />
+                                    <!-- <i class="pi pi-image" style="font-size: 2.5rem"></i> -->
+                                </label>
+                                <p class="img-des">Thumbnail</p>
+                            </span>
+                        </div>
+                        <button pButton pRipple [disabled]="!liveTitle || !coverImgFile?.length" [label]="
+                        'Next'
+                    " class="p-button-success mr-2" (click)="nextStep()"></button>
+                    </div>
+                    <div *ngIf="!isSelectTitleLive">
+
+                        <h5>Select Product for Live</h5>
+                        <!-- <div *ngFor="let item of  listAllProduct" class="mb-2">
                         <div class="item-name d-flex justify-content-between align-items-center gap-4">
                             <p-checkbox [binary]="true" (onChange)="selectItem(item)"></p-checkbox>
                             <img width="60px" [src]="item?.image || item?.images[0]" alt="" />
                             <div class="flex-grow-1">
 
                                 <h6 class="mb-0">{{ item.name }}</h6>
-                                <!-- <h6 class="mb-0">{{ item.quantity }}</h6> -->
                                 <p class="mb-0">
                                     {{ item?.totalItemPrice || item?.price | currency : "VND" }}
                                 </p>
                             </div>
-
+                            <p-button label="Select variety"
+                                [icon]="item.isSelected ? 'pi pi-angle-up' : 'pi pi-angle-down'" iconPos="right"
+                                (click)="showProductDetail(item)"></p-button>
                         </div>
-                    </div>
+                        <div *ngIf="item.isSelected">
+                            <div *ngFor="let vari of item?.detail?.varieties" class="ps-4 mt-2 d-flex">
+                                <div *ngFor="let att of vari.varietyAttributes" class="d-flex">
+                                    {{att.type + ": " + att.name + ", "}}
+                                </div>
+                                <div class="d-flex">
+                                    <h6 class="mt-2 me-2 w-80"><b>Amount</b></h6>
+                                    <app-quantity class="ms-2" [quantity]="numberOfProduct"
+                                        [max]="vari?.stockAmount || 0"
+                                        (onQuantity)="onChangeQty($event)"></app-quantity>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
 
+                        <p-table [value]="listAllProduct" dataKey="name" rowGroupMode="subheader" groupRowsBy="name"
+                            sortField="name" sortMode="single" styleClass="p-datatable-striped">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th width="20px"></th>
+                                    <th width="120px">Variety</th>
+
+                                    <th class="text-center" width="300px">
+                                        Quantity
+                                    </th>
+                                    <th class="text-center" width="280px">Price</th>
+                                </tr>
+                            </ng-template>
+
+                            <ng-template pTemplate="groupheader" let-product let-rowIndex="rowIndex"
+                                let-expanded="expanded">
+                                <tr pRowGroupHeader pTooltip="View Detail" style="cursor: pointer">
+                                    <td>
+                                        <p-checkbox [(ngModel)]="product.isSelected" [binary]="true" inputId="binary"
+                                            (ngModelChange)="editWholeVariety(product,product.isSelected)"></p-checkbox>
+                                    </td>
+                                    <td colspan="2">
+                                        <button type="button" pButton pRipple [pRowToggler]="product"
+                                            class="p-button-text p-button-rounded p-button-plain mr-2" [icon]="
+                                            expanded
+                                                ? 'pi pi-chevron-down'
+                                                : 'pi pi-chevron-right'
+                                        " (click)="showProductDetail(product)"></button>
+
+                                        <img src="{{ product?.image }}" alt="" width="32"
+                                            style="vertical-align: middle" />
+                                        <span class="font-bold ml-2">{{
+                                            product.name || product.productName
+                                            }}</span>
+                                    </td>
+                                    <td class="center">
+                                        <p-inputNumber currency="VND" locale="jp-JP" [min]="0"
+                                            [(ngModel)]="product.price"
+                                            (ngModelChange)="editWholeVariety(product,product.price)"
+                                            required></p-inputNumber>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="rowexpansion" let-product let-editing="editing">
+                                <tr *ngFor="let variety of product.detail?.varieties">
+                                    <ng-container *ngIf="
+                                        variety.varietyAttributes[0]?.name ||
+                                        variety.varietyAttributes[1]?.name
+                                    ">
+                                        <td class="text-center">
+                                            <p-checkbox [(ngModel)]="variety.isSelected" [binary]="true"
+                                                inputId="binary" class="ms-4"></p-checkbox>
+                                        </td>
+                                        <td class="text-center">
+                                            {{(variety.varietyAttributes[0]?.name || "") + ", " +
+                                            (variety.varietyAttributes[1]?.name || "") }}
+                                        </td>
+                                        <td class="center">
+                                            <!-- <p-cellEditor> -->
+                                            <!-- <ng-template pTemplate="input">
+                                                <p-inputNumber type="number" [(ngModel)]="
+                                                        variety.quantity
+                                                    " [ngModelOptions]="{
+                                                        standalone: true
+                                                    }" [min]="0" [max]="1000" required />
+                                            </ng-template>
+                                            <ng-template pTemplate="output">
+                                                <span pTooltip="Edit quantity" style="cursor: pointer">
+                                                    {{ variety.quantity }}
+                                                </span>
+                                            </ng-template> -->
+                                            <app-quantity class="ms-2" [quantity]="variety.liveStock"
+                                                [max]="variety.stockAmount" [min]="0"
+                                                (onQuantity)="onChangeQty($event)"></app-quantity>
+                                            <!-- </p-cellEditor> -->
+                                        </td>
+                                        <td [pEditableColumn]="variety.price" pEditableColumnField="price"
+                                            class="text-center">
+                                            <!-- <p-cellEditor> -->
+                                            <!-- <ng-template pTemplate="input"> -->
+                                            <p-inputNumber currency="VND" locale="jp-JP" [min]="0"
+                                                [(ngModel)]="variety.livePrice" (ngModelChange)="onChangeQty($event)"
+                                                required></p-inputNumber>
+                                            <!-- </ng-template> -->
+                                            <!-- <ng-template pTemplate="output">
+                                                <span pTooltip="Edit price" style="cursor: pointer">
+                                                    {{
+                                                    variety.price
+                                                    | currency : "VND"
+                                                    }}
+                                                </span>
+                                            </ng-template> -->
+                                            <!-- </p-cellEditor> -->
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
                 </div>
                 <div *ngIf="isLiveSuccess" class="col-12 xl:col-4">
-                    <div *ngFor="let item of  listProductForLive; index as i" class="mb-2">
-                        <div class="item-name d-flex justify-content-between align-items-center gap-4">
-                            <img width="60px" [src]="item?.image || item?.images[0]" alt="" />
-                            <div class="flex-grow-1">
+                    <p-tabView>
+                        <p-tabPanel header="Product">
+                            <div *ngFor="
+                                    let item of listProductForLive;
+                                    index as i
+                                " class="mb-2 max-height-60">
+                                <div class="item-name d-flex justify-content-between align-items-center gap-4">
+                                    <img width="60px" [src]="item?.image || item?.images[0]" alt="" />
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">{{ item.name }}</h6>
+                                        <!-- <h6 class="mb-0">{{ item.quantity }}</h6> -->
+                                        <p class="mb-0">
+                                            {{
+                                            item?.totalItemPrice ||
+                                            item?.price
+                                            | currency : "VND"
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div (click)="
+                                            selectedProduct = item;
+                                            indexSelectedProduct = i
+                                        ">
+                                        <i *ngIf="item.isPinned" class="bi bi-pin-angle-fill cursor-pointer"
+                                            pTooltip="Unpin" (click)="item.isPinned = false"></i>
+                                        <p-menu #menu [model]="items" [popup]="true" appendTo="body"></p-menu>
 
-                                <h6 class="mb-0">{{ item.name }}</h6>
-                                <!-- <h6 class="mb-0">{{ item.quantity }}</h6> -->
-                                <p class="mb-0">
-                                    {{ item?.totalItemPrice || item?.price | currency : "VND" }}
-                                </p>
+                                        <i *ngIf="!item.isPinned" class="bi bi-three-dots cursor-pointer"
+                                            (click)="menu.toggle($event)"></i>
+                                    </div>
+                                </div>
                             </div>
-                            <div (click)="selectedProduct = item; indexSelectedProduct = i">
-                                <i *ngIf="item.isPinned" class="bi bi-pin-angle-fill cursor-pointer" pTooltip="Unpin"
-                                    (click)="item.isPinned = false"></i>
-                                <p-menu #menu [model]="items" [popup]="true" appendTo="body"></p-menu>
-
-                                <i *ngIf="!item.isPinned" class="bi bi-three-dots cursor-pointer"
-                                    (click)="menu.toggle($event)"></i>
+                        </p-tabPanel>
+                        <p-tabPanel header="Comment">
+                            <div id="comments" class="comment-list height-60">
+                                <div class="comment-item" *ngFor="let comment of listComment">
+                                    <div class="d-flex align-items-center mt-2">
+                                        <img width="25" height="25" src="{{ comment?.userAvatar }}"
+                                            onerror="this.onerror=null;this.src='/assets/no_user.png';" alt=""
+                                            class="rounded-circle ms-2" />
+                                        <div class="ms-2">
+                                            <h6 class="mb-0 text-black">
+                                                {{ comment?.userName }}
+                                            </h6>
+                                            <p class="mb-0 text-black">
+                                                {{ comment?.content }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </p-tabPanel>
+                    </p-tabView>
                 </div>
 
-                <button pButton pRipple [label]="isLiveSuccess ? 'Shutdown live' :'Start Live Stream'"
-                    class="p-button-success mr-2" (click)="isLiveSuccess ? shutDownLive() : publishStream()"></button>
+                <button *ngIf="!isSelectTitleLive" pButton pRipple [label]="
+                        isLiveSuccess ? 'Shutdown live' : 'Start Live Stream'
+                    " class="p-button-success mr-2"
+                    (click)="isLiveSuccess ? shutDownLive() : publishStream()"></button>
             </div>
         </div>
     </div>
-
 </div>

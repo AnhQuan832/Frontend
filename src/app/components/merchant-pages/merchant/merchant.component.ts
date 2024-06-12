@@ -21,11 +21,13 @@ export class MerchantComponent {
         this.getMerchantList();
     }
     getMerchantList() {
-        this.merchantService.getAllMerchant({ isApproved: true }).subscribe({
-            next: (data) => {
-                this.listMerchant = data;
-            },
-        });
+        this.merchantService
+            .getAllMerchant({ isApproved: true, pageNumber: 1 })
+            .subscribe({
+                next: (data) => {
+                    this.listMerchant = data;
+                },
+            });
     }
 
     onMerchantSelected(merchant) {

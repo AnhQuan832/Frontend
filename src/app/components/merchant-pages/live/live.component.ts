@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BaseComponent } from 'src/app/base.component';
 import { ProductService } from 'src/app/services/product.service';
 import { StreamService } from 'src/app/services/stream.service';
@@ -12,13 +12,14 @@ import {
 } from 'openvidu-browser';
 import { StreamVideoComponent } from '../../shared/stream-video/stream-video.component';
 import { MenuItem } from 'primeng/api';
+import { ToastMessageService } from 'src/app/services/toast-message.service';
 
 @Component({
     selector: 'app-live',
     templateUrl: './live.component.html',
     styleUrls: ['./live.component.scss'],
 })
-export class LiveComponent extends BaseComponent implements OnInit {
+export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     @ViewChild('streamVideo', { static: false })
     streamVideo: StreamVideoComponent;
     listAllProduct = [];
@@ -33,11 +34,20 @@ export class LiveComponent extends BaseComponent implements OnInit {
     selectedProduct = null;
     indexSelectedProduct = 0;
     isLiveSuccess: boolean = false;
+    listComment = [];
+    price = 200000000;
+    coverImgFile: FileList;
+    isSelectTitleLive = true;
+    liveTitle;
     constructor(
         private productService: ProductService,
-        private streamService: StreamService
+        private streamService: StreamService,
+        private messageService: ToastMessageService
     ) {
         super();
+    }
+    ngOnDestroy(): void {
+        this.shutDownLive();
     }
     ngOnInit(): void {
         this.mySessionId = this.getUserInfo().merchantId;
@@ -96,8 +106,78 @@ export class LiveComponent extends BaseComponent implements OnInit {
 
         this.session = this.OV.initSession();
 
-        this.session.on('exception', (exception) => {
-            console.warn(exception);
+        this.session.on('exception', (event) => {
+            if (event.name === 'ICE_CONNECTION_FAILED') {
+                var stream = event.origin;
+                console.warn('Stream ' + stream + ' broke!');
+                console.warn('Reconnection process automatically started');
+                this.messageService.showMessage('', 'Disconnected', 'error');
+            }
+            if (event.name === 'ICE_CONNECTION_DISCONNECTED') {
+                var stream = event.origin;
+                console.warn('Stream ' + stream + ' disconnected!');
+                console.warn(
+                    'Giving it some time to be restored. If not possible, reconnection process will start'
+                );
+                this.messageService.showMessage('', 'Disconnected', 'error');
+            }
+        });
+
+        this.session.on('reconnecting', () =>
+            this.messageService.showMessage(
+                '',
+                'Oops! Trying to reconnect to the session',
+                'error'
+            )
+        );
+        this.session.on('reconnected', () =>
+            this.messageService.showMessage(
+                '',
+                'Reconnected to the session',
+                'success'
+            )
+        );
+        this.session.on('sessionDisconnected', (event) => {
+            if (event.reason === 'networkDisconnect') {
+                this.messageService.showMessage(
+                    '',
+                    'You lost your connection to the session',
+                    'error'
+                );
+            } else {
+                // Disconnected from the session for other reason than a network drop
+            }
+        });
+
+        this.session.onParticipantJoined = (event) => {
+            console.log(event);
+            this.messageService.showMessage(
+                '',
+                'New participant joined',
+                'info'
+            );
+            this.streamVideo.onParticipantChange(
+                true,
+                JSON.parse(event.metadata)
+            );
+        };
+
+        this.session.onParticipantLeft = (event) => {
+            console.log(event);
+            // this.streamVideo.onParticipantChange(
+            //     true,
+            //     JSON.parse(event.metadata)
+            // );
+        };
+        this.session.on('signal', (event) => {
+            const data = JSON.parse(event.data);
+            const cmt = {
+                userName: data.userFullName,
+                userAvatar: data.userAvatar,
+                content: data.content,
+            };
+            this.listComment.push(cmt);
+            this.autoScrollToNewMessage();
         });
 
         this.getStreamToken().then((token) => {
@@ -130,10 +210,19 @@ export class LiveComponent extends BaseComponent implements OnInit {
                 });
         });
     }
-    async getStreamToken(id?): Promise<string> {
+    async getStreamToken(): Promise<string> {
         const sessionId = await this.streamService.createSession(
-            this.mySessionId
+            this.createLiveData()
         );
+        setTimeout(() => {
+            if (!sessionId) {
+                this.messageService.showMessage(
+                    '',
+                    'Can not connect to Server. Please try again!',
+                    'error'
+                );
+            }
+        }, 3000);
         return await this.streamService.createToken(sessionId);
     }
 
@@ -148,8 +237,112 @@ export class LiveComponent extends BaseComponent implements OnInit {
     }
 
     shutDownLive() {
-        this.isOnLive = false;
+        this.isLiveSuccess = false;
         this.session.disconnect();
         this.session.unpublish(this.mainStreamManager[0]);
+    }
+
+    autoScrollToNewMessage() {
+        const cmtContent = document.getElementById('comments');
+        cmtContent.scrollTop = cmtContent.scrollHeight;
+    }
+
+    getProductDetail(product) {
+        this.productService.getProductDetail(product.productId).subscribe({
+            next: (res) => {
+                product['detail'] = res;
+                product.detail['listColor'] = [];
+                product.detail['listSize'] = [];
+                product.isSelected = true;
+                (product.detail?.varieties || []).forEach((item) => {
+                    // if (item.type === 'SIZE')
+                    //     product.detail['listColor'].push({
+                    //         ...item,
+                    //         active: true,
+                    //     });
+                    // else
+                    //     product.detail['listSize'].push({
+                    //         ...item,
+                    //         active: true,
+                    //     });
+                    item['liveStock'] = item.stockAmount;
+                    item['isSelected'] = true;
+                    item['livePrice'] = item.price;
+                });
+            },
+        });
+    }
+
+    showProductDetail(product) {
+        // product['isSelected'] = !product['isSelected'];
+        if (!product.detail) this.getProductDetail(product);
+    }
+
+    onChangeQty(event) {
+        console.log(event);
+    }
+
+    editWholeVariety(product, value) {
+        if (product.detail)
+            product.detail.varieties.forEach((item) => {
+                if (typeof item.price === 'number') item.price = value;
+                else item.isSelected = value;
+            });
+        else {
+            this.getProductDetail(product);
+            setTimeout(() => {
+                product.detail.varieties.forEach((item) => {
+                    if (typeof item.price === 'number') item.price = value;
+                    else item.isSelected = value;
+                });
+            }, 1000);
+        }
+    }
+
+    getSelectedVariety() {
+        let data = [];
+        this.listAllProduct.forEach((item) => {
+            if (item.isSelected)
+                item.detail.varieties.forEach((variety) => {
+                    if (variety.isSelected) {
+                        const varietyData = {
+                            livePrice: variety.livePrice,
+                            liveStock: variety.liveStock,
+                            varietyId: variety.varietyId,
+                        };
+                        data.push(varietyData);
+                    }
+                });
+        });
+        return data;
+    }
+    createLiveData() {
+        const formData = new FormData();
+        const data = this.getSelectedVariety();
+        const request = {
+            liveSessionTitle: this.liveTitle,
+            liveItemList: data,
+        };
+        this.prepareFormData(formData, request, 'request', true);
+
+        this.prepareFormData(
+            formData,
+            this.coverImgFile[0],
+            'thumbnail',
+            false
+        );
+
+        console.log(formData.get('request'));
+        return formData;
+    }
+
+    onSelectCoverImg(event: any) {
+        this.coverImgFile = event.target.files;
+        const imgInput = <HTMLImageElement>document.getElementById('coverImg');
+        imgInput.src = URL.createObjectURL(this.coverImgFile[0]);
+    }
+
+    nextStep() {
+        this.isSelectTitleLive = false;
     }
 }

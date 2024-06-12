@@ -1,3 +1,55 @@
 .display-none {
     display: none;
 }
+
+.max-height-60 {
+    max-height: 60vh;
+    overflow: auto;
+}
+
+.height-60 {
+    max-height: 60vh;
+    min-height: 60vh;
+    height: 60vh;
+
+    overflow: auto;
+}
+
+.attribute {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    h5 {
+        width: 80px;
+    }
+    > div {
+        border-radius: 2px;
+        border: solid 1px;
+        padding: 0.5rem;
+        width: fit-content;
+        min-width: 40px;
+        text-align: center;
+        cursor: pointer;
+        height: 36px;
+    }
+    .active {
+        border: solid 1px #ff9b00;
+        color: #ff9b00;
+    }
+    .disabled {
+        border: solid 1px #949390;
+        color: #949390;
+        cursor: default;
+    }
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+input[type="file"] {
+    display: none;
+}

@@ -143,6 +143,11 @@ export const API = {
     SEARCH: {
         ENDPOINT: API_URL + 'search/global',
     },
+    LIVE: {
+        END_POINT: {
+            SESSION: API_URL + 'sessions',
+        },
+    },
 };
 
 export const ATTRIBUTED = {

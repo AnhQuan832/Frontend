@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class QuantityComponent implements OnInit {
     @Input() quantity: any;
-    @Input() min: number = 1;
+    @Input() min: number = 0;
     @Input() max: number = 999999;
 
     @Output() onQuantity: EventEmitter<number> = new EventEmitter();
@@ -35,6 +35,10 @@ export class QuantityComponent implements OnInit {
 
         if (value === '0') {
             value = '1';
+        } else if (Number(value) > this.max) {
+            value = this.max.toString();
+        } else if (Number(value) < this.min) {
+            value = this.min.toString();
         }
 
         this.quantity = value;

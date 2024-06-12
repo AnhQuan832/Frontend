@@ -70,6 +70,10 @@ export class StreamVideoComponent
                 this.autoScrollToNewMessage();
             });
         }
+
+        if (changes['session.connection.localOptions.value'] && this.session) {
+            console.log(this.session.connection.localOptions.value.length);
+        }
     }
 
     ngAfterViewInit() {
@@ -119,5 +123,9 @@ export class StreamVideoComponent
     autoScrollToNewMessage() {
         const cmtContent = document.getElementById('comments');
         cmtContent.scrollTop = cmtContent.scrollHeight;
+    }
+
+    onParticipantChange(isJoin = true, info?) {
+        console.log(info);
     }
 }
