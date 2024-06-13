@@ -39,14 +39,28 @@ export class StreamService {
 
     createToken(sessionId, role = 'PUBLISHER') {
         return lastValueFrom(
-            this.http.post(
-                API.LIVE.END_POINT.SESSION + `/${sessionId + '/connections'}`,
-                { role },
-                {
-                    headers: this.storageService.getHttpHeader(),
-                    responseType: 'text',
-                }
-            )
+            this.http
+                .post(
+                    API.LIVE.END_POINT.SESSION +
+                        `/${sessionId + '/connections'}`,
+                    { role },
+                    {
+                        headers: this.storageService.getHttpHeader(),
+                    }
+                )
+                .pipe(
+                    map((data: any) => {
+                        if (
+                            data.meta.statusCode ===
+                            API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
+                        ) {
+                            return data.data.data;
+                        } else return false;
+                    }),
+                    catchError((err) => {
+                        throw new Error(err);
+                    })
+                )
         );
     }
 
@@ -57,7 +71,6 @@ export class StreamService {
                 {},
                 {
                     headers: this.storageService.getHttpHeader(),
-                    responseType: 'text',
                 }
             )
         );

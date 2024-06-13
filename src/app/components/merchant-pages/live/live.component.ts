@@ -256,8 +256,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
 
     shutDownLive() {
         this.isLiveSuccess = false;
-        this.session.disconnect();
-        this.session.unpublish(this.mainStreamManager[0]);
+        this.streamService.suspendSession(this.mySessionId);
     }
 
     autoScrollToNewMessage() {
