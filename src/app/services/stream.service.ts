@@ -27,7 +27,7 @@ export class StreamService {
                             data.meta.statusCode ===
                             API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
                         ) {
-                            return data.data.sessionKey;
+                            return data.data.sessionId;
                         } else return false;
                     }),
                     catchError((err) => {
@@ -52,8 +52,8 @@ export class StreamService {
 
     suspendSession(sessionId) {
         return lastValueFrom(
-            this.http.post(
-                API.LIVE.END_POINT.SESSION + `${sessionId + '/end'}`,
+            this.http.put(
+                API.LIVE.END_POINT.SESSION + `/${sessionId + '/end'}`,
                 {},
                 {
                     headers: this.storageService.getHttpHeader(),

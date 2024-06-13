@@ -13,6 +13,7 @@ import {
 import { StreamVideoComponent } from '../../shared/stream-video/stream-video.component';
 import { MenuItem } from 'primeng/api';
 import { ToastMessageService } from 'src/app/services/toast-message.service';
+import { findElements } from '@fullcalendar/core/internal';
 
 @Component({
     selector: 'app-live',
@@ -40,6 +41,8 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     isSelectTitleLive = true;
     liveTitle;
     isLoading: boolean = false;
+    first = 1;
+    totalRecords = 1;
     constructor(
         private productService: ProductService,
         private streamService: StreamService,
@@ -81,7 +84,11 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     getProductForLive() {
         const info = this.getUserInfo();
         this.productService
-            .getAllProduct({ merchantId: info.merchantId })
+            .getAllProduct({
+                merchantId: info.merchantId,
+                page: this.first,
+                size: 10,
+            })
             .subscribe({
                 next: (res) => {
                     this.listAllProduct = res;
@@ -91,6 +98,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
                         isPinned: false,
                     }));
                     this.listProductForLive[0].isPinned = true;
+                    this.totalRecords = this.listAllProduct[0].totalRecord || 0;
                 },
                 error: (err) => {
                     console.log(err);
@@ -220,17 +228,20 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
         });
     }
     async getStreamToken(): Promise<string> {
-        const sessionId = await this.streamService.createSession(
+        this.mySessionId = await this.streamService.createSession(
             this.createLiveData()
         );
-        if (!sessionId) {
+        if (!this.mySessionId) {
             this.messageService.showMessage(
                 '',
                 'Can not connect to Server. Please try again!',
                 'error'
             );
         }
-        return await this.streamService.createToken(sessionId, 'PUBLISHER');
+        return await this.streamService.createToken(
+            this.mySessionId,
+            'PUBLISHER'
+        );
     }
 
     removeHighlight(products, index?) {
@@ -351,5 +362,9 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
 
     nextStep() {
         this.isSelectTitleLive = false;
+    }
+
+    onPageChange(event) {
+        console.log(event);
     }
 }

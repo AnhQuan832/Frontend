@@ -145,7 +145,7 @@ export const API = {
     },
     LIVE: {
         END_POINT: {
-            SESSION: API_URL + 'sessions',
+            SESSION: API_URL + 'live/sessions',
         },
     },
 };

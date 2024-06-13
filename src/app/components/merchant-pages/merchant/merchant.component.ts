@@ -10,7 +10,8 @@ import { StorageService } from 'src/app/services/storage.service';
 })
 export class MerchantComponent {
     listMerchant: any;
-
+    first: number = 1;
+    totalRecords: number = 1;
     constructor(
         private merchantService: MerchantService,
         private storageService: StorageService,
@@ -35,5 +36,9 @@ export class MerchantComponent {
         this.router.navigate([
             `merchant/merchant/detail/${merchant.merchantId}`,
         ]);
+    }
+
+    onPageChange(event) {
+        console.log(event);
     }
 }

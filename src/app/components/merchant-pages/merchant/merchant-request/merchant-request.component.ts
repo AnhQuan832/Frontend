@@ -11,6 +11,8 @@ import { StorageService } from 'src/app/services/storage.service';
 export class MerchantRequestComponent {
     listMerchant: any;
 
+    first: number = 1;
+    totalRecords: number = 1;
     constructor(
         private merchantService: MerchantService,
         private storageService: StorageService,
@@ -21,9 +23,15 @@ export class MerchantRequestComponent {
         this.getMerchantList();
     }
     getMerchantList() {
-        this.merchantService.getAllMerchant().subscribe({
+        const params = { isApproved: false, offset: this.first, limit: 10 };
+        this.merchantService.getAllMerchant(params).subscribe({
             next: (data) => {
                 this.listMerchant = data;
+                // this.listMerchant.forEach((merchant) => {
+                //     if (!merchant.rating) {
+                //         merchant.rating = 0;
+                //     }
+                // });
             },
         });
     }
@@ -33,5 +41,9 @@ export class MerchantRequestComponent {
         this.router.navigate([
             `merchant/merchant/detail/${merchant.merchantId}`,
         ]);
+    }
+
+    onPageChange(event) {
+        console.log(event);
     }
 }

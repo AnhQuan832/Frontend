@@ -3,33 +3,29 @@
         <div class="pet-info my-auto">
             <h1 class="ps-4">{{ merchantDetail.shelterName }}</h1>
             <div class="basic-info ps-4">
-                <h5><b>Email: </b> {{ merchantDetail.representativeEmailAddress }}</h5>
+                <h5><b>Name: </b> {{ merchantDetail.merchantName }}</h5>
                 <h5>
-                    <b>Số điện thoại: </b>
-                    {{ merchantDetail.shelterPhoneNo }}
+                    <b>Phone: </b>
+                    {{ merchantDetail.phoneNumber }}
                 </h5>
 
                 <h5>
-                    <b>Địa chỉ: </b>
+                    <b>Address: </b>
                     {{
-                    merchantDetail.unitNoAndStreet +
+                    merchantDetail.wardName +
                     ", " +
-                    merchantDetail.ward +
+                    merchantDetail.districtName +
                     ", " +
-                    merchantDetail.district +
-                    ", " +
-                    merchantDetail.city
+                    merchantDetail.cityName
                     }}
                 </h5>
                 <h5>
-                    <b>Mạng xã hội: </b>
-                    <a href="{{ merchantDetail.representativeFacebookLink }}">{{
-                        merchantDetail.representativeFacebookLink
-                        }}</a>
+                    <b>Created Date: </b>
+                    {{ merchantDetail.createdDate | date: "dd/MM/yyyy" }}
                 </h5>
-                <h5><b>Thông tin chứng chỉ: </b></h5>
-                <h6 style="font-weight: 400" *ngIf="merchantDetail.relatedDocuments.length == 0">
-                    (Chưa có chứng chỉ nào)
+                <h5><b>Related Document or License: </b></h5>
+                <h6 class="mt-0" style="font-weight: 400" *ngIf="merchantDetail.relatedDocuments.length == 0">
+                    (No document or License yet)
                 </h6>
             </div>
             <div class="doc-container ps-4 d-flex gap-3">
@@ -53,18 +49,19 @@
 
         <div class="button ps-4 d-flex gap-3">
             <button class="btn btn-primary" (click)="acceptRequest()">
-                Chấp nhận
+                Accept
             </button>
 
-            <button class="btn btn-secondary" (click)="rejectRequest()">
-                Từ chối
+            <button class="btn btn-secondary " (click)="rejectRequest()">
+                Reject
             </button>
         </div>
     </div>
-    <!-- <div class="logo col-sm-4 d-flex justify-content-center align-items-center flex-column">
-        <img src="{{ merchantDetail.shelterLogo }}" alt="" class="rounded-circle" />
-        <button class="btn btn-primary" (click)="contactRequestor()">
+    <div class="logo col-sm-4 d-flex justify-content-center align-items-center flex-column">
+        <img src="{{ merchantDetail.merchantAvatar }}" alt="" class="rounded-circle"
+            onerror="this.onerror=null;this.src='/assets/no_user.png';" />
+        <!-- <button class="btn btn-primary" (click)="contactRequestor()">
             Liên hệ
-        </button>
-    </div> -->
+        </button> -->
+    </div>
 </div>

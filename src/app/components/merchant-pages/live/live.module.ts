@@ -13,6 +13,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
     declarations: [LiveComponent],
@@ -30,6 +31,7 @@ import { InputTextModule } from 'primeng/inputtext';
         FormsModule,
         ReactiveFormsModule,
         InputTextModule,
+        PaginatorModule,
     ],
 })
 export class LiveModule {}

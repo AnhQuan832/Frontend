@@ -175,6 +175,8 @@
                                 </tr>
                             </ng-template>
                         </p-table>
+                        <p-paginator [alwaysShow]="false" (onPageChange)="onPageChange($event)" [first]="first"
+                            [rows]="10" [totalRecords]="totalRecords"></p-paginator>
                     </div>
                 </div>
                 <div *ngIf="isLiveSuccess" class="col-12 xl:col-4">

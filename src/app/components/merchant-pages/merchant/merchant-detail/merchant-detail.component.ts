@@ -22,6 +22,15 @@ export class MerchantDetailComponent extends BaseComponent implements OnInit {
     getMerchantDetail() {
         this.merchantDetail =
             this.storageService.getItemLocal('merchantDetail');
+        console.log(location.pathname.split('/'));
+        const merchantId = window.location.href.slice(
+            window.location.href.lastIndexOf('/') + 1
+        );
+        this.merchantService.getMerchantDetail(merchantId).subscribe({
+            next: (res) => {
+                this.merchantDetail = res;
+            },
+        });
     }
 
     urlToFileType(url: string): string {

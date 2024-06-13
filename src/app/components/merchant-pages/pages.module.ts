@@ -18,9 +18,7 @@ import { MerchantComponent } from './merchant/merchant.component';
 import { AdminLiveComponent } from './admin-live/admin-live.component';
 
 @NgModule({
-    declarations: [
-    AdminLiveComponent
-  ],
+    declarations: [],
     imports: [
         CommonModule,
         PagesRoutingModule,

@@ -35,11 +35,14 @@ export class ProductComponent {
     rowsPerPageOptions = [5, 10, 20];
 
     ref: DynamicDialogRef;
+
+    first: number = 1;
+    totalRecords: number = 1;
     constructor(
         private productService: ProductService,
         private router: Router,
         private dialogService: DialogService,
-        private storageSerive: StorageService,
+        private storageService: StorageService,
         private messageService: MessageService,
         private layoutService: LayoutService
     ) {}
@@ -92,7 +95,7 @@ export class ProductComponent {
     }
 
     onRowSelect(data) {
-        this.storageSerive.setItemLocal('currentProduct', data);
+        this.storageService.setItemLocal('currentProduct', data);
         this.router.navigate([
             `merchant/product/product-detail/${data.productId}`,
         ]);
@@ -217,5 +220,9 @@ export class ProductComponent {
             (event.target as HTMLInputElement).value,
             'contains'
         );
+    }
+
+    onPageChange(event) {
+        console.log(event);
     }
 }

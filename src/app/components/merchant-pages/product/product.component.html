@@ -124,6 +124,8 @@
                     </tr>
                 </ng-template>
             </p-table>
+            <p-paginator [alwaysShow]="false" (onPageChange)="onPageChange($event)" [first]="first" [rows]="10"
+                [totalRecords]="totalRecords"></p-paginator>
         </div>
 
         <p-dialog [(visible)]="deleteProductDialog" header="Confirm" [modal]="true" [style]="{ width: '450px' }">
