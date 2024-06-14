@@ -34,7 +34,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     items: MenuItem[];
     selectedProduct = null;
     indexSelectedProduct = 0;
-    isLiveSuccess: boolean = true;
+    isLiveSuccess: boolean = false;
     listComment = [];
     price = 200000000;
     coverImgFile: FileList;
