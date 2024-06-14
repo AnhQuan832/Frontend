@@ -34,7 +34,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     items: MenuItem[];
     selectedProduct = null;
     indexSelectedProduct = 0;
-    isLiveSuccess: boolean = false;
+    isLiveSuccess: boolean = true;
     listComment = [];
     price = 200000000;
     coverImgFile: FileList;
@@ -355,6 +355,14 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
 
     onSelectCoverImg(event: any) {
         this.coverImgFile = event.target.files;
+        if (this.coverImgFile[0].size > 1048576) {
+            this.messageService.showMessage(
+                '',
+                'Image size must be less than 1MB',
+                'error'
+            );
+            return;
+        }
         const imgInput = <HTMLImageElement>document.getElementById('coverImg');
         imgInput.src = URL.createObjectURL(this.coverImgFile[0]);
     }

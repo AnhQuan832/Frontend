@@ -16,6 +16,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { VoucherManagementComponent } from './voucher-management/voucher-management.component';
 import { MerchantComponent } from './merchant/merchant.component';
 import { AdminLiveComponent } from './admin-live/admin-live.component';
+import { MerchantProfileComponent } from './merchant-profile/merchant-profile.component';
 
 @NgModule({
     declarations: [],

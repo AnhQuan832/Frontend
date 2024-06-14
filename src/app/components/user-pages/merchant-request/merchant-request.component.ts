@@ -3,15 +3,18 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { BaseComponent } from 'src/app/base.component';
 import { FileHandler } from 'src/app/model/FileHandler';
 import { AddressService } from 'src/app/services/address.service';
 import { MerchantService } from 'src/app/services/merchant.service';
+import { ToastMessageService } from 'src/app/services/toast-message.service';
 
 @Component({
     selector: 'app-merchant-request',
     templateUrl: './merchant-request.component.html',
     styleUrls: ['./merchant-request.component.scss'],
+    providers: [DialogService],
 })
 export class MerchantRequestComponent extends BaseComponent {
     avatarFile: FileList;
@@ -25,13 +28,15 @@ export class MerchantRequestComponent extends BaseComponent {
     selectedDistrict: any;
     selectedWard: any;
     relatedDoc: FileHandler[] = [];
+    ref: DynamicDialogRef;
     constructor(
         private builder: FormBuilder,
         private router: Router,
-        private messageService: MessageService,
+        private messageService: ToastMessageService,
         private apiAddress: AddressService,
         private merchantService: MerchantService,
-        private sanitizer: DomSanitizer
+        private sanitizer: DomSanitizer,
+        private dialogService: DialogService
     ) {
         super();
     }
@@ -134,17 +139,20 @@ export class MerchantRequestComponent extends BaseComponent {
         this.merchantService.createMerchantRequest(formData).subscribe({
             next: (res: any) => {
                 if (res) {
-                    this.messageService.add({
-                        severity: 'success',
-                        summary: 'Success',
-                        detail: 'Request sent successfully',
-                    });
+                    this.messageService.showMessage(
+                        'Success',
+                        'Request sent successfully',
+                        'success'
+                    );
+                    setTimeout(() => {
+                        this.ref.close();
+                    }, 1000);
                 } else {
-                    this.messageService.add({
-                        severity: 'error',
-                        summary: 'Error',
-                        detail: 'Request failed',
-                    });
+                    this.messageService.showMessage(
+                        'Failed',
+                        'Request failed',
+                        'error'
+                    );
                 }
             },
         });
@@ -216,5 +224,12 @@ export class MerchantRequestComponent extends BaseComponent {
         this.requestForm.patchValue({
             cityName: this.selectedProvince.provName,
         });
+    }
+
+    onFileRemove(event) {
+        this.relatedDoc = this.relatedDoc.filter((item) => {
+            return item.file.name !== event.file.name;
+        });
+        console.log(event);
     }
 }

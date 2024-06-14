@@ -45,6 +45,7 @@ export class NavBarComponent
             command: () => {
                 localStorage.clear();
                 this.loginCpn.signOut();
+
                 this.router.navigate(['/auth/login']);
             },
         },
@@ -59,9 +60,13 @@ export class NavBarComponent
         private loginCpn: LoginComponent
     ) {
         super();
+        router.events.subscribe((val) => {
+            this.isLogin = !!this.getToken();
+        });
     }
     ngOnInit(): void {
         this.isLogin = !!this.getToken();
+        this.checkPageAuth();
     }
     ngAfterViewInit(): void {
         this.setActiveNav();
@@ -137,5 +142,22 @@ export class NavBarComponent
 
     toChatPage() {
         this.router.navigate(['/user/message']);
+    }
+
+    checkPageAuth() {
+        const role = this.getRole();
+        let page;
+        switch (role) {
+            case 'ROLE_MERCHANT':
+                page = 'merchant';
+                break;
+            case 'ROLE_ADMIN':
+                page = 'admin';
+                break;
+            default:
+                page = 'user';
+                break;
+        }
+        this.router.navigate([`/${page}`]);
     }
 }

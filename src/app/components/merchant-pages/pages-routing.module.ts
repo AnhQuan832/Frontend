@@ -52,6 +52,13 @@ import { RouterModule } from '@angular/router';
                         (m) => m.AdminLiveModule
                     ),
             },
+            {
+                path: 'profile',
+                loadChildren: () =>
+                    import('./merchant-profile/merchant-profile.module').then(
+                        (m) => m.MerchantProfileModule
+                    ),
+            },
             { path: '**', redirectTo: '/notfound' },
         ]),
     ],

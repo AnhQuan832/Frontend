@@ -76,6 +76,27 @@ export class StreamService {
         );
     }
 
+    getAllStream(params) {
+        return this.http
+            .get(API.LIVE.END_POINT.SESSION, {
+                headers: this.storageService.getHttpHeader(),
+                params: params,
+            })
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return data.data.data.content;
+                    } else return false;
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
+    }
+
     // createSession(sessionId) {
     //     return this.http
     //         .post(

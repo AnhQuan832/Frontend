@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
+import { Menu } from 'primeng/menu';
 import { MerchantService } from 'src/app/services/merchant.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { ToastMessageService } from 'src/app/services/toast-message.service';
 
 @Component({
     selector: 'app-merchant-request',
@@ -9,18 +12,22 @@ import { StorageService } from 'src/app/services/storage.service';
     styleUrls: ['./merchant-request.component.scss'],
 })
 export class MerchantRequestComponent {
-    listMerchant: any;
+    listMerchant: any = [];
 
     first: number = 1;
     totalRecords: number = 1;
+    items: MenuItem[];
+    selectedMerchant: any;
     constructor(
         private merchantService: MerchantService,
         private storageService: StorageService,
-        private router: Router
+        private router: Router,
+        private messageService: ToastMessageService
     ) {}
 
     ngOnInit() {
         this.getMerchantList();
+        this.initMenuItems();
     }
     getMerchantList() {
         const params = { isApproved: false, offset: this.first, limit: 10 };
@@ -45,5 +52,50 @@ export class MerchantRequestComponent {
 
     onPageChange(event) {
         console.log(event);
+    }
+
+    initMenuItems() {
+        this.items = [
+            {
+                label: 'View Detail',
+                command: () => {
+                    this.onMerchantSelected(this.selectedMerchant);
+                },
+            },
+            {
+                label: 'Accept',
+                command: () => {
+                    this.merchantService
+                        .approveMerchant(this.selectedMerchant.merchantId)
+                        .subscribe({
+                            next: (data) => {
+                                this.getMerchantList();
+                                this.messageService.showMessage(
+                                    '',
+                                    'Merchant has been approved',
+                                    'success'
+                                );
+                            },
+                        });
+                },
+            },
+            {
+                label: 'Reject',
+                command: () => {
+                    this.merchantService
+                        .disapproveMerchant(this.selectedMerchant.merchantId)
+                        .subscribe({
+                            next: (data) => {
+                                this.getMerchantList();
+                                this.messageService.showMessage(
+                                    '',
+                                    'Merchant has been rejected',
+                                    'success'
+                                );
+                            },
+                        });
+                },
+            },
+        ];
     }
 }

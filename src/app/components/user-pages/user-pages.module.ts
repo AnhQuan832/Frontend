@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LandingRoutingModule } from './user-pages-routing.module';
 import { UserPageComponent } from './user-pages.component';
@@ -42,7 +42,9 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { LiveDetailComponent } from './live-detail/live-detail.component';
-
+import { HomeComponent } from './landing/landing.component';
+import { register } from 'swiper/element/bundle';
+register();
 @NgModule({
     imports: [
         CommonModule,
@@ -96,6 +98,8 @@ import { LiveDetailComponent } from './live-detail/live-detail.component';
         CompleteCheckoutComponent,
         MerchantRequestComponent,
         LiveDetailComponent,
+        HomeComponent,
     ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UserPageModule {}

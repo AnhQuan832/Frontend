@@ -45,7 +45,7 @@ export class LiveDetailComponent
     selectedSize: any;
     isDisableBuy: boolean = true;
     stream: StreamManager;
-    merchantId: string;
+    sessionKey: string;
     OV: OpenVidu;
     session: Session;
     subscribers: StreamManager;
@@ -68,10 +68,10 @@ export class LiveDetailComponent
     ngOnInit(): void {
         this.getAllProduct();
         this.isLogin = !!this.getToken();
-        this.merchantId = window.location.href.slice(
+        this.sessionKey = window.location.href.slice(
             window.location.href.lastIndexOf('/') + 1
         );
-        this.publishStream(this.merchantId);
+        this.publishStream(this.sessionKey);
     }
 
     getAllProduct() {
@@ -239,8 +239,12 @@ export class LiveDetailComponent
     }
 
     async getStreamToken(id): Promise<string> {
-        const sessionId = await this.streamService.createSession(id);
-        return await this.streamService.createToken(sessionId);
+        const token = await this.streamService.createToken(id);
+        if (!token) {
+            this.messageService.showMessage('', 'Live has ended', 'error');
+            setTimeout(() => {}, 1000);
+        }
+        return token;
     }
 
     publishStream(id) {
@@ -301,6 +305,11 @@ export class LiveDetailComponent
                         'There was an error connecting to the session:',
                         error.code,
                         error.message
+                    );
+                    this.messageService.showMessage(
+                        '',
+                        'Live has ended',
+                        'error'
                     );
                 });
             this.session.on('signal', (event) => {

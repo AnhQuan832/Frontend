@@ -10,6 +10,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { RatingModule } from 'primeng/rating';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import { RatingModule } from 'primeng/rating';
         FormsModule,
         ButtonModule,
         RatingModule,
+        MenuModule,
     ],
 })
 export class MerchantModule {}

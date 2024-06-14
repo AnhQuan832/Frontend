@@ -29,6 +29,11 @@ export class AppMenuComponent extends BaseComponent implements OnInit {
                 {
                     items: [
                         {
+                            label: 'Profile',
+                            icon: 'pi pi-fw pi-user',
+                            routerLink: ['/merchant/profile'],
+                        },
+                        {
                             label: 'Product',
                             icon: 'pi pi-fw pi-box',
                             routerLink: ['/merchant/product'],
@@ -38,14 +43,14 @@ export class AppMenuComponent extends BaseComponent implements OnInit {
                             icon: 'pi pi-fw pi-shopping-cart',
                             routerLink: ['/merchant/order'],
                         },
-                        {
-                            label: 'Voucher',
-                            icon: 'pi pi-fw pi-ticket',
-                            routerLink: ['/merchant/voucher'],
-                        },
+                        // {
+                        //     label: 'Voucher',
+                        //     icon: 'pi pi-fw pi-ticket',
+                        //     routerLink: ['/merchant/voucher'],
+                        // },
                         {
                             label: 'Live',
-                            icon: 'pi pi-fw pi-chart-line',
+                            icon: 'pi pi-fw pi-eye',
                             routerLink: ['/merchant/live'],
                         },
                         {

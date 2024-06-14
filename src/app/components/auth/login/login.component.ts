@@ -14,7 +14,6 @@ import {
 import { LoginService } from 'src/app/services/login.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { BaseComponent } from 'src/app/base.component';
-import { defer } from 'rxjs';
 
 @Component({
     selector: 'app-login',
@@ -87,6 +86,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     }
     public signOut(): void {
         this.socialLoginService.signOut();
+        this.refreshToken();
     }
     refreshToken(): void {
         this.socialLoginService.refreshAuthToken(

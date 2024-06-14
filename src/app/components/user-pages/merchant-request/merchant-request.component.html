@@ -31,7 +31,7 @@
                 <span class="m-4 my-2 w-100">
                     <h6 class="mb-1">Phone Number</h6>
                     <input class="w-100 rounded-2 p-2 mb-3" type="text" pKeyFilter="num" pInputText
-                        formControlName="phoneNumber" />
+                        formControlName="phoneNumber" maxlength="10" />
                 </span>
             </div>
             <!-- <div class="input-textbox d-flex justify-content-start w-100">
@@ -75,8 +75,9 @@
 
             <h6 class="mb-1" class="ms-4 mt-4">Business document</h6>
             <div class="d-flex justify-content-center w-100">
-                <p-fileUpload name="file[]" (onSelect)="onSelectFiles($event)" class="w-100 m-4 my-1" name="demo[]"
-                    [multiple]="true" [maxFileSize]="10000000" [showUploadButton]="false">
+                <p-fileUpload name="file[]" (onSelect)="onSelectFiles($event)" (onClear)="onFileRemove($event)"
+                    class="w-100 m-4 my-1" name="demo[]" [multiple]="true" [maxFileSize]="10000000"
+                    [showUploadButton]="false">
                     <ng-template pTemplate="content">
                         <!-- <ul *ngIf="uploadedFiles.length">
               <li *ngFor="let file of uploadedFiles">
@@ -100,7 +101,7 @@
             </div>
             <div class="btn-container d-flex justify-content-center pt-4 mb-4">
                 <button type="submit" class="btn btn-primary text-nowrap rounded-3" [disabled]="
-                        requestForm.invalid || relatedDoc.length === 0 || coverImgFile.length === 0 || avatarFile.length === 0
+                        requestForm.invalid || relatedDoc?.length === 0 || coverImgFile?.length === 0 || avatarFile?.length === 0
                     " (click)="sendRequest()">
                     Enroll
                 </button>

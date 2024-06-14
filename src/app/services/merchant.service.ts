@@ -77,7 +77,7 @@ export class MerchantService {
     approveMerchant(merchantId: string) {
         return this.http
             .put(
-                API.MERCHANT.END_POINT.APPROVE_MERCHANT + merchantId,
+                API.MERCHANT.END_POINT.APPROVE_MERCHANT + '/' + merchantId,
                 {},
                 {
                     headers: this.storageService.getHttpHeader(),
@@ -101,7 +101,7 @@ export class MerchantService {
     disapproveMerchant(merchantId: string) {
         return this.http
             .put(
-                API.MERCHANT.END_POINT.UN_APPROVE_MERCHANT + merchantId,
+                API.MERCHANT.END_POINT.UN_APPROVE_MERCHANT + '/' + merchantId,
                 {},
                 {
                     headers: this.storageService.getHttpHeader(),
@@ -125,7 +125,7 @@ export class MerchantService {
     suspendMerchant(merchantId: string) {
         return this.http
             .put(
-                API.MERCHANT.END_POINT.SUSPEND_MERCHANT + merchantId,
+                API.MERCHANT.END_POINT.SUSPEND_MERCHANT + '/' + merchantId,
                 {},
                 {
                     headers: this.storageService.getHttpHeader(),
@@ -149,7 +149,7 @@ export class MerchantService {
     unsuspendMerchant(merchantId: string) {
         return this.http
             .put(
-                API.MERCHANT.END_POINT.UNSUSPEND_MERCHANT + merchantId,
+                API.MERCHANT.END_POINT.UNSUSPEND_MERCHANT + '/' + merchantId,
                 {},
                 {
                     headers: this.storageService.getHttpHeader(),

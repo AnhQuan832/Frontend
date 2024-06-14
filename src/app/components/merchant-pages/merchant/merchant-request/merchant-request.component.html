@@ -1,7 +1,8 @@
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
-            <p-table #dt [value]="listMerchant" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="[
+            <p-table #dt [value]="listMerchant" responsiveLayout="scroll" [rows]="10" [lazy]="true"
+                [globalFilterFields]="[
                                 'name',
                                 'price',
                                 'brand.name',
@@ -33,7 +34,7 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-merchant>
-                    <tr (click)="onMerchantSelected(merchant)">
+                    <tr>
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Name</span>
                             {{ merchant.merchantId }}
@@ -63,9 +64,10 @@
 
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil"
-                                    class="p-button-rounded p-button-success mr-2"
-                                    (click)="onRowSelect(merchant)"></button>
+                                <button pButton pRipple icon="pi pi-ellipsis-h"
+                                    class="p-button-rounded p-button-text mr-2"
+                                    (click)="selectedMerchant = merchant; menu.toggle($event)"></button>
+                                <p-menu #menu [model]="items" [popup]="true" appendTo="body"></p-menu>
                             </div>
                         </td>
                     </tr>

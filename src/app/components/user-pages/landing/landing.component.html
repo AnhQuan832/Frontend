@@ -1,194 +1,25 @@
 <div class="main-content">
     <div class="content">
-        <section id="featured">
-            <div class="main">
-                <div class="live-image">
-                    <img src="https://plus.unsplash.com/premium_photo-1684529265466-38a66d9e9092?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                        alt="Gameplay" />
-                    <div class="live-icon">LIVE</div>
-                </div>
-                <div class="featured-info">
-                    <div class="header">
-                        <div class="img-cropper">
-                            <img src="https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
-                                alt="Profile" />
-                        </div>
-                        <div class="info-section">
-                            <p class="featured-name">Old Spice Shop</p>
-                            <div class="viewers">221 viewers</div>
-                        </div>
-                    </div>
-                    <!-- <div class="tags">
-                        <div class="live-lang">FPS</div>
-                        <div class="live-lang">Battle Roayle</div>
-                    </div>
-                    <p class="summary">
-                        We are shooting for these wins today! I know we can do
-                        it! Check out my stream and hang out as I climb the
-                        ranks!
-                    </p> -->
-                </div>
-            </div>
-            <!-- <div class="left1">
-                <div class="featured-content">
-                    <i class="bi bi-chevron-left"></i>
-                    <img src="https://plus.unsplash.com/premium_photo-1684529265466-38a66d9e9092?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                        alt="Channel" class="featured-channel" />
-                </div>
-            </div>
-            <div class="left2">
-                <div class="featured-content">
-                    <img src="https://i.ytimg.com/vi/eLQGVkuv8oo/maxresdefault.jpg" alt="Gameplay"
-                        class="featured-gameplay" />
-                    <img src="https://plus.unsplash.com/premium_photo-1684529265466-38a66d9e9092?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                        alt="Channel" class="featured-channel" />
-                </div>
-            </div>
-            <div class="right2">
-                <div class="featured-content">
-                    <img src="https://i0.wp.com/coin-drop.com/wp-content/uploads/Dying-Light-2-1-1.png?resize=1400%2C791"
-                        alt="Gameplay" class="featured-gameplay" />
-                    <img src="https://plus.unsplash.com/premium_photo-1684529265466-38a66d9e9092?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                        alt="Channel" class="featured-channel" />
-                </div>
-            </div>
-            <div class="right1">
-                <div class="featured-content">
-                    <i class="bi bi-chevron-right"></i>
-                    <img src="https://plus.unsplash.com/premium_photo-1684529265466-38a66d9e9092?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                        alt="Channel" class="featured-channel" />
-                </div>
-            </div> -->
-        </section>
         <h2>Recommended live channels</h2>
         <section class="recommended-live">
-            <div id="live-channels">
-                <div class="live-channel" (click)="onLiveClick(123)">
-                    <div class="live-image">
-                        <div class="live-icon">LIVE</div>
-                        <div class="live-views">8.2k viewers</div>
-                        <img src="https://plus.unsplash.com/premium_photo-1684529265466-38a66d9e9092?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                            alt="Gameplay" class="thumbnail" />
+            <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" navigation="true"
+                space-between="30" centered-slides="true" autoplay-delay="2500" rewind="true"
+                autoplay-disable-on-interaction="false">
+                <swiper-slide *ngFor="let stream of listStream" class="live-slide cursor-pointer"
+                    (click)="onLiveClick(stream)">
+                    <div class="d-flex">
+                        <img src="{{stream.thumbnail}}" alt="">
+                        <h5>{{stream.title}}</h5>
                     </div>
-                    <div class="live-info">
-                        <div class="img-cropper">
-                            <img src="https://images.unsplash.com/photo-1474260295919-57362ec1d17c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-                                alt="Profile img" />
-                        </div>
-                        <div class="live-text">
-                            <p class="live-title">Marshell Shop</p>
-                            <p class="live-user">50 minutes</p>
-
-
-                        </div>
-                        <div class="live-dots">
-                            <div class="rec-live-dot"></div>
-                            <div class="rec-live-dot"></div>
-                            <div class="rec-live-dot"></div>
-                        </div>
-                    </div>
+                </swiper-slide>
+                <div class="autoplay-progress" slot="container-end">
+                    <svg viewBox="0 0 48 48">
+                        <circle cx="24" cy="24" r="20"></circle>
+                    </svg>
+                    <span></span>
                 </div>
-                <div class="live-channel">
-                    <div class="live-image">
-                        <div class="live-icon">LIVE</div>
-                        <div class="live-views">8.2k viewers</div>
-                        <img src="https://plus.unsplash.com/premium_photo-1684529265466-38a66d9e9092?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                            alt="Gameplay" class="thumbnail" />
-                    </div>
-                    <div class="live-info">
-                        <div class="img-cropper">
-                            <img src="https://images.unsplash.com/photo-1474260295919-57362ec1d17c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-                                alt="Profile img" />
-                        </div>
-                        <div class="live-text">
-                            <p class="live-title">Brian</p>
-                            <p class="live-user">50 minutes</p>
+            </swiper-container>
 
-
-                        </div>
-                        <div class="live-dots">
-                            <div class="rec-live-dot"></div>
-                            <div class="rec-live-dot"></div>
-                            <div class="rec-live-dot"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="live-channel">
-                    <div class="live-image">
-                        <div class="live-icon">LIVE</div>
-                        <div class="live-views">8.2k viewers</div>
-                        <img src="https://plus.unsplash.com/premium_photo-1684529265466-38a66d9e9092?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                            alt="Gameplay" class="thumbnail" />
-                    </div>
-                    <div class="live-info">
-                        <div class="img-cropper">
-                            <img src="https://images.unsplash.com/photo-1474260295919-57362ec1d17c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-                                alt="Profile img" />
-                        </div>
-                        <div class="live-text">
-                            <p class="live-title">Marshell Shop</p>
-                            <p class="live-user">50 minutes</p>
-
-
-                        </div>
-                        <div class="live-dots">
-                            <div class="rec-live-dot"></div>
-                            <div class="rec-live-dot"></div>
-                            <div class="rec-live-dot"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="live-channel">
-                    <div class="live-image">
-                        <div class="live-icon">LIVE</div>
-                        <div class="live-views">8.2k viewers</div>
-                        <img src="https://plus.unsplash.com/premium_photo-1684529265466-38a66d9e9092?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                            alt="Gameplay" class="thumbnail" />
-                    </div>
-                    <div class="live-info">
-                        <div class="img-cropper">
-                            <img src="https://images.unsplash.com/photo-1474260295919-57362ec1d17c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-                                alt="Profile img" />
-                        </div>
-                        <div class="live-text">
-                            <p class="live-title">Marshell Shop</p>
-                            <p class="live-user">50 minutes</p>
-
-
-                        </div>
-                        <div class="live-dots">
-                            <div class="rec-live-dot"></div>
-                            <div class="rec-live-dot"></div>
-                            <div class="rec-live-dot"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="live-channel">
-                    <div class="live-image">
-                        <div class="live-icon">LIVE</div>
-                        <div class="live-views">8.2k viewers</div>
-                        <img src="https://plus.unsplash.com/premium_photo-1684529265466-38a66d9e9092?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                            alt="Gameplay" class="thumbnail" />
-                    </div>
-                    <div class="live-info">
-                        <div class="img-cropper">
-                            <img src="https://images.unsplash.com/photo-1474260295919-57362ec1d17c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-                                alt="Profile img" />
-                        </div>
-                        <div class="live-text">
-                            <p class="live-title">Marshell Shop</p>
-                            <p class="live-user">50 minutes</p>
-
-
-                        </div>
-                        <div class="live-dots">
-                            <div class="rec-live-dot"></div>
-                            <div class="rec-live-dot"></div>
-                            <div class="rec-live-dot"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </section>
         <div class="special-divider">
             <div class="line"></div>
