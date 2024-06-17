@@ -19,7 +19,7 @@
             <div class="reciepient rounded-3 m-1 p-2 d-flex align-items-center" *ngFor="let user of listUsers"
                 (click)="selectUser(user)" [id]="user.userId">
                 <div class="avatar">
-                    <img src="{{ user?.userAvatar }}" onerror="this.onerror=null;this.src='/assets/no_user.png';" alt=""
+                    <img src="{{ user?.userAvatar }}" onerror="this.onerror=null;this.src='assets/no_user.png';" alt=""
                         class="rounded-circle ms-2" />
                     <div class="unread-message rounded-circle" *ngIf="!user.isRead"></div>
                 </div>
@@ -46,8 +46,8 @@
             <p style="opacity: 0.7">Loading...</p>
         </div>
         <div class="chat-header p-2 m-1 rounded-3">
-            <img src="{{ currentUser.userAvatar }}" onerror="this.onerror=null;this.src='/assets/imgs/no_user.png';"
-                alt="" class="rounded-circle mx-2" />
+            <img src="{{ currentUser.userAvatar }}" onerror="this.onerror=null;this.src='/assets/no_user.png';" alt=""
+                class="rounded-circle mx-2" />
             <div class="name">{{ currentUser.userName }}</div>
         </div>
         <div class="chat-content" id="boxchat">
@@ -55,9 +55,9 @@
                 [ngClass]="{ 'sender-message': senderId === message.senderId }">
                 <img width="40px" height="40px" src="{{
             senderId === message.senderId
-              ? senderAvatar || '/assets/imgs/no_user.png'
-              : currentUser.userAvatar || '/assets/imgs/no_user.png'
-          }}" pBadge shape="circle" onerror="this.onerror=null;this.src='/assets/imgs/no_user.png';"
+              ? senderAvatar || '/assets/no_user.png'
+              : currentUser.userAvatar || '/assets/no_user.png'
+          }}" pBadge shape="circle" onerror="this.onerror=null;this.src='/assets/no_user.png';"
                     class="d-flex align-items-center rounded-circle" />
                 <div class="message-content rounded-3 p-2 m-1 mx-2">
                     {{ message.content }}

@@ -226,7 +226,9 @@ export class ChatComponent implements OnInit, AfterViewInit {
     }
 
     public connect() {
-        let Sock = new SockJS('https://doan02-be-production.up.railway.app/ws');
+        let Sock = new SockJS(
+            'https://kltn-pescue-production.up.railway.app/ws'
+        );
         // let Sock = new SockJS('http://localhost:8080/ws');
 
         this.stompClient = over(Sock);
