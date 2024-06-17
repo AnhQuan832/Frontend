@@ -5,6 +5,7 @@ import {
     Input,
     OnInit,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import SockJS from 'sockjs-client';
 import { ChatService } from 'src/app/services/chat.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -17,7 +18,8 @@ import { over } from 'stompjs';
 export class ChatComponent implements OnInit, AfterViewInit {
     constructor(
         private chatService: ChatService,
-        private storageService: StorageService
+        private storageService: StorageService,
+        private router: Router
     ) {}
 
     isLoadingChatRoom = true;
@@ -29,22 +31,24 @@ export class ChatComponent implements OnInit, AfterViewInit {
     public listMessage = new Array<Message>();
     currentUser: any;
     currentUserChat: any;
-
+    isLogin;
     userSearch: string;
     message: string;
     recipientId: string;
 
-    senderId = this.storageService.getItemLocal('userInfo')?.userId;
-    senderAvatar = this.storageService.getItemLocal('userInfo')?.userAvatar;
+    senderId = this.storageService.getItemLocal('currentUser')?.userId;
+    senderAvatar = this.storageService.getItemLocal('currentUser')?.userAvatar;
 
     private stompClient = null;
     private messageData = {
-        senderId: this.storageService.getItemLocal('userInfo')?.userId,
+        senderId: this.storageService.getItemLocal('currentUser')?.userId,
         recipientId: '',
         message: '',
     };
 
     async ngOnInit() {
+        this.isLogin = this.storageService.getDataFromCookie('jwtToken');
+        if (!this.isLogin) this.router.navigate(['/auth/login']);
         await this.connect();
         await this.getChatRoom();
         await this.getListUsers();
@@ -222,7 +226,9 @@ export class ChatComponent implements OnInit, AfterViewInit {
     }
 
     public connect() {
-        let Sock = new SockJS('https://doan02-be-production.up.railway.app/ws');
+        let Sock = new SockJS(
+            'https://kltn-pescue-production.up.railway.app/ws'
+        );
         // let Sock = new SockJS('http://localhost:8080/ws');
 
         this.stompClient = over(Sock);
