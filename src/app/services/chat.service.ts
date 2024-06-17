@@ -16,7 +16,9 @@ export class ChatService {
         return await this.http
             .get(
                 API.CHAT.END_POINT.CHAT_ROOM +
-                    `/${this.storageService.getItemLocal('userInfo')?.userId}`
+                    `/${
+                        this.storageService.getItemLocal('currentUser')?.userId
+                    }`
             )
             .toPromise();
     }

@@ -13,21 +13,23 @@ export class ProductService {
     ) {}
 
     getAllProduct(params?) {
-        return this.http.get(API.PRODUCT.END_POINT.PRODUCT, { params }).pipe(
-            map((data: any) => {
-                if (
-                    data.meta.statusCode ===
-                    API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
-                ) {
-                    return data.data.productList;
-                } else {
-                    return [];
-                }
-            }),
-            catchError((err) => {
-                throw new Error(err);
-            })
-        );
+        return this.http
+            .get(API.PRODUCT.END_POINT.PRODUCT, { params: params })
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return data.data.productList;
+                    } else {
+                        return [];
+                    }
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
     }
 
     getProduct(id) {

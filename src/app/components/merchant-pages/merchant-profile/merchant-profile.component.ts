@@ -39,4 +39,9 @@ export class MerchantProfileComponent extends BaseComponent implements OnInit {
             },
         });
     }
+
+    urlToFileType(file) {
+        const fileType = file.slice(file.lastIndexOf('.') + 1, file.length);
+        return fileType;
+    }
 }

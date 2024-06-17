@@ -169,8 +169,9 @@
                                     : variety.varietyAttributes[1]?.name
                                     }}
                                 </td>
-                                <td class="text-center">
-                                    {{ variety.stockAmount || 0 }}
+                                <td class="text-center" pTooltip="Change Stock">
+                                    <app-quantity class="ms-2" [quantity]="variety.stockAmount" [min]="0"
+                                        (onQuantity)="onChangeQty(variety, $event)"></app-quantity>
                                 </td>
                                 <!-- <td
                                     [pEditableColumn]="variety.name"

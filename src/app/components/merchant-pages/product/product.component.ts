@@ -7,13 +7,14 @@ import { ProductService } from 'src/app/services/product.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { AddProduct } from '../../shared/add product/add-product.component';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { BaseComponent } from 'src/app/base.component';
 
 @Component({
     selector: 'app-product',
     templateUrl: './product.component.html',
     styleUrls: ['./product.component.scss'],
 })
-export class ProductComponent {
+export class ProductComponent extends BaseComponent {
     productDialog: boolean = false;
 
     deleteProductDialog: boolean = false;
@@ -45,27 +46,37 @@ export class ProductComponent {
         private storageService: StorageService,
         private messageService: MessageService,
         private layoutService: LayoutService
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit() {
-        this.productService.getAllProduct().subscribe({
-            next: (res) => {
-                this.products = res;
-            },
-        });
-        this.cols = [
-            { field: 'product', header: 'Product' },
-            { field: 'price', header: 'Price' },
-            { field: 'category', header: 'Category' },
-            { field: 'rating', header: 'Reviews' },
-            { field: 'inventoryStatus', header: 'Status' },
-        ];
+        this.getAllProduct();
+        // this.cols = [
+        //     { field: 'product', header: 'Product' },
+        //     { field: 'price', header: 'Price' },
+        //     { field: 'category', header: 'Category' },
+        //     { field: 'rating', header: 'Reviews' },
+        //     { field: 'inventoryStatus', header: 'Status' },
+        // ];
 
-        this.statuses = [
-            { label: 'INSTOCK', value: 'instock' },
-            { label: 'LOWSTOCK', value: 'lowstock' },
-            { label: 'OUTOFSTOCK', value: 'outofstock' },
-        ];
+        // this.statuses = [
+        //     { label: 'INSTOCK', value: 'instock' },
+        //     { label: 'LOWSTOCK', value: 'lowstock' },
+        //     { label: 'OUTOFSTOCK', value: 'outofstock' },
+        // ];
+    }
+
+    getAllProduct() {
+        const merchant = this.getUserInfo();
+        if (merchant.merchantId)
+            this.productService
+                .getAllProduct({ merchantId: merchant.merchantId })
+                .subscribe({
+                    next: (res) => {
+                        this.products = res;
+                    },
+                });
     }
 
     addNewProduct() {
@@ -75,11 +86,9 @@ export class ProductComponent {
         });
 
         this.ref.onClose.subscribe((res) => {
-            this.productService.getAllProduct().subscribe({
-                next: (res) => {
-                    this.products = res;
-                },
-            });
+            if (res) {
+                this.getAllProduct();
+            }
         });
     }
 

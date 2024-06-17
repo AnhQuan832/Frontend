@@ -28,11 +28,11 @@ export class AppMenuComponent extends BaseComponent implements OnInit {
                 },
                 {
                     items: [
-                        {
-                            label: 'Profile',
-                            icon: 'pi pi-fw pi-user',
-                            routerLink: ['/merchant/profile'],
-                        },
+                        // {
+                        //     label: 'Profile',
+                        //     icon: 'pi pi-fw pi-user',
+                        //     routerLink: ['/merchant/profile'],
+                        // },
                         {
                             label: 'Product',
                             icon: 'pi pi-fw pi-box',
@@ -63,11 +63,11 @@ export class AppMenuComponent extends BaseComponent implements OnInit {
                             icon: 'pi pi-fw pi-chart-line',
                             routerLink: ['/merchant/sale'],
                         },
-                        {
-                            label: 'Log out',
-                            icon: 'pi pi-fw pi-sign-in',
-                            routerLink: ['/auth/login'],
-                        },
+                        // {
+                        //     label: 'Log out',
+                        //     icon: 'pi pi-fw pi-sign-in',
+                        //     routerLink: ['/auth/login'],
+                        // },
                     ],
                 },
             ];
@@ -131,11 +131,11 @@ export class AppMenuComponent extends BaseComponent implements OnInit {
                                 },
                             ],
                         },
-                        {
-                            label: 'Log out',
-                            icon: 'pi pi-fw pi-sign-in',
-                            routerLink: ['/auth/login'],
-                        },
+                        // {
+                        //     label: 'Log out',
+                        //     icon: 'pi pi-fw pi-sign-in',
+                        //     routerLink: ['/auth/login'],
+                        // },
                     ],
                 },
             ];

@@ -33,14 +33,12 @@ export class HomeComponent implements OnInit {
             localStorage.removeItem('localCart');
         }
 
-        this.productService.getProdMost(4).subscribe({
-            next: (res) => (this.mostProd = res),
-        });
+        this.getMostView();
         this.getAllStream();
     }
 
     getAllStream() {
-        const params = { offset: 1, limit: 10 };
+        const params = { offset: 1, limit: 10, isOnlyActive: true };
         this.streamService.getAllStream(params).subscribe({
             next: (res) => (this.listStream = res),
         });
@@ -54,22 +52,28 @@ export class HomeComponent implements OnInit {
         this.router.navigate([`/user/live/${stream.sessionId}`]);
     }
 
-    setupSwiper() {
-        const progressCircle = document.querySelector(
-            '.autoplay-progress svg'
-        ) as SVGAElement;
-        const progressContent = document.querySelector(
-            '.autoplay-progress span'
-        );
+    // setupSwiper() {
+    //     const progressCircle = document.querySelector(
+    //         '.autoplay-progress svg'
+    //     ) as SVGAElement;
+    //     const progressContent = document.querySelector(
+    //         '.autoplay-progress span'
+    //     );
 
-        const swiperEl = document.querySelector('swiper-container');
-        swiperEl.addEventListener('autoplaytimeleft', (e) => {
-            const [swiper, time, progress] = e.detail;
-            progressCircle.style.setProperty(
-                '--progress',
-                (1 - progress).toString()
-            );
-            progressContent.textContent = `${Math.ceil(time / 1000)}s`;
+    //     const swiperEl = document.querySelector('swiper-container');
+    //     swiperEl.addEventListener('autoplaytimeleft', (e) => {
+    //         const [swiper, time, progress] = e.detail;
+    //         progressCircle.style.setProperty(
+    //             '--progress',
+    //             (1 - progress).toString()
+    //         );
+    //         progressContent.textContent = `${Math.ceil(time / 1000)}s`;
+    //     });
+    // }
+
+    getMostView() {
+        this.productService.getProdMost(10).subscribe({
+            next: (res) => (this.mostProd = res),
         });
     }
 }

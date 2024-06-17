@@ -353,4 +353,7 @@ export class ProductDetailComponent implements OnInit {
                 }),
         });
     }
+    onChangeQty(vari, value) {
+        vari.stockAmount = value;
+    }
 }

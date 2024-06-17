@@ -1,3 +1,4 @@
+import { StorageService } from './../../../services/storage.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -11,6 +12,7 @@ import { MessageService } from 'primeng/api';
 import { ProductService } from 'src/app/services/product.service';
 import { ProductComponent } from '../../merchant-pages/product/product.component';
 import { BaseComponent } from 'src/app/base.component';
+import { ToastMessageService } from 'src/app/services/toast-message.service';
 
 @Component({
     selector: 'app-charts',
@@ -35,6 +37,7 @@ export class AddProduct extends BaseComponent implements OnInit {
         category: this.builder.control('', Validators.required),
         subCategory: this.builder.control('', Validators.required),
         price: this.builder.control('', Validators.required),
+        merchantId: this.builder.control(''),
         detail: this.builder.control(''),
         description: this.builder.control(''),
         petTypeId: this.builder.control(''),
@@ -53,9 +56,10 @@ export class AddProduct extends BaseComponent implements OnInit {
         private builder: FormBuilder,
         private sanitizer: DomSanitizer,
         private dialogService: DialogService,
-        private messageService: MessageService,
+        private messageService: ToastMessageService,
         private ref: DynamicDialogRef,
-        private productCpn: ProductComponent
+        private productCpn: ProductComponent,
+        private storageService: StorageService
     ) {
         super();
     }
@@ -117,30 +121,34 @@ export class AddProduct extends BaseComponent implements OnInit {
 
     onAddProduct() {
         this.addProductForm.patchValue({ petTypeId: '1' });
+        this.addProductForm.patchValue({
+            merchantId: this.getUserInfo().merchantId,
+        });
         const listVariety = [
             ...this.addProductForm.get('color').value,
             ...this.addProductForm.get('size').value,
         ];
         this.addProductForm.get('varietyAttributeList').setValue(listVariety);
+        console.log(this.imgs);
         this.productService
             .addNewProduct(this.setUpFormData(this.addProductForm))
             .subscribe({
                 next: (res) => {
                     if (res) {
-                        this.messageService.add({
-                            key: 'toast',
-                            severity: 'success',
-                            detail: 'Add product success',
-                        });
+                        this.messageService.showMessage(
+                            '',
+                            'Add product success',
+                            'success'
+                        );
                         setTimeout(() => {
-                            this.ref.close();
+                            this.ref.close(true);
                         }, 100);
                     } else {
-                        this.messageService.add({
-                            key: 'toast',
-                            severity: 'error',
-                            detail: 'Add product fail',
-                        });
+                        this.messageService.showMessage(
+                            '',
+                            'Add product failed. Please recheck your input',
+                            'error'
+                        );
                     }
                 },
                 error: (err) => console.log(err),

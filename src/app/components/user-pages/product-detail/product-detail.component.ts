@@ -70,6 +70,12 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
         this.productService.getProductDetail(this.product.productId).subscribe({
             next: (res) => {
                 this.product = res;
+                if (this.product.detail) {
+                    this.product.detail = this.product.detail.replace(
+                        /(?:\r\n|\r|\n)/g,
+                        '<br>'
+                    );
+                }
                 this.product.varieties.forEach((item) => {
                     this.listDetailVariety.push({
                         ...item,

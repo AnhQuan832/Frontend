@@ -30,6 +30,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { PanelModule } from 'primeng/panel';
 import { CalendarModule } from 'primeng/calendar';
 import { PaginatorModule } from 'primeng/paginator';
+import { KeyFilterModule } from 'primeng/keyfilter';
 @NgModule({
     declarations: [
         ProductComponent,
@@ -64,6 +65,8 @@ import { PaginatorModule } from 'primeng/paginator';
         PanelModule,
         CalendarModule,
         PaginatorModule,
+        KeyFilterModule,
+        TooltipModule,
     ],
     providers: [MessageService, DialogService],
 })

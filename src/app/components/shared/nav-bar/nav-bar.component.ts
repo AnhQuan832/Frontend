@@ -158,6 +158,6 @@ export class NavBarComponent
                 page = 'user';
                 break;
         }
-        this.router.navigate([`/${page}`]);
+        if (page !== 'user') this.router.navigate([`/${page}`]);
     }
 }

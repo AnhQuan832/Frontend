@@ -1,5 +1,6 @@
 .main-content {
     min-height: 100vh;
+    padding: 2rem;
     .recommended-live {
         .live-slide {
             height: 300px;
@@ -15,17 +16,10 @@ swiper-container {
 swiper-slide {
     text-align: center;
     font-size: 18px;
-    background: #fff;
+    background: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-swiper-slide img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 }
 
 .autoplay-progress {
@@ -56,4 +50,45 @@ swiper-slide img {
     stroke-dashoffset: calc(125.6px * (1 - var(--progress)));
     stroke-dasharray: 125.6;
     transform: rotate(-90deg);
+}
+
+.banner {
+    padding: 2rem;
+    border-radius: 20px;
+    max-height: 50vh;
+    background: #ff4b1f;
+    background: -webkit-linear-gradient(to right, #1fddff, #ff4b1f);
+    background: linear-gradient(to right, #1fddff, #ff4b1f);
+
+    display: flex;
+    .banner-content {
+    }
+
+    .banner-prod {
+        width: 50%;
+        img {
+            position: relative;
+            right: 0;
+            width: 75%;
+            mix-blend-mode: multiply;
+            object-fit: cover;
+        }
+    }
+}
+
+.live-title {
+    position: absolute;
+    margin-bottom: 0;
+    bottom: 0;
+    background-color: rgba(250, 228, 116, 0.7);
+    padding: 0.75rem;
+}
+
+.live-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.recommended-live {
 }

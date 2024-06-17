@@ -18,6 +18,7 @@ import { AppConfigModule } from './config/config.module';
 import { AppSidebarComponent } from './app.sidebar.component';
 import { AppLayoutComponent } from './app.layout.component';
 import { SharedModule } from '../components/shared/shared.module';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
     declarations: [
@@ -42,6 +43,7 @@ import { SharedModule } from '../components/shared/shared.module';
         RouterModule,
         AppConfigModule,
         SharedModule,
+        MenuModule,
     ],
     exports: [AppLayoutComponent],
 })

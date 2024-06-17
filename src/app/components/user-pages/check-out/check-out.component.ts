@@ -222,24 +222,24 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
         } else this.discount = this.selectedVoucher.value;
     }
     onCheckOut() {
-        if (this.isLogin)
-            this.checkOutForm.patchValue({ address: this.selectedAdd });
-        else {
-            const dist = this.listDistrict.find(
-                (item) => item.distName === this.selectedAdd.districtName
-            );
-            this.districtSelectedChange({ distCode: dist.distCode });
-            const ward = this.listWard.find(
-                (item) => item.wardName === this.selectedAdd.wardName
-            );
-            const address = {
-                streetName: this.checkOutForm.value.address.streetName,
-                cityName: this.selectedProvince.provName,
-                districtName: this.selectedDistrict.distName,
-                wardName: this.selectedWard.wardName,
-            };
-            this.checkOutForm.patchValue({ address: address });
-        }
+        // if (this.isLogin)
+        this.checkOutForm.patchValue({ address: this.selectedAdd });
+        // else {
+        //     const dist = this.listDistrict.find(
+        //         (item) => item.distName === this.selectedAdd.districtName
+        //     );
+        //     this.districtSelectedChange({ distCode: dist.distCode });
+        //     const ward = this.listWard.find(
+        //         (item) => item.wardName === this.selectedAdd.wardName
+        //     );
+        //     const address = {
+        //         streetName: this.checkOutForm.value.address.streetName,
+        //         cityName: this.selectedProvince.provName,
+        //         districtName: this.selectedDistrict.distName,
+        //         wardName: this.selectedWard.wardName,
+        //     };
+        //     this.checkOutForm.patchValue({ address: address });
+        // }
 
         this.checkOutForm.patchValue({ voucher: this.selectedVoucher });
         this.checkOutForm.patchValue({
@@ -331,20 +331,32 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
 
     onAddress() {
         if (this.isAddNewAddress) {
-            const address = {
-                userId: this.storageService.getItemLocal('currentUser')?.userId,
-                streetName: this.checkOutForm.value.address.streetName,
-                cityName: this.selectedProvince.provName,
-                districtName: this.selectedDistrict.distName,
-                wardName: this.selectedWard.wardName,
-                districtId: this.selectedDistrict.distCode,
-                wardCode: this.selectedWard.wardCode,
-            };
-            this.apiAddress.addAddress(address).subscribe({
-                next: (res) => {
-                    this.listAddress.push(res);
-                },
-            });
+            if (this.isLogin) {
+                const address = {
+                    userId: this.storageService.getItemLocal('currentUser')
+                        ?.userId,
+                    streetName: this.checkOutForm.value.address.streetName,
+                    cityName: this.selectedProvince.provName,
+                    districtName: this.selectedDistrict.distName,
+                    wardName: this.selectedWard.wardName,
+                    districtId: this.selectedDistrict.distCode,
+                    wardCode: this.selectedWard.wardCode,
+                };
+                this.apiAddress.addAddress(address).subscribe({
+                    next: (res) => {
+                        this.listAddress.push(res);
+                    },
+                });
+            } else {
+                this.listAddress.push({
+                    streetName: this.checkOutForm.value.address.streetName,
+                    cityName: this.selectedProvince.provName,
+                    districtName: this.selectedDistrict.distName,
+                    wardName: this.selectedWard.wardName,
+                    districtId: this.selectedDistrict.distCode,
+                    wardCode: this.selectedWard.wardCode,
+                });
+            }
         } else {
             this.isAddNewAddress = !this.isAddNewAddress;
         }

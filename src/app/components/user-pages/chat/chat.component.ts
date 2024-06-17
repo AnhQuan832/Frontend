@@ -36,12 +36,12 @@ export class ChatComponent implements OnInit, AfterViewInit {
     message: string;
     recipientId: string;
 
-    senderId = this.storageService.getItemLocal('userInfo')?.userId;
-    senderAvatar = this.storageService.getItemLocal('userInfo')?.userAvatar;
+    senderId = this.storageService.getItemLocal('currentUser')?.userId;
+    senderAvatar = this.storageService.getItemLocal('currentUser')?.userAvatar;
 
     private stompClient = null;
     private messageData = {
-        senderId: this.storageService.getItemLocal('userInfo')?.userId,
+        senderId: this.storageService.getItemLocal('currentUser')?.userId,
         recipientId: '',
         message: '',
     };

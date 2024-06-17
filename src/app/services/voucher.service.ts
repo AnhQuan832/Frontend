@@ -78,4 +78,26 @@ export class VoucherService {
                 })
             );
     }
+
+    getUserVoucher() {
+        return this.http
+            .get(API.VOUCHER.END_POINT.AVAILABLE_VOUCHER, {
+                headers: this.storageService.getHttpHeader(),
+            })
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return data.data.voucherList;
+                    } else {
+                        return [];
+                    }
+                }),
+                catchError((err) => {
+                    return [];
+                })
+            );
+    }
 }

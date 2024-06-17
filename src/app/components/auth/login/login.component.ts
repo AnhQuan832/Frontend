@@ -87,6 +87,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
     public signOut(): void {
         this.socialLoginService.signOut();
         this.refreshToken();
+        document.cookie =
+            'jwtToken' + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     }
     refreshToken(): void {
         this.socialLoginService.refreshAuthToken(
