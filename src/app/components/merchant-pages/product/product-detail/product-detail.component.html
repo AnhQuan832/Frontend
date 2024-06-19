@@ -63,24 +63,32 @@
                         <div></div>
                         <div class="row px-2">
                             <div class="col-6 p-1">
-                                <p class="mb-1">Length</p>
-                                <input type="text" pInputText class="w-full" formControlName="length" />
+                                <p class="mb-1">Length (cm)</p>
+                                <input type="number" pInputText class="w-full" formControlName="length" pKeyFilter="int"
+                                    max="200" />
+                                <small id="username-help">Maximum: 200 cm</small>
                             </div>
 
                             <div class="col-6 p-1">
-                                <p class="mb-1">Height</p>
-                                <input type="text" pInputText class="w-full" formControlName="height" />
+                                <p class="mb-1">Height (cm)</p>
+                                <input type="number" pInputText class="w-full" formControlName="height" pKeyFilter="int"
+                                    max="200" />
+                                <small id="username-help">Maximum: 200 cm</small>
                             </div>
                         </div>
                         <div class="row px-2">
                             <div class="col-6 p-1">
-                                <p class="mb-1">Width</p>
-                                <input type="text" pInputText class="w-full" formControlName="width" />
+                                <p class="mb-1">Width (cm)</p>
+                                <input type="number" pInputText class="w-full" formControlName="width" pKeyFilter="int"
+                                    max="200" />
+                                <small id="username-help">Maximum: 200 cm</small>
                             </div>
 
                             <div class="col-6 p-1">
-                                <p class="mb-1">Weight</p>
-                                <input type="text" pInputText class="w-full" formControlName="weight" />
+                                <p class="mb-1">Weight (gram)</p>
+                                <input type="number" pInputText class="w-full" formControlName="weight" pKeyFilter="int"
+                                    max="1600000" />
+                                <small id="username-help">Maximum: 160000 gram</small>
                             </div>
                         </div>
                     </span>
@@ -171,7 +179,7 @@
                                 </td>
                                 <td class="text-center" pTooltip="Change Stock">
                                     <app-quantity class="ms-2" [quantity]="variety.stockAmount" [min]="0"
-                                        (onQuantity)="onChangeQty(variety, $event)"></app-quantity>
+                                        (onQuantity)="updateVariety(variety, $event)"></app-quantity>
                                 </td>
                                 <!-- <td
                                     [pEditableColumn]="variety.name"

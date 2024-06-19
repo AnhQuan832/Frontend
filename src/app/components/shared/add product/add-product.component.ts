@@ -31,6 +31,7 @@ export class AddProduct extends BaseComponent implements OnInit {
         SIZE: [],
     };
     subCategoryOption;
+    isAddingProduct = false;
     addProductForm = this.builder.group({
         name: this.builder.control('', Validators.required),
         brand: this.builder.control('', Validators.required),
@@ -44,10 +45,10 @@ export class AddProduct extends BaseComponent implements OnInit {
         size: this.builder.control(''),
         color: this.builder.control(''),
         varietyAttributeList: this.builder.control([]),
-        length: this.builder.control(''),
-        width: this.builder.control(''),
-        height: this.builder.control(''),
-        weight: this.builder.control(''),
+        length: this.builder.control('', Validators.required),
+        width: this.builder.control('', Validators.required),
+        height: this.builder.control('', Validators.required),
+        weight: this.builder.control('', Validators.required),
     });
 
     constructor(
@@ -120,6 +121,7 @@ export class AddProduct extends BaseComponent implements OnInit {
     }
 
     onAddProduct() {
+        this.isAddingProduct = true;
         this.addProductForm.patchValue({ petTypeId: '1' });
         this.addProductForm.patchValue({
             merchantId: this.getUserInfo().merchantId,
@@ -129,11 +131,11 @@ export class AddProduct extends BaseComponent implements OnInit {
             ...this.addProductForm.get('size').value,
         ];
         this.addProductForm.get('varietyAttributeList').setValue(listVariety);
-        console.log(this.imgs);
         this.productService
             .addNewProduct(this.setUpFormData(this.addProductForm))
             .subscribe({
                 next: (res) => {
+                    this.isAddingProduct = false;
                     if (res) {
                         this.messageService.showMessage(
                             '',
@@ -151,7 +153,7 @@ export class AddProduct extends BaseComponent implements OnInit {
                         );
                     }
                 },
-                error: (err) => console.log(err),
+                error: (err) => (this.isAddingProduct = false),
             });
     }
 

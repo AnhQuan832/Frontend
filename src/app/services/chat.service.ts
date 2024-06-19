@@ -34,14 +34,12 @@ export class ChatService {
             .toPromise();
     }
 
-    async getUnreadMessageByRecipientId(recipientID: string, senderID: string) {
-        return await this.http
-            .get(
-                API.CHAT.END_POINT.UNREAD_MESSAGES_COUNT +
-                    `/${senderID}/` +
-                    `${recipientID}/count`
-            )
-            .toPromise();
+    getUnreadMessageByRecipientId(recipientID: string, senderID: string) {
+        return this.http.get(
+            API.CHAT.END_POINT.UNREAD_MESSAGES_COUNT +
+                `/${senderID}/` +
+                `${recipientID}/count`
+        );
     }
 
     putSeenMessage(senderID: string, recipientID: string) {
