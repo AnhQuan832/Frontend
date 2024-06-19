@@ -425,7 +425,7 @@ export class ProductService {
 
     updateVarietyStock(data) {
         return this.http
-            .post(API.PRODUCT.END_POINT.VARIETY_STOCK, data, {
+            .put(API.PRODUCT.END_POINT.VARIETY_STOCK, data, {
                 headers: this.storageService.getHttpHeader(),
             })
             .pipe(

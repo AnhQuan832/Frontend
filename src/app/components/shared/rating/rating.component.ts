@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ProductService } from 'src/app/services/product.service';
+import { ToastMessageService } from 'src/app/services/toast-message.service';
 
 @Component({
     selector: 'app-rating',
@@ -17,7 +18,7 @@ export class RatingComponent implements OnInit {
         private productService: ProductService,
         private config: DynamicDialogConfig,
         private ref: DynamicDialogRef,
-        private messageSerivce: MessageService
+        private messageService: ToastMessageService
     ) {}
     ngOnInit(): void {
         this.product = this.config.data;
@@ -32,11 +33,7 @@ export class RatingComponent implements OnInit {
         };
         this.productService.addReview(data).subscribe({
             next: (res) => {
-                this.messageSerivce.add({
-                    key: 'toast',
-                    severity: 'success',
-                    detail: 'Added review',
-                });
+                this.messageService.showMessage('', 'Success', 'success');
                 this.ref.close();
             },
         });

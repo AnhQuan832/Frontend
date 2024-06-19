@@ -276,7 +276,7 @@
                         <b>Product Image</b>
                     </div>
                 </p-divider>
-                <div class="img-container d-flex gap-4 m-4 my-1" *ngIf="listImages">
+                <div class="img-container d-flex flex-wrap gap-4 m-4 my-1" *ngIf="listImages">
                     <div class="img-content" *ngFor="let img of listImages">
                         <div class="btn-delete rounded-circle d-flex justify-content-center align-items-center"
                             (click)="deleteImg(img)">

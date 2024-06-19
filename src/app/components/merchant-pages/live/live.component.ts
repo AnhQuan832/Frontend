@@ -116,20 +116,20 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
         this.OV.setAdvancedConfiguration({
             iceServers: [
                 {
-                    urls: "stun:stun.relay.metered.ca:80",
+                    urls: 'stun:stun.relay.metered.ca:80',
                 },
                 {
                     urls: [
-                        "turn:global.relay.metered.ca:80",
-                        "turn:global.relay.metered.ca:80?transport=tcp",
-                        "turn:global.relay.metered.ca:443",
-                        "turns:global.relay.metered.ca:443?transport=tcp"
+                        'turn:global.relay.metered.ca:80',
+                        'turn:global.relay.metered.ca:80?transport=tcp',
+                        'turn:global.relay.metered.ca:443',
+                        'turns:global.relay.metered.ca:443?transport=tcp',
                     ],
-                    username: "e5501e082a3b3e2c71bbd3e8",
-                    credential: "a9RtoZ3qOO7qa8+/",
-                }
-            ]
-        })
+                    username: 'e5501e082a3b3e2c71bbd3e8',
+                    credential: 'a9RtoZ3qOO7qa8+/',
+                },
+            ],
+        });
 
         this.session = this.OV.initSession();
 
@@ -274,6 +274,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
 
     shutDownLive() {
         this.isLiveSuccess = false;
+        this.session.disconnect();
         this.streamService.suspendSession(this.mySessionId);
     }
 
