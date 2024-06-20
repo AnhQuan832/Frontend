@@ -113,6 +113,8 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
         this.isOnLive = true;
         this.isLoading = true;
         this.OV = new OpenVidu();
+
+        this.session = this.OV.initSession();
         this.OV.setAdvancedConfiguration({
             iceServers: [
                 {
@@ -130,8 +132,6 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
                 },
             ],
         });
-
-        this.session = this.OV.initSession();
 
         this.session.on('exception', (event) => {
             if (event.name === 'ICE_CONNECTION_FAILED') {
