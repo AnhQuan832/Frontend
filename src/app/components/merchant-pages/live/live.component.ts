@@ -183,10 +183,10 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
                 'New participant joined',
                 'info'
             );
-            this.streamVideo.onParticipantChange(
-                true,
-                JSON.parse(event.metadata)
-            );
+            // this.streamVideo.onParticipantChange(
+            //     true,
+            //     JSON.parse(event.metadata)
+            // );
         };
 
         this.session.onParticipantLeft = (event) => {
