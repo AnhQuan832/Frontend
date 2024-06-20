@@ -62,7 +62,7 @@ export class LiveDetailComponent
         super();
     }
     ngOnDestroy(): void {
-        this.session.disconnect();
+        // this.session.disconnect();
     }
 
     ngOnInit(): void {
@@ -281,9 +281,9 @@ export class LiveDetailComponent
         });
         this.getStreamToken(id).then((token) => {
             console.log(token);
-            const user = JSON.stringify(this.getUserInfo());
+            // const user = JSON.stringify(this.getUserInfo());
             this.session
-                .connect(token, { clientData: user })
+                .connect(token, {})
                 .then(() => {
                     let publisher: Publisher = this.OV.initPublisher(
                         undefined,
@@ -346,9 +346,9 @@ export class LiveDetailComponent
 
     turnOffLive() {
         this.isOnLive = false;
-        this.session.forceUnpublish(
-            this.subscribers.stream.streamManager.stream
-        );
+        // this.session.forceUnpublish(
+        //     this.subscribers.stream.streamManager.stream
+        // );
     }
 
     autoScrollToNewMessage() {
