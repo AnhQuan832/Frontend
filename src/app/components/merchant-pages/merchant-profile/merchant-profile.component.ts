@@ -34,7 +34,6 @@ export class MerchantProfileComponent extends BaseComponent implements OnInit {
         const info = this.getUserInfo();
         this.merchantService.getMerchantDetail(info.merchantId).subscribe({
             next: (res) => {
-                console.log(res);
                 this.merchantDetail = res;
             },
         });

@@ -247,7 +247,11 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
             returnUrl: 'http://localhost:4200/user/complete-checkout',
         });
 
-        this.checkOutForm.patchValue({ voucherByMerchantMap: {} });
+        this.checkOutForm.patchValue({
+            voucherByMerchantMap: this.storageService.getItemLocal(
+                'voucherByMerchantMap'
+            ),
+        });
 
         let data;
         if (this.cartItem[0]?.cartId) {

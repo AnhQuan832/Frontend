@@ -36,6 +36,8 @@ export const API = {
             REVIEW: API_URL + 'rating',
             MOST_VIEW: API_URL + 'product/most-views',
             MOST_BUY: API_URL + 'product/most-buy',
+            VARIETY_STOCK: API_URL + 'product/variety/stock-amount',
+            VARIETY_MEASUREMENT: API_URL + 'product/variety/measurement',
         },
         STATUS: {
             GET_PRODUCT_SUCCESS: '0_2_s',

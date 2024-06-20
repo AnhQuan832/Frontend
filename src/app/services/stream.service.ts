@@ -76,7 +76,7 @@ export class StreamService {
         );
     }
 
-    getAllStream(params) {
+    getAllStream(params?) {
         return this.http
             .get(API.LIVE.END_POINT.SESSION, {
                 headers: this.storageService.getHttpHeader(),

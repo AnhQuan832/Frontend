@@ -145,12 +145,17 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                     item[1].attributeId === this.selectedSize.attributeId &&
                     item[0].attributeId === this.selectedColor.attributeId
                 );
-            else if (this.selectedSize && !this.selectedColor)
+            else if (this.selectedSize && !this.selectedColor) {
+                if (item?.varietyAttributes.length > 1)
+                    return (
+                        item?.varietyAttributes[1]?.attributeId ===
+                        this.selectedSize.attributeId
+                    );
                 return (
-                    item?.varietyAttributes[1]?.attributeId ===
+                    item?.varietyAttributes[0]?.attributeId ===
                     this.selectedSize.attributeId
                 );
-            else if (!this.selectedSize && this.selectedColor)
+            } else if (!this.selectedSize && this.selectedColor)
                 return (
                     item.varietyAttributes[0].attributeId ===
                     this.selectedColor.attributeId

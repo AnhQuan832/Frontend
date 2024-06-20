@@ -51,32 +51,17 @@ export class ProductComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        this.getAllProduct();
-        // this.cols = [
-        //     { field: 'product', header: 'Product' },
-        //     { field: 'price', header: 'Price' },
-        //     { field: 'category', header: 'Category' },
-        //     { field: 'rating', header: 'Reviews' },
-        //     { field: 'inventoryStatus', header: 'Status' },
-        // ];
-
-        // this.statuses = [
-        //     { label: 'INSTOCK', value: 'instock' },
-        //     { label: 'LOWSTOCK', value: 'lowstock' },
-        //     { label: 'OUTOFSTOCK', value: 'outofstock' },
-        // ];
+        this.getProducts();
     }
 
-    getAllProduct() {
-        const merchant = this.getUserInfo();
-        if (merchant.merchantId)
-            this.productService
-                .getAllProduct({ merchantId: merchant.merchantId })
-                .subscribe({
-                    next: (res) => {
-                        this.products = res;
-                    },
-                });
+    getProducts() {
+        this.productService
+            .getAllProduct({ merchantId: this.getUserInfo().merchantId })
+            .subscribe({
+                next: (res) => {
+                    this.products = res;
+                },
+            });
     }
 
     addNewProduct() {
@@ -86,9 +71,7 @@ export class ProductComponent extends BaseComponent {
         });
 
         this.ref.onClose.subscribe((res) => {
-            if (res) {
-                this.getAllProduct();
-            }
+            this.getProducts();
         });
     }
 

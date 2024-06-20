@@ -1,8 +1,12 @@
 <div class="grid">
     <div class="col-12">
-        <div class="card px-6 py-6">
-            <div class="pet-info my-auto">
-                <h1 class="ps-4">{{ merchantDetail.shelterName }}</h1>
+        <div class="card px-6 py-6 position-relative vh-100">
+            <div class="cover-img mb-4"
+                style="background-image: url({{merchantDetail.merchantAvatar}}); height: 200px;">
+                <img width="150px" height="150px" src="{{ merchantDetail.merchantAvatar }}" alt=""
+                    class="rounded-circle logo" onerror="this.onerror=null;this.src='/assets/no_user.png';" />
+            </div>
+            <div class="info d-flex pt-4 ">
                 <div class="basic-info ps-4">
                     <h5><b>Name: </b> {{ merchantDetail.merchantName }}</h5>
                     <h5>
@@ -28,11 +32,11 @@
                     <h6 class="mt-0" style="font-weight: 400" *ngIf="merchantDetail.relatedDocuments.length == 0">
                         (No document or License yet)
                     </h6>
-                </div>
-                <div class="doc-container ps-4 d-flex gap-3">
+                    <div class="doc-container ps-4 d-flex gap-3">
+                    </div>
                     <div class="doc-info" *ngFor="let item of merchantDetail.relatedDocuments">
                         <a href="{{ item }}">
-                            <div class="doc-icon d-flex justify-content-center align-items-center">
+                            <div class="doc-icon d-flex justify-content-start align-items-center">
                                 <i *ngIf="
                               urlToFileType(item) != 'pdf' &&
                               urlToFileType(item) != 'doc' &&

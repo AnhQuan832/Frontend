@@ -6,6 +6,7 @@ import {
     OnInit,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import SockJS from 'sockjs-client';
 import { ChatService } from 'src/app/services/chat.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -190,16 +191,16 @@ export class ChatComponent implements OnInit, AfterViewInit {
         });
     }
 
-    async getUnreadMessage() {
-        await this.listUsers.map(async (user) => {
-            await this.chatService
-                .getUnreadMessageByRecipientId(user.userId, this.senderId)
-                .then((messageCount) => {
-                    if (messageCount === 0) user.isRead = true;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+    getUnreadMessage() {
+        const unreadMessages = [];
+        this.listUsers.map((user) => {
+            unreadMessages.push(
+                this.chatService
+                    .getUnreadMessageByRecipientId(user.userId, this.senderId)
+                    .subscribe((messageCount) => {
+                        if (messageCount === 0) user.isRead = true;
+                    })
+            );
         });
     }
 

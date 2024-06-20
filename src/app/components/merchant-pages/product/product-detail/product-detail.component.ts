@@ -10,6 +10,8 @@ import { StorageService } from 'src/app/services/storage.service';
 import { AddBrand } from '../../../shared/add brand/add-brand.component';
 import { AddCategory } from '../../../shared/add category/add-category.component';
 import { AddSubCategory } from '../../../shared/add sub-category/add-sub-category.component';
+import { forkJoin } from 'rxjs';
+import { BaseComponent } from 'src/app/base.component';
 
 @Component({
     selector: 'app-product-detail',
@@ -17,7 +19,7 @@ import { AddSubCategory } from '../../../shared/add sub-category/add-sub-categor
     styleUrls: ['./product-detail.component.less'],
     providers: [DialogService],
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent extends BaseComponent implements OnInit {
     imgs: FileHandler[] = [];
     attribute = {
         COLOR: [],
@@ -38,6 +40,7 @@ export class ProductDetailComponent implements OnInit {
     removedImgs: Array<string> = new Array();
     isAddAttribute: boolean = false;
     attPrice = 0;
+    listUpdateVariety = [];
     addProductForm = this.builder.group({
         productId: this.builder.control(''),
         name: this.builder.control('', Validators.required),
@@ -55,6 +58,7 @@ export class ProductDetailComponent implements OnInit {
         width: this.builder.control(''),
         height: this.builder.control(''),
         weight: this.builder.control(''),
+        merchantId: this.builder.control(''),
     });
 
     constructor(
@@ -64,7 +68,9 @@ export class ProductDetailComponent implements OnInit {
         private dialogService: DialogService,
         private storageService: StorageService,
         private messageService: MessageService
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.initialize();
@@ -82,7 +88,9 @@ export class ProductDetailComponent implements OnInit {
                     this.addProductForm.patchValue({
                         category: this.product.subCategory.category,
                     });
-
+                    this.addProductForm.patchValue({
+                        merchantId: this.getUserInfo().merchantId,
+                    });
                     this.productService.getAttribute().subscribe({
                         next: (res) => {
                             this.attribute = res;
@@ -137,7 +145,7 @@ export class ProductDetailComponent implements OnInit {
         });
     }
 
-    prepareFormData(product: any) {
+    setFormData(product: any) {
         const formData = new FormData();
         const data = product.value;
         formData.append(
@@ -276,6 +284,15 @@ export class ProductDetailComponent implements OnInit {
         //     console.log(res)
         //   }
         // })
+        const requests = [];
+        Object.values(this.listUpdateVariety).forEach((variety) => {
+            const data = {
+                varietyId: variety.varietyId,
+                stockAmount: variety.stockAmount,
+            };
+            requests.push(this.productService.updateVarietyStock(data));
+        });
+        forkJoin(requests).subscribe();
         this.addProductForm.patchValue({ varieties: this.product.varieties });
         this.productService.updateProduct(this.addProductForm.value).subscribe({
             next: (res) => {
@@ -355,5 +372,10 @@ export class ProductDetailComponent implements OnInit {
     }
     onChangeQty(vari, value) {
         vari.stockAmount = value;
+    }
+
+    updateVariety(variety, value) {
+        variety.stockAmount = value;
+        this.listUpdateVariety[variety.varietyId] = variety;
     }
 }

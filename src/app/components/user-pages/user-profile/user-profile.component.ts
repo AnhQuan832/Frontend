@@ -12,6 +12,7 @@ import { BaseComponent } from 'src/app/base.component';
 import { MerchantRequestComponent } from '../merchant-request/merchant-request.component';
 import { ToastMessageService } from 'src/app/services/toast-message.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { RatingComponent } from '../../shared/rating/rating.component';
 
 @Component({
     selector: 'app-user-profile',
@@ -115,10 +116,10 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
     }
 
     addRating(row) {
-        // this.ref = this.dialogService.open(RatingComponent, {
-        //   header: 'Write a Review',
-        //   data: row,
-        // });
+        this.ref = this.dialogService.open(RatingComponent, {
+            header: 'Write a Review',
+            data: row,
+        });
     }
 
     contactAdmin() {

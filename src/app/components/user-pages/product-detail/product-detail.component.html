@@ -6,8 +6,8 @@
     <p style="opacity: 0.7">Loading</p>
 </div>
 <p class="bread-crumb">
-    Store > {{ product.subCategory.category.name }} >
-    {{ product.subCategory.name }}
+    Store > {{ product?.subCategory?.category?.name }} >
+    {{ product?.subCategory?.name }}
 </p>
 <div class="container-fluid p-4" *ngIf="!isLoading">
     <div class="row">
@@ -94,16 +94,21 @@
                 </p>
             </p-tabPanel>
             <p-tabPanel header="Rating & Reviews">
-                <p>
-                    Sed ut perspiciatis unde omnis iste natus error sit
-                    voluptatem accusantium doloremque laudantium, totam rem
-                    aperiam, eaque ipsa quae ab illo inventore veritatis et
-                    quasi architecto beatae vitae dicta sunt explicabo. Nemo
-                    enim ipsam voluptatem quia voluptas sit aspernatur aut odit
-                    aut fugit, sed quia consequuntur magni dolores eos qui
-                    ratione voluptatem sequi nesciunt. Consectetur, adipisci
-                    velit, sed quia non numquam eius modi.
-                </p>
+                <div class="list-review card" *ngFor="let rv of product.ratingList">
+                    <div class="info d-flex align-items-start ">
+                        <img width="50px" class="me-2" src="{{ rv.userAvatar || product.images[0]  }}"
+                            onerror="this.onerror=null;this.src='/assets/imgs/no_user.png';" alt="" />
+                        <span class="d-flex flex-column">
+                            <p style="font-size: 0.75rem" class="m-0">
+                                {{ rv.userFirstName }} {{ rv.userLastName }} |
+                                {{ rv.date | date : "dd/MM/yyyy" }}
+                            </p>
+                            <span><p-rating [(ngModel)]="rv.score" [cancel]="false" [readonly]="true"></p-rating></span>
+                            <p class="mt-2 mb-0">{{ rv.message }}</p>
+                        </span>
+                    </div>
+                    <hr />
+                </div>
             </p-tabPanel>
         </p-tabView>
     </div>

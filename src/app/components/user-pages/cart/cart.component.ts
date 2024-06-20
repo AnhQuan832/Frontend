@@ -15,6 +15,7 @@ import { VoucherService } from 'src/app/services/voucher.service';
 export class CartComponent implements OnInit {
     cart = [];
     cartId;
+    voucherByMerchantMap = {};
     selectedProducts: any[] = [
         {
             totalItemPrice: 200,
@@ -252,5 +253,10 @@ export class CartComponent implements OnInit {
 
     onVoucherSelected(shop) {
         this.calculateTotal();
+        this.voucherByMerchantMap[shop.merchantId] = shop.voucher;
+        this.storageService.setItemLocal(
+            'voucherByMerchantMap',
+            this.voucherByMerchantMap
+        );
     }
 }
