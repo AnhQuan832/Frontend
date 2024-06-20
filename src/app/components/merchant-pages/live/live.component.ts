@@ -118,9 +118,6 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
         this.OV.setAdvancedConfiguration({
             iceServers: [
                 {
-                    urls: "stun:stun.relay.metered.ca:80",
-                },
-                {
                     urls: [
                         "turn:global.relay.metered.ca:80",
                         "turn:global.relay.metered.ca:80?transport=tcp",
