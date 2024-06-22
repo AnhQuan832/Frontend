@@ -32,22 +32,24 @@ export class ProductService {
             );
     }
 
-    getProduct(id) {
-        return this.http.get(API.PRODUCT.END_POINT.PRODUCT + `/${id}`).pipe(
-            map((data: any) => {
-                if (
-                    data.meta.statusCode ===
-                    API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
-                ) {
-                    return data.data.product;
-                } else {
-                    return [];
-                }
-            }),
-            catchError((err) => {
-                throw new Error(err);
-            })
-        );
+    getProduct(id, viewerId?) {
+        return this.http
+            .get(API.PRODUCT.END_POINT.PRODUCT + `/${id}/viewer/${viewerId}`)
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return data.data.product;
+                    } else {
+                        return [];
+                    }
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
     }
 
     getCategory() {

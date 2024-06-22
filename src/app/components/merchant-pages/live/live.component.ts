@@ -118,12 +118,12 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
         this.OV.setAdvancedConfiguration({
             iceServers: [
                 {
-                    urls: "turns:global.relay.metered.ca:443",
-                    username: "e5501e082a3b3e2c71bbd3e8",
-                    credential: "a9RtoZ3qOO7qa8+/",
-                }
-            ]
-        })
+                    urls: 'turns:global.relay.metered.ca:443',
+                    username: 'e5501e082a3b3e2c71bbd3e8',
+                    credential: 'a9RtoZ3qOO7qa8+/',
+                },
+            ],
+        });
 
         this.session.on('exception', (event) => {
             if (event.name === 'ICE_CONNECTION_FAILED') {
@@ -275,29 +275,31 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     }
 
     getProductDetail(product) {
-        this.productService.getProductDetail(product.productId).subscribe({
-            next: (res) => {
-                product['detail'] = res;
-                product.detail['listColor'] = [];
-                product.detail['listSize'] = [];
-                product.isSelected = true;
-                (product.detail?.varieties || []).forEach((item) => {
-                    // if (item.type === 'SIZE')
-                    //     product.detail['listColor'].push({
-                    //         ...item,
-                    //         active: true,
-                    //     });
-                    // else
-                    //     product.detail['listSize'].push({
-                    //         ...item,
-                    //         active: true,
-                    //     });
-                    item['liveStock'] = item.stockAmount;
-                    item['isSelected'] = true;
-                    item['livePrice'] = item.price;
-                });
-            },
-        });
+        this.productService
+            .getProduct(product.productId, this.getUserInfo().userId)
+            .subscribe({
+                next: (res) => {
+                    product['detail'] = res;
+                    product.detail['listColor'] = [];
+                    product.detail['listSize'] = [];
+                    product.isSelected = true;
+                    (product.detail?.varieties || []).forEach((item) => {
+                        // if (item.type === 'SIZE')
+                        //     product.detail['listColor'].push({
+                        //         ...item,
+                        //         active: true,
+                        //     });
+                        // else
+                        //     product.detail['listSize'].push({
+                        //         ...item,
+                        //         active: true,
+                        //     });
+                        item['liveStock'] = item.stockAmount;
+                        item['isSelected'] = true;
+                        item['livePrice'] = item.price;
+                    });
+                },
+            });
     }
 
     showProductDetail(product) {

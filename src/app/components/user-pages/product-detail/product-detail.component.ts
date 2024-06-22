@@ -9,6 +9,9 @@ import { CartService } from 'src/app/services/cart.service';
 import { BaseComponent } from 'src/app/base.component';
 import { Toast } from 'primeng/toast';
 import { ToastMessageService } from 'src/app/services/toast-message.service';
+import { v4 as uuidv4 } from 'uuid';
+import { s } from '@fullcalendar/core/internal-common';
+
 @Component({
     selector: 'app-product-detail',
     templateUrl: './product-detail.component.html',
@@ -52,6 +55,12 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
 
     initialize() {
         this.isLogin = this.getUserInfo() ? true : false;
+        let uuid = sessionStorage.getItem('uuid');
+        if (!uuid) {
+            uuid = uuidv4();
+            sessionStorage.setItem('uuid', uuid);
+        }
+        const viewerId = this.isLogin ? this.getUserInfo().userId : uuidv4();
         if (!this.isLogin)
             this.cartService.getUnauthCart().subscribe({
                 next: (res) => {
@@ -67,29 +76,33 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
         this.productService.getProdMostBuy(7).subscribe((data) => {
             this.mostBuy = data;
         });
-        this.productService.getProductDetail(this.product.productId).subscribe({
-            next: (res) => {
-                this.product = res;
-                if (this.product.detail) {
-                    this.product.detail = this.product.detail.replace(
-                        /(?:\r\n|\r|\n)/g,
-                        '<br>'
-                    );
-                }
-                this.product.varieties.forEach((item) => {
-                    this.listDetailVariety.push({
-                        ...item,
-                        ...item.varietyAttributes,
+        this.productService
+            .getProduct(this.product.productId, viewerId)
+            .subscribe({
+                next: (res) => {
+                    this.product = res;
+                    if (this.product.detail) {
+                        this.product.detail = this.product.detail.replace(
+                            /(?:\r\n|\r|\n)/g,
+                            '<br>'
+                        );
+                    }
+                    this.product.varieties.forEach((item) => {
+                        this.listDetailVariety.push({
+                            ...item,
+                            ...item.varietyAttributes,
+                        });
                     });
-                });
-                (this.product.varietyAttributeList || []).forEach((item) => {
-                    if (item.type === 'SIZE')
-                        this.listSize.push({ ...item, active: true });
-                    else this.listColor.push({ ...item, active: true });
-                });
-                this.isLoading = false;
-            },
-        });
+                    (this.product.varietyAttributeList || []).forEach(
+                        (item) => {
+                            if (item.type === 'SIZE')
+                                this.listSize.push({ ...item, active: true });
+                            else this.listColor.push({ ...item, active: true });
+                        }
+                    );
+                    this.isLoading = false;
+                },
+            });
         if (!this.isLogin)
             this.cartService.getUnauthCart().subscribe({
                 next: (res) => this.storageService.setItemLocal('cart', res),
