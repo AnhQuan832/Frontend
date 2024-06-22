@@ -34,7 +34,12 @@ export class ProductService {
 
     getProduct(id, viewerId?) {
         return this.http
-            .get(API.PRODUCT.END_POINT.PRODUCT + `/${id}/viewer/${viewerId}`)
+            .get(API.PRODUCT.END_POINT.PRODUCT + `/${id}/viewer/${viewerId}`, {
+                headers: new HttpHeaders({
+                    'client-id': 'PqescSU7WscLlNRvHK2Ew397vBa0b7dr',
+                    'client-key': 'opIGrWw2u0WBmZHVIyDRqM6t0P2NKE1c',
+                }),
+            })
             .pipe(
                 map((data: any) => {
                     if (
