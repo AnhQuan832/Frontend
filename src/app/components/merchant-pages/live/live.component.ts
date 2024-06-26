@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+    Component,
+    HostListener,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import { BaseComponent } from 'src/app/base.component';
 import { ProductService } from 'src/app/services/product.service';
 import { StreamService } from 'src/app/services/stream.service';
@@ -14,6 +20,7 @@ import { StreamVideoComponent } from '../../shared/stream-video/stream-video.com
 import { MenuItem } from 'primeng/api';
 import { ToastMessageService } from 'src/app/services/toast-message.service';
 import { findElements } from '@fullcalendar/core/internal';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
     selector: 'app-live',
@@ -43,18 +50,24 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     isLoading: boolean = false;
     first = 1;
     totalRecords = 1;
+    listLiveProduct = [];
     constructor(
         private productService: ProductService,
         private streamService: StreamService,
-        private messageService: ToastMessageService
+        private messageService: ToastMessageService,
+        private storageService: StorageService
     ) {
         super();
+        const liveSession = this.getDataFromCookie('sessionToken');
+        if (liveSession) {
+            this.publishStream(liveSession);
+        }
     }
     ngOnDestroy(): void {
         this.shutDownLive();
+        this.setTempSession();
     }
     ngOnInit(): void {
-        this.mySessionId = this.getUserInfo().merchantId;
         this.getProductForLive();
         this.items = [
             {
@@ -81,6 +94,18 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
         ];
     }
 
+    @HostListener('window:beforeunload')
+    beforeunloadHandler() {
+        this.setTempSession();
+    }
+
+    setTempSession() {
+        this.storageService.setTimeResetTokenCookie(
+            'sessionToken',
+            this.mySessionId,
+            0.00011
+        );
+    }
     getProductForLive() {
         const info = this.getUserInfo();
         this.productService
@@ -109,7 +134,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     pinProduct(product) {}
     selectItem(item) {}
 
-    publishStream() {
+    async publishStream(prevSession?) {
         this.isOnLive = true;
         this.isLoading = true;
         this.OV = new OpenVidu();
@@ -142,30 +167,32 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.session.on('reconnecting', () =>
-            this.messageService.showMessage(
-                '',
-                'Oops! Trying to reconnect to the session',
-                'error'
-            )
-        );
-        this.session.on('reconnected', () =>
-            this.messageService.showMessage(
-                '',
-                'Reconnected to the session',
-                'success'
-            )
-        );
+        // this.session.on('reconnecting', () =>
+        //     this.messageService.showMessage(
+        //         '',
+        //         'Oops! Trying to reconnect to the session',
+        //         'error'
+        //     )
+        // );
+        // this.session.on('reconnected', () =>
+        //     this.messageService.showMessage(
+        //         '',
+        //         'Reconnected to the session',
+        //         'success'
+        //     )
+        // );
         this.session.on('sessionDisconnected', (event) => {
             if (event.reason === 'networkDisconnect') {
-                this.messageService.showMessage(
-                    '',
-                    'You lost your connection to the session',
-                    'error'
-                );
             } else {
                 // Disconnected from the session for other reason than a network drop
             }
+            this.messageService.showMessage(
+                '',
+                'Your live has been shut down by Admin',
+                'error'
+            );
+            this.isLiveSuccess = false;
+            this.isSelectTitleLive = true;
         });
 
         this.session.onParticipantJoined = (event) => {
@@ -183,10 +210,10 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
 
         this.session.onParticipantLeft = (event) => {
             console.log(event);
-            // this.streamVideo.onParticipantChange(
-            //     true,
-            //     JSON.parse(event.metadata)
-            // );
+            this.streamVideo.onParticipantChange(
+                false,
+                'Participant left the session'
+            );
         };
         this.session.on('signal', (event) => {
             const data = JSON.parse(event.data);
@@ -199,48 +226,48 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
             this.autoScrollToNewMessage();
         });
 
-        this.getStreamToken().then((token) => {
-            this.session
-                .connect(token, { clientData: '' })
-                .then(() => {
-                    let publisher: Publisher = this.OV.initPublisher(
-                        undefined,
-                        {
-                            audioSource: undefined,
-                            videoSource: undefined,
-                            publishAudio: true,
-                            publishVideo: true,
-                            resolution: '640x480',
-                            frameRate: 30,
-                            insertMode: 'APPEND',
-                            mirror: false,
-                        }
-                    );
-                    this.session.publish(publisher);
-                    this.mainStreamManager = publisher;
-                    this.isLiveSuccess = true;
-                    this.isLoading = false;
-                })
-                .catch((error) => {
-                    console.log(
-                        'There was an error connecting to the session:',
-                        error.code,
-                        error.message
-                    );
-                    this.isLoading = false;
-                    this.messageService.showMessage(
-                        '',
-                        'Can not connect to Server. Please try again later!',
-                        'error'
-                    );
-                });
+        this.getStreamToken(prevSession).then((token) => {
+            this.connectToSession(token);
         });
     }
 
-    async getStreamToken(): Promise<string> {
-        this.mySessionId = await this.streamService.createSession(
-            this.createLiveData()
-        );
+    connectToSession(token) {
+        this.session
+            .connect(token, { clientData: '' })
+            .then(() => {
+                let publisher: Publisher = this.OV.initPublisher(undefined, {
+                    audioSource: undefined,
+                    videoSource: undefined,
+                    publishAudio: true,
+                    publishVideo: true,
+                    resolution: '640x480',
+                    frameRate: 30,
+                    insertMode: 'APPEND',
+                    mirror: false,
+                });
+                this.session.publish(publisher);
+                this.mainStreamManager = publisher;
+                this.isLiveSuccess = true;
+                this.isLoading = false;
+                this.isSelectTitleLive = false;
+            })
+            .catch((error) => {
+                console.log(
+                    'There was an error connecting to the session:',
+                    error.code,
+                    error.message
+                );
+                this.isLoading = false;
+            });
+    }
+
+    async getStreamToken(prevSession?): Promise<string> {
+        this.mySessionId =
+            prevSession ||
+            (await this.streamService.createSession(
+                this.createLiveData()
+                // 'MERCHANT_1'
+            ));
         if (!this.mySessionId) {
             this.messageService.showMessage(
                 '',
@@ -248,10 +275,13 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
                 'error'
             );
         }
-        return await this.streamService.createToken(
-            this.mySessionId,
-            'PUBLISHER'
-        );
+        this.setTempSession();
+
+        // return await this.streamService.createToken(
+        //     this.mySessionId,
+        //     'PUBLISHER'
+        // );
+        return await this.streamService.createToken(this.mySessionId);
     }
 
     removeHighlight(products, index?) {
@@ -267,6 +297,8 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     shutDownLive() {
         this.isLiveSuccess = false;
         this.streamService.suspendSession(this.mySessionId);
+        // this.session.disconnect();
+        // this.session.unpublish(this.mainStreamManager[0]);
     }
 
     autoScrollToNewMessage() {
@@ -330,8 +362,10 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
 
     getSelectedVariety() {
         let data = [];
+        this.listLiveProduct = [];
         this.listAllProduct.forEach((item) => {
-            if (item.isSelected)
+            if (item.isSelected) {
+                this.listLiveProduct.push(item);
                 item.detail.varieties.forEach((variety) => {
                     if (variety.isSelected) {
                         const varietyData = {
@@ -342,6 +376,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
                         data.push(varietyData);
                     }
                 });
+            }
         });
         return data;
     }
@@ -367,14 +402,14 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
 
     onSelectCoverImg(event: any) {
         this.coverImgFile = event.target.files;
-        if (this.coverImgFile[0].size > 1048576) {
-            this.messageService.showMessage(
-                '',
-                'Image size must be less than 1MB',
-                'error'
-            );
-            return;
-        }
+        // if (this.coverImgFile[0].size > 1048576) {
+        //     this.messageService.showMessage(
+        //         '',
+        //         'Image size must be less than 1MB',
+        //         'error'
+        //     );
+        //     return;
+        // }
         const imgInput = <HTMLImageElement>document.getElementById('coverImg');
         imgInput.src = URL.createObjectURL(this.coverImgFile[0]);
     }

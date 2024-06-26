@@ -94,11 +94,11 @@ export class AppMenuComponent extends BaseComponent implements OnInit {
                         //      icon: 'pi pi-fw pi-shopping-cart',
                         //      routerLink: ['/merchant/order'],
                         //  },
-                        //  {
-                        //      label: 'Voucher',
-                        //      icon: 'pi pi-fw pi-ticket',
-                        //      routerLink: ['/merchant/voucher'],
-                        //  },
+                        {
+                            label: 'Voucher',
+                            icon: 'pi pi-fw pi-ticket',
+                            routerLink: ['/merchant/voucher'],
+                        },
                         {
                             label: 'Live',
                             icon: 'pi pi-fw pi-chart-line',

@@ -61,3 +61,10 @@ input[type="file"] {
     opacity: 0.8;
     background-color: white;
 }
+
+:host::ng-deep {
+    .p-tabview-panels {
+        max-height: 65vh;
+        overflow: auto;
+    }
+}

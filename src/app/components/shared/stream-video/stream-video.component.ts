@@ -11,6 +11,9 @@ import {
     OnChanges,
     SimpleChange,
     SimpleChanges,
+    signal,
+    computed,
+    ChangeDetectorRef,
 } from '@angular/core';
 import {
     OpenVidu,
@@ -33,7 +36,7 @@ export class StreamVideoComponent
     extends BaseComponent
     implements OnChanges, AfterViewInit
 {
-    @ViewChild('videoElement') elementRef: ElementRef;
+    @ViewChild('videoElement', { static: false }) elementRef: ElementRef;
     @Input()
     set streamManager(streamManager: StreamManager) {
         this._streamManager = streamManager;
@@ -45,55 +48,39 @@ export class StreamVideoComponent
     @Input() isPublisher: boolean = false;
     @Input() session: Session;
     @Output() onStreamManager = new EventEmitter<any>();
+    @Input() isEnd: boolean = false;
 
     mySessionId = '';
     OV: OpenVidu;
     _streamManager;
     listComment = [];
     commentContent;
+    viewers: number = 0;
     constructor(
         private streamService: StreamService,
-        public layoutService: LayoutService
+        public layoutService: LayoutService,
+        private cdr: ChangeDetectorRef
     ) {
         super();
     }
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes['session'] && this.session) {
-            this.session.on('signal', (event) => {
-                const data = JSON.parse(event.data);
-                const cmt = {
-                    userName: data.userFullName,
-                    userAvatar: data.userAvatar,
-                    content: data.content,
-                };
-                this.listComment.push(cmt);
-                this.autoScrollToNewMessage();
-            });
-        }
-
-        if (changes['session.connection.localOptions.value'] && this.session) {
-            console.log(this.session.connection.localOptions.value.length);
-        }
+        // if (changes['session'] && this.session) {
+        //     this.session.on('signal', (event) => {
+        //         const data = JSON.parse(event.data);
+        //         const cmt = {
+        //             userName: data.userFullName,
+        //             userAvatar: data.userAvatar,
+        //             content: data.content,
+        //         };
+        //         this.listComment.push(cmt);
+        //         this.autoScrollToNewMessage();
+        //     });
+        // }
     }
 
     ngAfterViewInit() {
         if (this._streamManager) {
             this._streamManager.addVideoElement(this.elementRef.nativeElement);
-        } else {
-            let video = document.getElementById(
-                '#videoElement'
-            ) as HTMLVideoElement;
-
-            if (navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices
-                    .getUserMedia({ video: true })
-                    .then(function (stream) {
-                        video.srcObject = stream;
-                    })
-                    .catch(function (error) {
-                        console.log('Something went wrong!');
-                    });
-            }
         }
     }
     onComment() {
@@ -126,6 +113,25 @@ export class StreamVideoComponent
     }
 
     onParticipantChange(isJoin = true, info?) {
-        console.log(info);
+        if (isJoin) this.viewers++;
+        else if (this.viewers > 0) this.viewers--;
+    }
+
+    playVideo() {
+        const video = document.querySelector('video') as HTMLMediaElement;
+        video.play();
+        video.muted = false;
+        setTimeout(() => {
+            video.muted = false;
+        }, 10000);
+    }
+
+    endStream() {
+        this.isEnd = true;
+        this.cdr.detectChanges();
+    }
+
+    getVideoElement() {
+        return this.elementRef.nativeElement;
     }
 }

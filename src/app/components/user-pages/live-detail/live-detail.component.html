@@ -2,7 +2,7 @@
 
 
     <div class="col-12 xl:col-8 position-relative">
-        <app-stream-video #stream *ngIf="isOnLive" [streamManager]="subscribers" [session]="session"></app-stream-video>
+        <app-stream-video #stream [streamManager]="subscribers" [session]="session" [isEnd]="isEnd"></app-stream-video>
         <!-- <div class="comment-container">
             <div class="comment-list">
                 <div class="comment-item" *ngFor="let comment of listComment">
@@ -32,7 +32,7 @@
                         <div *ngIf="!isSelectVariety">
                             <div *ngFor="let item of  listProduct" class="mb-2">
                                 <div class="item-name d-flex justify-content-between align-items-center gap-4">
-                                    <img width="60px" [src]="item?.image || item?.images[0]" alt="" />
+                                    <img width="60px" [src]="item?.coverImage || item?.images[0]" alt="" />
                                     <div class="flex-grow-1">
 
                                         <h6 class="mb-0">{{ item.name }}</h6>
@@ -119,9 +119,52 @@
                             </div>
 
                         </div>
-                        <div class="comment-input mt-2">
-                            <input type="text" class="form-control" placeholder="Enter your comment"
-                                [(ngModel)]="commentContent" (keyup.enter)="onComment()" />
+                        <div class="input-message mt-2">
+                            <span>
+                                <input type="text" [(ngModel)]="commentContent" (keydown.enter)="onComment()"
+                                    placeholder="Enter message ..." />
+                                <button (click)="onComment()" [disabled]="!commentContent">
+                                    <i class="ps-1 bi bi-send"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </p-tabPanel>
+                    <p-tabPanel header="Live Cart">
+                        <div *ngIf="liveCart['liveCartItemList']">
+                            <div *ngFor="let item of liveCart['liveCartItemList']">
+                                <div class="cart-item d-flex">
+                                    <span style="min-width: 10rem" class="d-flex align-items-center flex-wrap gap-4">
+                                        <p-checkbox [(ngModel)]="item.isSelected" [binary]="true"
+                                            (onChange)="selectItem(shop,item)"></p-checkbox>
+                                        <img [src]="item?.liveItem?.coverImage" width="100" height="100"
+                                            class="shadow-4 rounded-3" />
+                                        <span class="d-flex flex-column" style="max-width: 50%">
+                                            <h5 class="mb-0">
+                                                {{ item.liveItem.name }}
+                                            </h5>
+                                            <!-- <small style="font-size: 12px">{{
+                                                item.listAttributeName.join(", ")
+                                                }}</small> -->
+                                            <span style="width: 14%; min-width: 8rem">
+                                                {{ item.liveItem.livePrice | currency : "VND" }}
+                                            </span>
+                                        </span>
+                                    </span>
+                                    <span style="width: 14%; min-width: 10rem" class="num-item d-flex my-auto">
+                                        <app-quantity [quantity]="item.quantity" [min]="1"
+                                            [max]="item.liveItem.currentStock"
+                                            (onQuantity)="onChangeQty(item, $event)"></app-quantity>
+                                        <button pButton pRipple icon="pi pi-trash"
+                                            class="p-button-rounded p-button-danger p-button-text" (click)="
+                                                                    $event.stopPropagation(); removeItem(item)
+                                                                "></button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="px-4 pt-4">
+                                <button pButton pRipple [disabled]="!liveCart" class="btn btn-primary w-100"
+                                    label="Checkout" (click)="checkout(); "></button>
+                            </div>
                         </div>
                     </p-tabPanel>
                 </p-tabView>

@@ -1,6 +1,6 @@
-<div class="video-container">
-
-    <video #videoElement class="w-100"></video>
+<div class="video-container ">
+    <div *ngIf="!isEnd" class="viewer"><b>{{viewers}} <i class="bi bi-eye"></i></b></div>
+    <video #videoElement class="w-100" autoplay muted></video>
     <div *ngIf="_streamManager" class="comment-container">
         <!-- <div class="position-relative comment">
             <div id="comments" class="comment-list">
@@ -22,5 +22,13 @@
             </div>
         </div> -->
 
+    </div>
+
+    <div *ngIf="isEnd" class="position-absolute w-100 h-100 card" style="top:0; ">
+        <div class="d-flex justify-content-center align-items-center w-100 h-100" style="background-color: white;">
+            <div class="text-center">
+                <h1 class="">The stream has ended</h1>
+            </div>
+        </div>
     </div>
 </div>

@@ -78,6 +78,7 @@ export class CartComponent implements OnInit {
                     item.isSelected = item.cartItemDTOList.every(
                         (pro) => pro.isSelected
                     );
+                    // this.voucherByMerchantMap[item.merchantId] = {};
                     return item;
                 });
                 this.calculateTotal();
@@ -138,6 +139,12 @@ export class CartComponent implements OnInit {
 
     onCheckOut() {
         this.storageService.setItemLocal('cart', this.selectedProducts);
+        this.storageService.setItemLocal('discountPrice', this.discountPrice);
+        this.storageService.setItemLocal(
+            'voucherByMerchantMap',
+            this.voucherByMerchantMap
+        );
+
         this.router.navigate(['/user/check-out']);
     }
 

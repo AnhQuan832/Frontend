@@ -54,3 +54,54 @@
         padding: 0.5rem 1rem;
     }
 }
+
+.input-message {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    bottom: 1.5rem;
+    height: 2em;
+    min-height: 40px;
+
+    span {
+        border-radius: 20px;
+        width: 95%;
+        display: flex;
+        flex-direction: row;
+        background-color: rgb(240, 242, 245);
+
+        input {
+            border: none;
+            flex-grow: 1;
+            border-radius: 20px 0 0 20px;
+            height: 100%;
+            padding-left: 0.75rem;
+            background-color: transparent;
+            &:focus {
+                outline: none;
+            }
+        }
+        button {
+            width: clamp(10%, 2rem, 20%);
+            border-radius: 0 20px 20px 0;
+            float: right;
+            height: 100%;
+            border: none;
+            color: var(--primary-color);
+            font-weight: 700;
+            &:disabled {
+                color: black;
+                font-weight: 400;
+                display: none;
+            }
+        }
+    }
+}
+
+:host::ng-deep {
+    .p-tabview-panels {
+        max-height: 65vh;
+        overflow: auto;
+    }
+}

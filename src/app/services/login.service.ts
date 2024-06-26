@@ -125,11 +125,22 @@ export class LoginService {
     }
 
     sendOtpRes(email) {
-        return this.http.post(API.AUTHENTICATE.END_POINT.CONFIRM_EMAIL, null, {
-            params: {
-                emailAddress: email,
-            },
-        });
+        return this.http
+            .post(API.AUTHENTICATE.END_POINT.CONFIRM_EMAIL, null, {
+                params: {
+                    emailAddress: email,
+                },
+            })
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode === API.AUTHENTICATE.STATUS.SUCCESS
+                    ) {
+                        return true;
+                    }
+                    return false;
+                })
+            );
     }
 
     sendOtpReset(email) {

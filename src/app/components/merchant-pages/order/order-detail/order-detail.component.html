@@ -1,44 +1,26 @@
 <div class="field grid">
     <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0">Name</label>
     <div class="col-12 md:col-10">
-        <input
-            class="w-75"
-            disabled="true"
-            pInputText
-            [value]="data.userName"
-            type="text"
-        />
+        <input class="w-75" disabled="true" pInputText [value]="data.userName" type="text" />
     </div>
 </div>
 
 <div class="field grid">
     <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0">Address</label>
     <div class="col-12 md:col-10">
-        <input
-            class="w-75"
-            disabled="true"
-            pInputText
-            [value]="data.address"
-            type="text"
-        />
+        <input class="w-75" disabled="true" pInputText [value]="data.address" type="text" />
     </div>
 </div>
 
 <div class="field grid">
     <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0">Discount</label>
     <div class="col-12 md:col-10">
-        <p-inputNumber
-            class="w-75"
-            disabled="true"
-            mode="currency"
-            currency="VND"
-            [(ngModel)]="data.discountPrice"
-            type="text"
-        />
+        <p-inputNumber class="w-75" disabled="true" mode="currency" currency="VND" [(ngModel)]="data.discountPrice"
+            type="text" />
     </div>
 </div>
 
-<div class="field grid">
+<!-- <div class="field grid">
     <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0"
         >Shipping fee</label
     >
@@ -52,52 +34,27 @@
             type="text"
         />
     </div>
-</div>
+</div> -->
 <div class="field grid">
-    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0"
-        >Total Price</label
-    >
+    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0">Total Price</label>
     <div class="col-12 md:col-10">
-        <p-inputNumber
-            class="w-75"
-            disabled="true"
-            mode="currency"
-            currency="VND"
-            [(ngModel)]="data.finalPrice"
-            type="text"
-        />
+        <p-inputNumber class="w-75" disabled="true" mode="currency" currency="VND" [(ngModel)]="data.finalPrice"
+            type="text" />
     </div>
 </div>
 
 <div class="field grid mb-2">
-    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0"
-        >Payment method</label
-    >
+    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0">Payment method</label>
     <div class="col-12 md:col-10">
-        <input
-            disabled="true"
-            pInputText
-            [value]="data.paymentType"
-            type="text"
-        />
+        <input disabled="true" pInputText [value]="data.paymentType" type="text" />
     </div>
 </div>
-<p-table
-    #dt
-    [value]="listTransactions"
-    responsiveLayout="scroll"
-    dataKey="cartItemId"
-    [rows]="8"
-    [globalFilterFields]="[
+<p-table #dt [value]="listTransactions" responsiveLayout="scroll" dataKey="cartItemId" [rows]="8" [globalFilterFields]="[
         'name',
         'price',
         'brand.name',
         'subCategory.category.name'
-    ]"
-    [paginator]="true"
-    [showCurrentPageReport]="true"
-    [rowHover]="true"
->
+    ]" [paginator]="true" [showCurrentPageReport]="true" [rowHover]="true">
     <!-- <ng-template pTemplate="caption">
           <div class="d-flex justify-content-end">
             <span class="block p-input-icon-left">
@@ -151,28 +108,10 @@
 </p-table>
 
 <div class="d-flex justify-content-center gap-2 mt-2">
-    <button
-        *ngIf="data.status === 'PENDING' || data.status === 'PAID'"
-        pButton
-        pRipple
-        label="Cancel"
-        class="p-button-danger mr-2"
-        (click)="updateStatus('CANCEL')"
-    ></button>
-    <button
-        *ngIf="data.status === 'COMPLETED'"
-        pButton
-        pRipple
-        label="Return"
-        class="p-button-waring mr-2"
-        (click)="updateStatus('RETURN')"
-    ></button>
-    <button
-        *ngIf="data.status === 'PENDING' || data.status === 'PAID'"
-        pButton
-        pRipple
-        label="Confirm"
-        class="p-button-success mr-2"
-        (click)="updateStatus('COMPLETED')"
-    ></button>
+    <button *ngIf="data.status === 'PENDING' || data.status === 'PAID'" pButton pRipple label="Cancel"
+        class="p-button-danger mr-2" (click)="updateStatus('CANCEL')"></button>
+    <button *ngIf="data.status === 'COMPLETED'" pButton pRipple label="Return" class="p-button-waring mr-2"
+        (click)="updateStatus('RETURN')"></button>
+    <button *ngIf="data.status === 'PENDING' || data.status === 'PAID'" pButton pRipple label="Confirm"
+        class="p-button-success mr-2" (click)="updateStatus('COMPLETED')"></button>
 </div>

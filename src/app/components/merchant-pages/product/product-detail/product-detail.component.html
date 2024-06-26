@@ -58,7 +58,7 @@
                         <p-inputNumber class="inputtext ps-1 w-100" formControlName="price" mode="currency" min="0"
                             currency="VND" locale="jp-JP"></p-inputNumber>
                     </span>
-                    <span class="p-float-label col-11 mb-0">
+                    <!-- <span class="p-float-label col-11 mb-0">
                         <h6 class="addressLabel ps-0">Package Size</h6>
                         <div></div>
                         <div class="row px-2">
@@ -91,17 +91,17 @@
                                 <small id="username-help">Maximum: 160000 gram</small>
                             </div>
                         </div>
-                    </span>
+                    </span> -->
                     <span class="p-float-label col-11">
                         <h6 class="addressLabel ps-0">Detail</h6>
                         <textarea formControlName="detail" class="w-100" name="" id="textarea" pInputTextarea
-                            [autoResize]="true"></textarea>
+                            [autoResize]="true" style="max-height: 400px;"></textarea>
                     </span>
 
                     <span class="p-float-label col-11">
                         <h6 class="addressLabel ps-0">Description</h6>
                         <textarea formControlName="description" class="w-100" name="" id="textarea" pInputTextarea
-                            [autoResize]="true"></textarea>
+                            [autoResize]="true" style="max-height: 400px;"></textarea>
                     </span>
                 </div>
                 <div class="w-50 ms-4">

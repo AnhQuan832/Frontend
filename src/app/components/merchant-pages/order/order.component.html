@@ -15,12 +15,7 @@
                 </ng-template>
             </p-toolbar> -->
 
-            <p-table
-                #dt
-                [value]="listVoucher"
-                responsiveLayout="scroll"
-                [rows]="10"
-                [globalFilterFields]="[
+            <p-table #dt [value]="listVoucher" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="[
                     'type',
                     'createdDate',
                     'value',
@@ -31,20 +26,9 @@
                     'cityName',
                     'districtName',
                     'wardName'
-                ]"
-                [paginator]="true"
-                [rowsPerPageOptions]="[10, 20, 30]"
-                [showCurrentPageReport]="true"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                [(selection)]="selectedVouchers"
-                selectionMode="multiple"
-                [rowHover]="true"
-                dataKey="voucherId"
-            >
+                ]" [(selection)]="selectedVouchers" selectionMode="multiple" [rowHover]="true" dataKey="voucherId">
                 <ng-template pTemplate="caption">
-                    <div
-                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
-                    >
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <span>
                             <div class="d-flex gap-2 align-items-center">
                                 <h5 class="m-0 mb-1">Manage Order</h5>
@@ -82,37 +66,19 @@
                         </span>
                         <span class="d-flex gap-2">
                             <span>
-                                <p-calendar
-                                    style="cursor: pointer"
-                                    [(ngModel)]="rangeDates"
-                                    placeholder="Select Date"
-                                    selectionMode="range"
-                                    [readonlyInput]="true"
-                                    dateFormat="dd/mm/yy"
-                                    [showButtonBar]="true"
-                                    [showIcon]="true"
-                                    (onClickOutside)="onDateChange()"
-                                ></p-calendar>
-                                <span
-                                    class="text-primary mx-2"
-                                    style="cursor: pointer"
-                                    *ngIf="rangeDates"
-                                    (click)="
+                                <p-calendar style="cursor: pointer" [(ngModel)]="rangeDates" placeholder="Select Date"
+                                    selectionMode="range" [readonlyInput]="true" dateFormat="dd/mm/yy"
+                                    [showButtonBar]="true" [showIcon]="true"
+                                    (onClickOutside)="onDateChange()"></p-calendar>
+                                <span class="text-primary mx-2" style="cursor: pointer" *ngIf="rangeDates" (click)="
                                         rangeDates = null; onDateChange(true)
-                                    "
-                                    >Clear</span
-                                >
+                                    ">Clear</span>
                             </span>
 
                             <span class="block mt-2 md:mt-0 p-input-icon-left">
                                 <i class="pi pi-search"></i>
-                                <input
-                                    pInputText
-                                    type="text"
-                                    (input)="onGlobalFilter(dt, $event)"
-                                    placeholder="Search..."
-                                    class="w-full sm:w-auto"
-                                />
+                                <input pInputText type="text" (input)="onGlobalFilter(dt, $event)"
+                                    placeholder="Search..." class="w-full sm:w-auto" />
                             </span>
                         </span>
                     </div>
@@ -134,9 +100,8 @@
                         <th [width]="'10%'" pSortableColumn="finalPrice">
                             Price <p-sortIcon field="finalPrice"></p-sortIcon>
                         </th>
-                        <th [width]="'40%'" pSortableColumn="cityName">
+                        <th [width]="'40%'">
                             Address
-                            <p-sortIcon field="cityName"></p-sortIcon>
                         </th>
                         <th [width]="'10%'" pSortableColumn="paymentType">
                             Payment
@@ -180,16 +145,13 @@
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Max vale</span>
                             {{
-                                product.paymentType === "CREDIT_CARD"
-                                    ? "Credit card"
-                                    : "COD"
+                            product.paymentType === "CREDIT_CARD"
+                            ? "Credit card"
+                            : "COD"
                             }}
                         </td>
                         <td style="width: 14%; min-width: 10rem">
-                            <p-tag
-                                [value]="product.status"
-                                [severity]="getSeverity(product.status)"
-                            ></p-tag>
+                            <p-tag [value]="product.status" [severity]="getSeverity(product.status)"></p-tag>
                         </td>
                         <td></td>
                     </tr>

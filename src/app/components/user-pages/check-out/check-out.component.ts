@@ -56,6 +56,7 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
     discount = 0;
     checkOutForm: FormGroup;
     isLogin;
+    liveCartId;
     constructor(
         private apiAddress: AddressService,
         private cartService: CartService,
@@ -68,6 +69,7 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
         super();
     }
     ngOnInit(): void {
+        this.discount = this.storageService.getItemLocal('discountPrice');
         this.checkOutForm = this.fb.group({
             recipientName: this.fb.control('', [Validators.required]),
             phoneNumber: this.fb.control('', [Validators.required]),
@@ -95,7 +97,7 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
             });
             this.getListAddress();
             const info = this.storageService.getItemLocal('currentUser');
-
+            this.liveCartId = this.storageService.getItemLocal('liveCartId');
             this.checkOutForm.patchValue({ recipientName: info.userFullName });
             this.checkOutForm.patchValue({ phoneNumber: info.userPhoneNumber });
             this.checkOutForm.patchValue({ userEmail: info.userEmail });
@@ -243,43 +245,72 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
 
         this.checkOutForm.patchValue({ voucher: this.selectedVoucher });
         this.checkOutForm.patchValue({
-            // returnUrl: 'https://pescue-shop.vercel.app/user/complete-checkout',
+            // returnUrl: 'https://gradution-project-eta.vercel.app/user/complete-checkout',
             returnUrl: 'http://localhost:4200/user/complete-checkout',
         });
-
-        this.checkOutForm.patchValue({
-            voucherByMerchantMap: this.storageService.getItemLocal(
-                'voucherByMerchantMap'
-            ),
-        });
-
+        if (!this.liveCartId)
+            this.checkOutForm.patchValue({
+                voucherByMerchantMap:
+                    this.storageService.getItemLocal('voucherByMerchantMap') ||
+                    {},
+            });
+        else
+            this.checkOutForm.patchValue({
+                voucherByMerchantMap: {},
+            });
         let data;
-        if (this.cartItem[0]?.cartId) {
+        if (this.cartItem[0]?.cartId || this.liveCartId) {
             data = {
                 paymentInfoDTO: this.checkOutForm.value,
                 cartId: this.cartItem[0].cartId,
             };
-            this.invoiceService.processPayment(data).subscribe({
-                next: (res) => {
-                    // window.open(res);
-                    if (res) {
-                        window.location.href = res.paymentUrl;
-                        this.storageService.setItemLocal(
-                            'sucInvoice',
-                            res.invoiceId
-                        );
-                    } else {
-                        this.msgService.add({
-                            key: 'toast',
-                            severity: 'success',
-                            detail: 'Your order has been sent',
-                        });
-                        setTimeout(() => {
-                            this.router.navigate(['/user/profile']);
-                        }, 1000);
-                    }
-                },
-            });
+            if (!this.liveCartId) {
+                this.invoiceService.processPayment(data).subscribe({
+                    next: (res) => {
+                        // window.open(res);
+                        if (res) {
+                            window.location.href = res.paymentUrl;
+                            this.storageService.setItemLocal(
+                                'sucInvoice',
+                                res.invoiceId
+                            );
+                        } else {
+                            this.msgService.add({
+                                key: 'toast',
+                                severity: 'success',
+                                detail: 'Your order has been sent',
+                            });
+                            setTimeout(() => {
+                                this.router.navigate(['/user/profile']);
+                            }, 1000);
+                        }
+                    },
+                });
+            } else {
+                data.cartId = this.liveCartId;
+                localStorage.removeItem('liveCartId');
+                this.invoiceService.processLivePayment(data).subscribe({
+                    next: (res) => {
+                        // window.open(res);
+                        if (res) {
+                            window.location.href = res.paymentUrl;
+                            this.storageService.setItemLocal(
+                                'sucInvoice',
+                                res.invoiceId
+                            );
+                        } else {
+                            this.msgService.add({
+                                key: 'toast',
+                                severity: 'success',
+                                detail: 'Your order has been sent',
+                            });
+                            setTimeout(() => {
+                                this.router.navigate(['/user/profile']);
+                            }, 1000);
+                        }
+                    },
+                });
+            }
         } else {
             data = {
                 paymentInfoDTO: this.checkOutForm.value,
@@ -376,34 +407,34 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
         const ward = this.listWard.find(
             (item) => item.wardName === this.selectedAdd.wardName
         );
-        await this.apiAddress
-            .getShippingService(dist.distCode)
-            .then((res: any) => {
-                this.listShippingService = res.data;
-            });
-        this.listShippingService.forEach((item, index) => {
-            const data = {
-                to_district_id: dist.distCode,
-                to_ward_code: ward.wardCode,
-                insurance_value: 500000,
-                service_id: item.service_id,
-                height: 15,
-                length: 15,
-                weight: 1000,
-                width: 15,
-                coupon: null,
-            };
-            this.cartService.getShippingFee(data).subscribe((res: any) => {
-                if (res.code === 200)
-                    this.shipService.map((item) => {
-                        if (
-                            item.service_type_id ===
-                            this.listShippingService[index].service_type_id
-                        )
-                            item.price = res.data.total;
-                    });
-            });
-            this.selectedShipping = this.listShippingService[0];
-        });
+        // await this.apiAddress
+        //     .getShippingService(dist.distCode)
+        //     .then((res: any) => {
+        //         this.listShippingService = res.data;
+        //     });
+        // this.listShippingService.forEach((item, index) => {
+        //     const data = {
+        //         to_district_id: dist.distCode,
+        //         to_ward_code: ward.wardCode,
+        //         insurance_value: 500000,
+        //         service_id: item.service_id,
+        //         height: 15,
+        //         length: 15,
+        //         weight: 1000,
+        //         width: 15,
+        //         coupon: null,
+        //     };
+        //     this.cartService.getShippingFee(data).subscribe((res: any) => {
+        //         if (res.code === 200)
+        //             this.shipService.map((item) => {
+        //                 if (
+        //                     item.service_type_id ===
+        //                     this.listShippingService[index].service_type_id
+        //                 )
+        //                     item.price = res.data.total;
+        //             });
+        //     });
+        //     this.selectedShipping = this.listShippingService[0];
+        // });
     }
 }

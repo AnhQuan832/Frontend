@@ -1,6 +1,13 @@
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
+            <div *ngIf="isAddingProduct"
+                class="loading  position-absolute d-flex justify-content-center align-items-center flex-column gap-2">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only"></span>
+                </div>
+                <p><b>Creating Product </b></p>
+            </div>
             <form class="container ps-4" [formGroup]="addProductForm">
                 <div class="d-flex flex-column w-100">
                     <span class="p-float-label col-11">

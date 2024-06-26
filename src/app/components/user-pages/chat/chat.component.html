@@ -73,7 +73,6 @@
                 <input type="text" [(ngModel)]="message" (keydown.enter)="sendMessage()" (focus)="onFocusBoxChat()"
                     placeholder="Enter message ..." />
                 <button (click)="sendMessage()" [disabled]="!message">
-                    Gửi
                     <i class="ps-1 bi bi-send"></i>
                 </button>
             </span>

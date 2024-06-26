@@ -47,7 +47,7 @@
                 <p-divider></p-divider>
                 <div class="cate-type w-100 p-2">
                     <h5>Price</h5>
-                    <p-slider [(ngModel)]="priceRange" [range]="true" min="0" max="50000000" [step]="1000"
+                    <p-slider [(ngModel)]="priceRange" [range]="true" min="0" max="50000000" [step]="10000"
                         (onChange)="onPriceChange()"></p-slider>
                     <div class="d-flex justify-content-between">
                         <p>{{ priceRange[0] | number : "1.0-0" }}</p>

@@ -90,7 +90,7 @@
     <div class="mt-4">
         <p-tabView>
             <p-tabPanel header="Product Details">
-                <p [innerHTML]="product.detail">
+                <p style="font-size: 20px;" [innerHTML]="product.detail">
                 </p>
             </p-tabPanel>
             <p-tabPanel header="Rating & Reviews">
@@ -158,28 +158,7 @@
 
             <ul class="grid-list d-flex gap-4">
                 <li *ngFor="let item of mostBuy" style="cursor: pointer" (click)="onProdClick(item)">
-                    <div class="product-card">
-                        <div class="card-banner img-holder" style="--width: 360; --height: 360">
-                            <img width="120px" [src]="item.images[0]" height="120px" loading="lazy"
-                                alt="Commodo leo sed porta" class="img-cover default" />
-                        </div>
-
-                        <div class="card-content">
-                            <!-- <div class="wrapper">
-                  <div class="rating-wrapper"></div>
-
-                  <span class="span">(1)</span>
-                </div> -->
-
-                            <h5>
-                                {{ item.name }}
-                            </h5>
-
-                            <p class="card-price" value="15">
-                                {{ item.price | currency : "VND" }}
-                            </p>
-                        </div>
-                    </div>
+                    <app-product-card [product]="item"></app-product-card>
                 </li>
             </ul>
         </div>

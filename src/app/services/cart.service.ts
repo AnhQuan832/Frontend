@@ -131,4 +131,76 @@ export class CartService {
                 })
             );
     }
+
+    addToLiveCart(quantity, varietyId, totalItemPrice?) {
+        return this.http
+            .post(
+                API.LIVE_CART.END_POINT.ADD_TO_CART,
+                { quantity: quantity, liveItemId: varietyId },
+                { headers: this.storageService.getHttpHeader() }
+            )
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.CART.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
+    }
+
+    getLiveCart(sessionId) {
+        return this.http
+            .get(API.LIVE_CART.END_POINT.CART + `/session/${sessionId}`, {
+                headers: this.storageService.getHttpHeader(),
+            })
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.CART.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return data.data.cart;
+                    } else {
+                        throw new Error(data.meta);
+                    }
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
+    }
+
+    selectLiveItem(itemId) {
+        return this.http
+            .post(
+                API.LIVE_CART.END_POINT.SELECT_CART_ITEM + `/${itemId}`,
+                null,
+                {
+                    headers: this.storageService.getHttpHeader(),
+                }
+            )
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.CART.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return true;
+                    } else {
+                        throw new Error(data.meta);
+                    }
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
+    }
 }

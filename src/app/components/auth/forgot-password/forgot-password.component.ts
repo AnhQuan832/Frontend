@@ -22,6 +22,7 @@ export class ForgotPasswordComponent {
     otp;
     newPass;
     valid = false;
+    isWrongEmail = false;
     private accessToken = '';
     constructor(
         private builder: FormBuilder,
@@ -31,30 +32,40 @@ export class ForgotPasswordComponent {
     ) {}
 
     validateForm = this.builder.group({
-        emailAddress: this.builder.control(null),
+        emailAddress: this.builder.control(null, Validators.email),
         otp: this.builder.control('', Validators.required),
         newPassword: this.builder.control('', Validators.required),
     });
     loginForm = this.builder.group({
-        userEmail: this.builder.control('', [Validators.required]),
+        userEmail: this.builder.control('', [
+            Validators.required,
+            Validators.email,
+        ]),
     });
     ngOnInit(): void {}
 
     sendOTP() {
         this.isSubmitted = true;
-        if (this.loginForm.valid)
+        this.isWrongEmail = false;
+
+        if (this.loginForm.valid) {
             this.authService
                 .sendOtpReset(this.loginForm.value.userEmail)
                 .subscribe({
                     next: (res) => {
-                        this.email = res;
-                        this.isSubmitted = false;
-                        this.validateForm.patchValue({
-                            emailAddress: this.loginForm.value.userEmail,
-                        });
+                        if (res) {
+                            this.email = res;
+                            this.isSubmitted = false;
+                            this.validateForm.patchValue({
+                                emailAddress: this.loginForm.value.userEmail,
+                            });
+                        } else {
+                            this.isWrongEmail = true;
+                        }
                     },
                     error: (err) => console.log(err),
                 });
+        }
     }
 
     clearErrorNotification() {

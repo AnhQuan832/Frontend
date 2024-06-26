@@ -21,6 +21,7 @@ export const API = {
             ACCOUNT_NOT_FOUND: '1_5_f',
             BAD_CREDENTIAL: '1_6_f',
             AUTHENTICATE_SUCCESSFUL: '1_7_s',
+            SUCCESS: '0_2_s',
         },
     },
     PRODUCT: {
@@ -148,6 +149,30 @@ export const API = {
     LIVE: {
         END_POINT: {
             SESSION: API_URL + 'live/sessions',
+        },
+    },
+
+    LIVE_CART: {
+        END_POINT: {
+            CART: API_URL + 'live/cart',
+            ADD_TO_CART: API_URL + 'live/cart/update-cart-item',
+            SELECT_CART_ITEM: API_URL + 'live/cart/select-cart-item',
+            ADD_TO_CART_UNAUTH:
+                API_URL + 'live/cart/un-authenticate/update-cart-item',
+            GET_UNAUTH_CART: API_URL + 'live/cart/un-authenticate',
+        },
+        STATUS: {
+            GET_PRODUCT_SUCCESS: '0_2_s',
+        },
+    },
+    LIVE_PAYMENT: {
+        END_POINT: {
+            CHECK_OUT: API_URL + 'live/payment/user-cart-checkout',
+            SINGLE_CHECKOUT: API_URL + 'live/payment/single-item-checkout',
+            UNTAUTH_CHECK_OUT:
+                API_URL + 'live/payment/un-authenticate/user-cart-checkout',
+            UNTAUTH_SINGLE_CHECKOUT:
+                API_URL + 'live/payment/un-authenticate/single-item-checkout',
         },
     },
 };

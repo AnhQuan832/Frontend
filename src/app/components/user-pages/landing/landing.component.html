@@ -1,9 +1,11 @@
 <div class="main-content">
 
     <div class="banner position-relative">
-        <div class="banner-content">
-            <h1>Watch live streams and connect with your favorite streamers</h1>
-            <p>Join the community and watch your favorite streamers live</p>
+        <div class="banner-content d-flex flex-column justify-content-between ">
+            <div>
+                <h1>Watch live streams and connect with your favorite streamers</h1>
+                <p>Join the community and watch your favorite streamers live</p>
+            </div>
             <button class="btn btn-primary">Join Now</button>
         </div>
         <div class="banner-prod">
@@ -29,7 +31,7 @@
 
 
         <h2>Recommended product for you</h2>
-        <section class="recommended-live">
+        <section class="recommended-live" style="height: 380px;">
             <swiper-container class="mySwiper" navigation="true" space-between="30" autoplay-delay="3500" rewind="true"
                 autoplay-disable-on-interaction="false" slides-per-view="5">
                 <swiper-slide *ngFor="let item of mostProd" class="live-slide cursor-pointer"

@@ -1,8 +1,13 @@
 .video-container {
+    position: relative;
+    // border: solid 1px;
+    margin-left: 2rem;
+    margin-top: 2rem;
+
+    border-radius: 12px;
     .w-100 {
         width: 100%;
     }
-    position: relative;
     .comment-container {
         background-color: transparent;
         position: absolute;
@@ -36,6 +41,15 @@
                 padding: 0.5rem 1rem;
             }
         }
+    }
+    .viewer {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+
+        background-color: white;
+        padding: 4px 12px;
+        border-radius: 16px;
     }
 }
 

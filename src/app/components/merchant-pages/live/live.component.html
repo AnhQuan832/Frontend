@@ -12,6 +12,12 @@
                 <div *ngIf="isLiveSuccess" class="col-12 xl:col-8">
                     <app-stream-video #streamVideo [streamManager]="mainStreamManager"
                         [session]="session"></app-stream-video>
+                    <div class="w-100 d-flex justify-content-center">
+                        <button pButton pRipple [label]="'Shutdown live'
+                                                                    " class="p-button-success mr-2"
+                            (click)=" shutDownLive()"></button>
+                    </div>
+
                 </div>
                 <div *ngIf="!isLiveSuccess" class="col-12">
                     <div *ngIf="isSelectTitleLive">
@@ -183,7 +189,7 @@
                     <p-tabView>
                         <p-tabPanel header="Product">
                             <div *ngFor="
-                                    let item of listProductForLive;
+                                    let item of listLiveProduct;
                                     index as i
                                 " class="mb-2 max-height-60">
                                 <div class="item-name d-flex justify-content-between align-items-center gap-4">
@@ -235,10 +241,8 @@
                     </p-tabView>
                 </div>
 
-                <button *ngIf="!isSelectTitleLive" pButton pRipple [label]="
-                        isLiveSuccess ? 'Shutdown live' : 'Start Live Stream'
-                    " class="p-button-success mr-2"
-                    (click)="isLiveSuccess ? shutDownLive() : publishStream()"></button>
+                <button *ngIf="!isSelectTitleLive && !isLiveSuccess" pButton pRipple [label]="'Start Live Stream'
+                    " class="p-button-success mr-2" (click)="publishStream()"></button>
             </div>
         </div>
     </div>

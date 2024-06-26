@@ -76,8 +76,8 @@
     </div>
     <div *ngIf="cartItem" class="col-5 card p-4">
         <div class="items">
-            <div *ngFor="let item of cartItem" class="d-flex justify-content-between align-items-center mb-2">
-                <div class="item-name d-flex justify-content-start align-items-center gap-4">
+            <div *ngFor="let item of cartItem" class="d-flex justify-content-between align-items-center mb-2 gap-4">
+                <div class="item-name d-flex justify-content-start align-items-center gap-1">
                     <img width="60px" [src]="item?.image || item?.images[0]" alt="" />
                     <h6>{{ item.name }}</h6>
                     <h6>x{{ item.quantity }}</h6>
@@ -122,7 +122,7 @@
         </div> -->
         <p-divider type="solid" class="my-4"></p-divider>
         <div class="shipping">
-            <span class="d-flex justify-content-between">
+            <span class="d-flex justify-content-between align-items-center gap-2">
                 <h6>Order Payment</h6>
                 <h6>
                     {{
@@ -147,8 +147,7 @@
                 </h6>
             </span>
         </div>
-        <p-divider type="solid" class="my-2"></p-divider>
-        <span class="d-flex justify-content-between">
+        <span class="d-flex justify-content-between mt-3">
             <h6>Total</h6>
             <h6>
                 {{
@@ -170,5 +169,3 @@
         </button>
     </div>
 </div>
-
-<p-toast key="toast"></p-toast>

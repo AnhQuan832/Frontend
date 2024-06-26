@@ -32,6 +32,7 @@ export class AddProduct extends BaseComponent implements OnInit {
     };
     subCategoryOption;
     isAddingProduct = false;
+    isLoading = false;
     addProductForm = this.builder.group({
         name: this.builder.control('', Validators.required),
         brand: this.builder.control('', Validators.required),
@@ -151,6 +152,7 @@ export class AddProduct extends BaseComponent implements OnInit {
                             'Add product failed. Please recheck your input',
                             'error'
                         );
+                        this.isAddingProduct = false;
                     }
                 },
                 error: (err) => (this.isAddingProduct = false),

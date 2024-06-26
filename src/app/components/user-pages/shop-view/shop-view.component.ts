@@ -26,7 +26,7 @@ export class ShopViewComponent implements OnInit {
             numScroll: 1,
         },
     ];
-    priceRange: number[] = [10000, 2000000];
+    priceRange: number[] = [10000, 30000000];
     products = [];
     searchValue;
     timeAutoPlay = 3000;

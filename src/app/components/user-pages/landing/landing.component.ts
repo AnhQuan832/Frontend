@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit {
     // }
 
     getMostView() {
-        this.productService.getProdMost(10).subscribe({
+        this.productService.getProdMost({ quantity: 10 }).subscribe({
             next: (res) => (this.mostProd = res),
         });
     }

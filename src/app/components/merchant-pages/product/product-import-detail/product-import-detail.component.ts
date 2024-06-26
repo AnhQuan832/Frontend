@@ -33,7 +33,7 @@ export class ProductImportDetailComponent implements OnInit {
 
     constructor(
         private builder: FormBuilder,
-        private productSerive: ProductService,
+        private productService: ProductService,
         private messageService: MessageService,
         private ref: DynamicDialogRef,
         private config: DynamicDialogConfig
@@ -45,7 +45,7 @@ export class ProductImportDetailComponent implements OnInit {
             for (let i = 0; i < this.listDetails.length; i++)
                 this.getImportDetail(this.listDetails[i], i);
         } else
-            this.productSerive.getAllProduct().subscribe({
+            this.productService.getAllProduct().subscribe({
                 next: (res) => (this.products = res),
             });
     }
@@ -63,7 +63,7 @@ export class ProductImportDetailComponent implements OnInit {
                     .filter((item) => item.quantity !== 0)
             )
         );
-        this.productSerive.processImport(data).subscribe({
+        this.productService.processImport(data).subscribe({
             next: (res) => {
                 this.messageService.add({
                     key: 'toast',
@@ -84,7 +84,7 @@ export class ProductImportDetailComponent implements OnInit {
     handleChangeProduct(event) {
         this.listDetails = event.value;
         for (let i = 0; i < event.value.length; i++)
-            this.productSerive.getProduct(event.value[i].productId).subscribe({
+            this.productService.getProduct(event.value[i].productId).subscribe({
                 next: (res) => {
                     this.listSize = [];
                     this.listColor = [];
@@ -104,7 +104,7 @@ export class ProductImportDetailComponent implements OnInit {
             invoiceId: invoice.importInvoiceId,
             productId: invoice.productId,
         };
-        this.productSerive.getInvoiceDetail(params).subscribe({
+        this.productService.getInvoiceDetail(params).subscribe({
             next: (res) => {
                 this.listDetails[index].varieties = res;
             },

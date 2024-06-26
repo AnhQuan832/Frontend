@@ -97,6 +97,25 @@ export class StreamService {
             );
     }
 
+    getLiveItems(sessionId) {
+        return this.http
+            .get(API.LIVE.END_POINT.SESSION + `/${sessionId}/live-items`, {
+                headers: this.storageService.getHttpHeader(),
+            })
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return data.data.data;
+                    } else return false;
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
+    }
     // createSession(sessionId) {
     //     return this.http
     //         .post(

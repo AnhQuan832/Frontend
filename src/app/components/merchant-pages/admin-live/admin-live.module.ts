@@ -9,9 +9,11 @@ import { PaginatorModule } from 'primeng/paginator';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { MenuModule } from 'primeng/menu';
+import { QuickviewLiveComponent } from './quickview-live/quickview-live.component';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-    declarations: [AdminLiveComponent],
+    declarations: [AdminLiveComponent, QuickviewLiveComponent],
     imports: [
         CommonModule,
         AdminLiveRoutingModule,
@@ -22,6 +24,7 @@ import { MenuModule } from 'primeng/menu';
         ButtonModule,
         TooltipModule,
         MenuModule,
+        SharedModule,
     ],
 })
 export class AdminLiveModule {}

@@ -184,4 +184,48 @@ export class InvoiceService {
                 })
             );
     }
+
+    processLivePayment(data) {
+        return this.http
+            .post(API.LIVE_PAYMENT.END_POINT.CHECK_OUT, data, {
+                headers: this.storageService.getHttpHeader(),
+            })
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.CART.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return data.data.output;
+                    } else {
+                        throw new Error(data.meta);
+                    }
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
+    }
+
+    processLiveBuyNow(data) {
+        return this.http
+            .post(API.LIVE_PAYMENT.END_POINT.SINGLE_CHECKOUT, data, {
+                headers: this.storageService.getHttpHeader(),
+            })
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.CART.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return data.data.output;
+                    } else {
+                        throw new Error(data.meta);
+                    }
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
+    }
 }

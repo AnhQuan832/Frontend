@@ -78,8 +78,9 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
 
     private async initialize() {
         this.product = this.storageService.getItemLocal('currentProduct');
+        const userId = this.getUserInfo().userId;
         await this.productService
-            .getProductDetail(this.product.productId)
+            .getProduct(this.product.productId, userId)
             .subscribe({
                 next: (res) => {
                     this.product = res;

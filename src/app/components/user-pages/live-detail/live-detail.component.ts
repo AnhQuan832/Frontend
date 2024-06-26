@@ -1,6 +1,7 @@
 import {
     BootstrapOptions,
     Component,
+    HostListener,
     OnDestroy,
     OnInit,
     ViewChild,
@@ -20,6 +21,8 @@ import { StorageService } from 'src/app/services/storage.service';
 import { StreamService } from 'src/app/services/stream.service';
 import { ToastMessageService } from 'src/app/services/toast-message.service';
 import { StreamVideoComponent } from '../../shared/stream-video/stream-video.component';
+import { forkJoin } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-live-detail',
@@ -52,41 +55,86 @@ export class LiveDetailComponent
     isOnLive = false;
     listComment = [];
     commentContent;
+    isEnd: boolean = false;
+    liveCart = [];
+    listAllProduct;
+    currentStock = 0;
     constructor(
         private productService: ProductService,
         private cartService: CartService,
         private storageService: StorageService,
         private messageService: ToastMessageService,
-        private streamService: StreamService
+        private streamService: StreamService,
+        private router: Router
     ) {
         super();
     }
     ngOnDestroy(): void {
-        // this.session.disconnect();
+        this.leaveSession();
     }
 
     ngOnInit(): void {
-        this.getAllProduct();
+        if (this.session) {
+            this.leaveSession();
+        }
         this.isLogin = !!this.getToken();
         this.sessionKey = window.location.href.slice(
             window.location.href.lastIndexOf('/') + 1
         );
+        this.getAllProduct();
         this.publishStream(this.sessionKey);
+        this.getLiveCart();
     }
 
+    leaveSession() {
+        if (this.session) {
+            this.session.disconnect();
+        }
+        this.subscribers = null;
+        delete this.session;
+        delete this.OV;
+    }
     getAllProduct() {
-        this.productService.getAllProduct().subscribe({
+        this.streamService.getLiveItems(this.sessionKey).subscribe({
             next: (res) => {
-                this.listProduct = res;
-            },
-            error: (err) => {
-                console.log(err);
+                this.listAllProduct = res;
+                this.listProduct = this.parseProductList(res);
             },
         });
     }
 
+    parseProductList(list) {
+        const productMap = {};
+
+        list.forEach((item) => {
+            const productId = item.productId;
+            if (!productMap[productId]) {
+                productMap[productId] = {
+                    productId: productId,
+                    coverImage: item.coverImage,
+                    livePrice: item.livePrice,
+                    initialStock: item.initialStock,
+                    currentStock: item.currentStock,
+                    name: item.name,
+                    items: [],
+                };
+            }
+            productMap[productId].items.push(item);
+        });
+
+        return Object.values(productMap);
+    }
+    getLiveCart() {
+        this.cartService.getLiveCart(this.sessionKey).subscribe({
+            next: (res) => {
+                this.liveCart = res;
+            },
+        });
+    }
     onSelectProduct(product) {
-        this.productService.getProductDetail(product.productId).subscribe({
+        const userId = this.getUserInfo().userId;
+        this.listDetailVariety = [];
+        this.productService.getProduct(product.productId, userId).subscribe({
             next: (res) => {
                 this.selectedProduct = res;
                 this.selectedProduct.varieties.forEach((item) => {
@@ -109,6 +157,9 @@ export class LiveDetailComponent
     }
 
     addToCart() {
+        const liveItemId = this.listAllProduct.find(
+            (item) => item.varietyId === this.selectedVariety.varietyId
+        );
         const data = {
             quantity: this.numberOfProduct,
             totalItemPrice: this.attPrice,
@@ -116,47 +167,26 @@ export class LiveDetailComponent
         };
         if (this.isLogin) {
             this.cartService
-                .addToCart(this.numberOfProduct, this.selectedVariety.varietyId)
+                .addToLiveCart(this.numberOfProduct, liveItemId.liveItemId)
                 .subscribe({
                     next: (res) => {
-                        (this.isSelectVariety = false),
+                        if (res) {
+                            this.getLiveCart();
+                            (this.isSelectVariety = false),
+                                this.messageService.showMessage(
+                                    '',
+                                    'Added to cart',
+                                    'success'
+                                );
+                        } else {
                             this.messageService.showMessage(
                                 '',
-                                'Added to cart',
+                                'Cannot add to cart',
                                 'success'
                             );
+                        }
                     },
-                    error: () => {
-                        this.messageService.showMessage(
-                            '',
-                            'Cannot add to cart',
-                            'success'
-                        );
-                    },
-                });
-        } else {
-            const cartId = this.storageService.getItemLocal('cart').cartId;
-
-            this.cartService
-                .addToCartUnAuth(
-                    cartId,
-                    this.numberOfProduct,
-                    this.selectedVariety.varietyId
-                )
-                .subscribe({
-                    next: (res) =>
-                        this.messageService.showMessage(
-                            '',
-                            'Added to cart',
-                            'success'
-                        ),
-                    error: () => {
-                        this.messageService.showMessage(
-                            '',
-                            'Cannot add to cart',
-                            'success'
-                        );
-                    },
+                    error: () => {},
                 });
         }
     }
@@ -222,9 +252,12 @@ export class LiveDetailComponent
                 );
             return false;
         });
-        this.attPrice = this.selectedVariety
-            ? this.selectedVariety.price
-            : this.selectedProduct.price;
+
+        const liveItem = this.listAllProduct.find(
+            (item) => item.varietyId === this.selectedVariety.varietyId
+        );
+        this.attPrice = liveItem.livePrice;
+        this.currentStock = liveItem.currentStock;
     }
 
     onChangeQty(event) {
@@ -241,21 +274,34 @@ export class LiveDetailComponent
     async getStreamToken(id): Promise<string> {
         const token = await this.streamService.createToken(id);
         if (!token) {
-            this.messageService.showMessage('', 'Live has ended', 'error');
-            setTimeout(() => {}, 1000);
+            this.isEnd = true;
         }
         return token;
     }
 
-    publishStream(id) {
+    async publishStream(id) {
         this.OV = new OpenVidu();
 
         this.session = this.OV.initSession();
 
         this.session.on('streamDestroyed', (event: StreamEvent) => {
             console.log('Stream destroyed: ' + event);
+            this.streamVideo.endStream();
         });
+        this.session.onParticipantJoined = (event) => {
+            this.streamVideo.onParticipantChange(
+                true,
+                JSON.parse(event.metadata)
+            );
+        };
 
+        this.session.onParticipantLeft = (event) => {
+            console.log(event);
+            this.streamVideo.onParticipantChange(
+                false,
+                'Participant left the session'
+            );
+        };
         this.session.on('streamCreated', (event: StreamEvent) => {
             let subscriber: Subscriber = this.session.subscribe(
                 event.stream,
@@ -264,6 +310,10 @@ export class LiveDetailComponent
 
             this.subscribers = subscriber;
             this.isOnLive = true;
+            this.streamVideo.playVideo();
+            this.subscribers.on('videoElementCreated', (event) => {
+                event.element.controls = true;
+            });
         });
 
         this.session.on('exception', (exception) => {
@@ -279,26 +329,15 @@ export class LiveDetailComponent
             this.listComment.push(cmt);
             this.autoScrollToNewMessage();
         });
-        this.getStreamToken(id).then((token) => {
-            console.log(token);
+        const token = await this.getStreamToken(id);
+        if (token)
             // const user = JSON.stringify(this.getUserInfo());
             this.session
                 .connect(token, {})
                 .then(() => {
-                    let publisher: Publisher = this.OV.initPublisher(
-                        undefined,
-                        {
-                            audioSource: undefined,
-                            videoSource: undefined,
-                            publishAudio: false,
-                            publishVideo: false,
-                            resolution: '640x480',
-                            frameRate: 30,
-                            insertMode: 'APPEND',
-                            mirror: false,
-                        }
-                    );
-                    this.session.publish(publisher);
+                    // let publisher: Publisher = this.OV.initPublisher(undefined);
+                    // this.session.publish(publisher);
+                    this.streamVideo.onParticipantChange(true, 'You');
                 })
                 .catch((error) => {
                     console.log(
@@ -312,12 +351,6 @@ export class LiveDetailComponent
                         'error'
                     );
                 });
-            this.session.on('signal', (event) => {
-                console.log(event.data); // Message
-                console.log(event.from); // Connection object of the sender
-                console.log(event.type); // The type of message
-            });
-        });
     }
 
     onComment() {
@@ -354,5 +387,32 @@ export class LiveDetailComponent
     autoScrollToNewMessage() {
         const cmtContent = document.getElementById('comments');
         cmtContent.scrollTop = cmtContent.scrollHeight;
+    }
+
+    checkout() {
+        this.storageService.setItemLocal(
+            'liveCartId',
+            this.liveCart['liveCartId']
+        );
+        const data = this.liveCart['liveCartItemList'].map((item) => {
+            return {
+                name: item.liveItem.name,
+                image: item.liveItem.coverImage,
+                price: item.totalItemPrice,
+                quantity: item.quantity,
+            };
+        });
+        this.storageService.setItemLocal('cart', data);
+        this.router.navigate(['/user/check-out']);
+    }
+
+    removeItem(data) {
+        this.cartService
+            .addToLiveCart(-data.quantity, data.liveItem.liveItemId)
+            .subscribe({
+                next: (res) => {
+                    this.getLiveCart();
+                },
+            });
     }
 }
