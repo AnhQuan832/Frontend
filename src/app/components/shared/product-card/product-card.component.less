@@ -16,16 +16,29 @@
     box-shadow: 2px 5px 2px 0px rgba(0, 0, 0, 0.12);
     -webkit-box-shadow: 2px 5px 2px 0px rgba(0, 0, 0, 0.12);
     -moz-box-shadow: 2px 5px 2px 0px rgba(0, 0, 0, 0.12);
+
+    .image-container {
+        transition: transform 0.2s;
+        overflow: hidden;
+    }
+
     &:hover {
         box-shadow: 7px 10px 5px 0px rgba(0, 0, 0, 0.12);
         -webkit-box-shadow: 7px 10px 5px 0px rgba(0, 0, 0, 0.12);
         -moz-box-shadow: 7px 10px 5px 0px rgba(0, 0, 0, 0.12);
+
+        img {
+            transform: scale(1.2);
+        }
     }
     .img {
         align-self: stretch;
         height: 200px;
-        width: 200px;
+        width: 100%;
+        min-width: 150px;
         border-radius: 7px 7px 0 0;
+
+        transition: 0.5s all ease-in-out;
     }
     i {
         cursor: pointer;

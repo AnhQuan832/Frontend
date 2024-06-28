@@ -31,6 +31,7 @@ import { PanelModule } from 'primeng/panel';
 import { CalendarModule } from 'primeng/calendar';
 import { PaginatorModule } from 'primeng/paginator';
 import { KeyFilterModule } from 'primeng/keyfilter';
+import { SkeletonModule } from 'primeng/skeleton';
 @NgModule({
     declarations: [
         ProductComponent,
@@ -67,6 +68,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
         PaginatorModule,
         KeyFilterModule,
         TooltipModule,
+        SkeletonModule,
     ],
     providers: [MessageService, DialogService],
 })

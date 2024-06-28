@@ -39,7 +39,12 @@ export class ShopViewComponent implements OnInit {
     listBrand;
     isLoading: boolean = false;
     page = 1;
-    size = 20;
+    size = 10;
+    throttle = 300;
+    scrollDistance = 1;
+    scrollUpDistance = 2;
+    totalRecord = 0;
+    isLoadingMore = false;
     constructor(private productService: ProductService) {}
     ngOnInit(): void {
         this.initialize();
@@ -48,17 +53,7 @@ export class ShopViewComponent implements OnInit {
     private initialize() {
         this.isLoading = true;
 
-        this.productService
-            .getAllProduct({ page: this.page, size: this.size })
-            .subscribe({
-                next: (res) => {
-                    this.isLoading = false;
-                    this.products = res;
-                    this.sortedProd = _.cloneDeep(this.products);
-                    this.defaultProd = _.cloneDeep(this.products);
-                },
-                error: (err) => console.log(err),
-            });
+        this.getProducts(true);
         forkJoin([
             this.productService.getCategory(),
             this.productService.getBrand(),
@@ -70,6 +65,29 @@ export class ShopViewComponent implements OnInit {
                 this.listCate.unshift({ name: 'All', categoryId: 'All' });
             },
         });
+    }
+
+    getProducts(isInit = false) {
+        if (isInit) this.products = [];
+        else {
+            this.isLoadingMore = true;
+            if (this.totalRecord === this.products.length) {
+                this.isLoadingMore = false;
+                return;
+            }
+        }
+        this.productService
+            .getAllProduct({ page: this.page, size: this.size })
+            .subscribe({
+                next: (res) => {
+                    this.isLoading = false;
+                    this.isLoadingMore = false;
+                    if (res.length !== 0)
+                        this.totalRecord = res[0]['totalRecord'] || 0;
+                    this.products.push(...res);
+                },
+                error: (err) => console.log(err),
+            });
     }
 
     getSeverity(status: string) {
@@ -193,4 +211,18 @@ export class ShopViewComponent implements OnInit {
         });
     }
     clearFilter() {}
+
+    onScrollDown(ev) {
+        console.log('scrolled down!!', ev);
+        this.page++;
+        this.getProducts();
+    }
+
+    onUp(ev) {
+        // console.log('scrolled up!', ev);
+        // const start = this.sum;
+        // this.sum += 20;
+        // this.prependItems(start, this.sum);
+        // this.direction = 'up';
+    }
 }

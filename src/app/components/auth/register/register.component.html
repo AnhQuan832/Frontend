@@ -4,16 +4,18 @@
         <div
             style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
             <div class="w-full surface-card py-4 px-5 sm:px-8" style="border-radius:53px">
-                <!-- <div class="text-center mb-5">
+                <!-- <div class="text-center mb-2">
                     <div class="text-900 text-3xl font-medium mb-3">Welcome</div>
                     <span class="text-600 font-medium">Sign in to continue</span>
                 </div> -->
 
                 <form *ngIf="!verifyEmail" class="login_container_form d-flex flex-column col-12  p-4 rounded-2"
                     [formGroup]="registerForm" (ngSubmit)="registerNewUser()">
+                    <app-logo class="m-auto"></app-logo>
+
                     <span class="my-2">
                         <h6>Email</h6>
-                        <input class="w-full md:w-30rem mb-5 ps-2" name="emailInput" type="email" pInputText
+                        <input class="w-full md:w-30rem mb-2 ps-2" name="emailInput" type="email" pInputText
                             formControlName="userEmail" (focus)="clearErrorNotification()" />
                         <div *ngIf="isSubmitted">
                             <small class="text-danger" *ngIf="registerForm.get('userEmail')?.hasError('required')">Email
@@ -26,7 +28,7 @@
                     </span>
                     <span class="my-2">
                         <h6>Password</h6>
-                        <p-password class="inputtext w-100 mt-1" [toggleMask]="true" formControlName="userPassword"
+                        <p-password class="inputtext w-100 mt-1 mb-2" [toggleMask]="true" formControlName="userPassword"
                             (focus)="clearErrorNotification()" [feedback]="false">
                         </p-password>
                         <div *ngIf="isSubmitted">
@@ -53,7 +55,7 @@
                     <span class="my-2">
                         <h6 class="mt-2">Fullname</h6>
 
-                        <input class="w-full md:w-30rem mb-5 ps-2" pInputText type="text" formControlName="userFullName"
+                        <input class="w-full md:w-30rem mb-2 ps-2" pInputText type="text" formControlName="userFullName"
                             (focus)="clearErrorNotification()" />
                         <div *ngIf="isSubmitted">
                             <small class="text-danger" *ngIf="
@@ -63,9 +65,8 @@
                     </span>
                     <span class="my-2">
                         <h6>Phone number</h6>
-
-                        <input class="w-full md:w-30rem mb-5 ps-2" pInputText type="text" maxlength="10"
-                            formControlName="userPhoneNumber" (focus)="clearErrorNotification()" />
+                        <input class="w-full md:w-30rem mb-2 ps-2" pInputText type="text" maxlength="10"
+                            formControlName="userPhoneNumber" (focus)="clearErrorNotification()" pKeyFilter="num" />
                         <div *ngIf="isSubmitted">
                             <small class="text-danger" *ngIf="
                                         registerForm.get('userPhoneNumber')?.hasError('pattern')
@@ -91,7 +92,7 @@
                     <p class="mx-auto my-2">
                         <a routerLink="/auth/login">Back to login</a>
                     </p>
-                    <p-divider class="mx-auto mb-2">or</p-divider>
+                    <p-divider class="mx-auto ">or</p-divider>
                     <asl-google-signin-button class="mx-auto" type="standard" size="large"></asl-google-signin-button>
                 </form>
 
@@ -104,7 +105,7 @@
                     <span class="my-2">
                         <h6>OTP</h6>
 
-                        <input class="w-full md:w-30rem mb-5" type="number" maxlength="10" pKeyFilter="int"
+                        <input class="w-full md:w-30rem mb-2" type="number" maxlength="10" pKeyFilter="int"
                             formControlName="otp" (focus)="clearErrorNotification()" />
                         <p class="text-end text-primary" style="cursor: pointer" (click)="sendOtp()">
                             Resend

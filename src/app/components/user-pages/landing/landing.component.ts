@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
+import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -20,7 +21,8 @@ export class HomeComponent implements OnInit {
         private productService: ProductService,
         private router: Router,
         private messageService: ToastMessageService,
-        private streamService: StreamService
+        private streamService: StreamService,
+        public layout: LayoutService
     ) {}
     ngOnInit(): void {
         const localCart = this.storageService.getItemLocal('localCart');

@@ -24,7 +24,10 @@ export class InvoiceService {
                         data.meta.statusCode ===
                         API.CART.STATUS.GET_PRODUCT_SUCCESS
                     ) {
-                        return data.data.invoiceList;
+                        return [
+                            ...data.data.invoiceList.liveInvoices,
+                            ...data.data.invoiceList.invoices,
+                        ];
                     } else {
                         throw new Error(data.meta);
                     }
@@ -219,6 +222,28 @@ export class InvoiceService {
                         API.CART.STATUS.GET_PRODUCT_SUCCESS
                     ) {
                         return data.data.output;
+                    } else {
+                        throw new Error(data.meta);
+                    }
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
+    }
+
+    getLivePaymentDetail(id) {
+        return this.http
+            .get(API.INVOICE.END_POINT.INVOICE + `/live/${id}`, {
+                headers: this.storageService.getHttpHeader(),
+            })
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.CART.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return data.data.invoiceItemList;
                     } else {
                         throw new Error(data.meta);
                     }

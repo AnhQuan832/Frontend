@@ -105,13 +105,24 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
 
     onRowSelect(row) {
         this.selectedInvoice = row;
-        this.invoiceService.getPaymentDetail(row.invoiceId).subscribe({
-            next: (res) => {
-                this.cart = res;
-                const element = document.getElementById('invoice');
-                element.scrollIntoView();
-            },
-        });
+        if (row.invoiceId)
+            this.invoiceService.getPaymentDetail(row.invoiceId).subscribe({
+                next: (res) => {
+                    this.cart = res;
+                    const element = document.getElementById('invoice');
+                    element.scrollIntoView();
+                },
+            });
+        else
+            this.invoiceService
+                .getLivePaymentDetail(row.liveInvoiceId)
+                .subscribe({
+                    next: (res) => {
+                        this.cart = res;
+                        const element = document.getElementById('invoice');
+                        element.scrollIntoView();
+                    },
+                });
         this.isBought = row.status === 'COMPLETED';
     }
 
@@ -122,7 +133,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         });
     }
 
-    contactAdmin() {
+    contactAdmin(invoice) {
         sessionStorage.setItem('reciepientID', 'USER_1697033158735');
         this.chat.connect();
         setTimeout(() => {
@@ -138,6 +149,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
             case 'PAID':
                 return 'success';
             case 'PENDING':
+            case 'COD':
                 return 'info';
             case 'RETURN':
                 return 'warning';

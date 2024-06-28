@@ -1,6 +1,9 @@
 <div *ngIf="!isLoading; else loading" class="card m-2" (click)="onCardClick()">
-    <img class="img" src="{{ product.image || product.images[0] || 'https://via.placeholder.com/320x300' }}"
-        lazyload="true" />
+    <div class="image-container">
+
+        <img class="img" src="{{ product.image || product.images[0] || 'https://via.placeholder.com/320x300' }}"
+            lazyload="true" />
+    </div>
     <div class="card-content w-100 d-flex flex-column p-3 justify-content-between">
         <span>
             <h5 class="product-name clamp mb-0">{{ product?.name }}</h5>

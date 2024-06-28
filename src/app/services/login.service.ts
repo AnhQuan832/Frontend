@@ -157,7 +157,7 @@ export class LoginService {
         });
     }
 
-    validateResset(data) {
+    validateReset(data) {
         return this.http.post(API.AUTHENTICATE.END_POINT.VALIDATE_PASS, null, {
             params: data,
         });

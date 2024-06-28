@@ -1,5 +1,5 @@
 <div class="shopView d-flex">
-    <div class="shopView-filter col-sm-6 col-md-2">
+    <div class="shopView-filter col-sm-12 col-md-2">
         <div class="side-filter d-flex flex-column p-2">
             <div class="cate-type w-100 p-2">
                 <h4>Filter</h4>
@@ -64,12 +64,18 @@
             </div>
         </div>
     </div>
-    <div class="shopView-list col-10">
+    <div class="shopView-list col-sm-12 col-md-10" infinite-scroll [infiniteScrollDistance]="scrollDistance"
+        [infiniteScrollUpDistance]="scrollUpDistance" [infiniteScrollThrottle]="throttle"
+        (scrolled)="onScrollDown($event)">
         <div *ngIf="!isLoading; else loading" class="w-100 shopView-list">
             <app-product-card *ngFor="let product of products" [product]="product" class="product"></app-product-card>
+            <div *ngIf="isLoadingMore"><app-product-card *ngFor="let _ of [].constructor(size)"
+                    [isLoading]="true"></app-product-card>
+            </div>
         </div>
         <ng-template #loading><app-product-card *ngFor="let _ of [].constructor(20)"
                 [isLoading]="true"></app-product-card>
         </ng-template>
+
     </div>
 </div>

@@ -242,11 +242,10 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
         //     };
         //     this.checkOutForm.patchValue({ address: address });
         // }
-
+        const domain = window.location.origin;
         this.checkOutForm.patchValue({ voucher: this.selectedVoucher });
         this.checkOutForm.patchValue({
-            // returnUrl: 'https://gradution-project-eta.vercel.app/user/complete-checkout',
-            returnUrl: 'http://localhost:4200/user/complete-checkout',
+            returnUrl: domain + '/user/complete-checkout',
         });
         if (!this.liveCartId)
             this.checkOutForm.patchValue({
@@ -272,7 +271,7 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
                             window.location.href = res.paymentUrl;
                             this.storageService.setItemLocal(
                                 'sucInvoice',
-                                res.invoiceId
+                                res.invoiceId || res.liveInvoiceId
                             );
                         } else {
                             this.msgService.add({

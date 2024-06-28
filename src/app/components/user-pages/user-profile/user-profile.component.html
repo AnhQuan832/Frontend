@@ -71,7 +71,7 @@
                             <div>
                                 <h6>Member point</h6>
                                 <input type="text" pattern="[0-9]+" minlength="10" pInputText maxlength="11"
-                                    class="w-100 rounded-2 p-2 mb-3" formControlName="memberPoint" />
+                                    class="w-100 rounded-2 p-2 mb-3" formControlName="memberPoint" locale="jp-JP" />
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -102,41 +102,40 @@
                                         styleClass="p-datatable-striped" [tableStyle]="{ 'min-width': '25rem' }">
                                         <ng-template pTemplate="header">
                                             <tr class="py-5">
-                                                <th pSortableColumn="totalPrice">
-                                                    Invoice ID <p-sortIcon field="totalPrice"></p-sortIcon>
+                                                <th>
+                                                    Invoice ID
                                                 </th>
                                                 <th pSortableColumn="createdDate" style="min-width: 6rem" class="ps-4">
-                                                    Date <p-sortIcon field="createdDate"></p-sortIcon>
+                                                    Date
                                                 </th>
 
                                                 <th pSortableColumn="finalPrice">
-                                                    Price <p-sortIcon field="finalPrice"></p-sortIcon>
+                                                    Price
                                                 </th>
 
                                                 <th pSortableColumn="paymentType">
-                                                    Payment <p-sortIcon field="paymentType"></p-sortIcon>
+                                                    Payment
                                                 </th>
                                                 <th pSortableColumn="status">
-                                                    Status <p-sortIcon field="status"></p-sortIcon>
+                                                    Status
                                                 </th>
-                                                <th></th>
+                                                <th>Action</th>
                                             </tr>
                                         </ng-template>
                                         <ng-template pTemplate="body" let-invoice>
                                             <tr (click)="onRowSelect(invoice)" style="cursor: pointer">
                                                 <td class="ps-4">
-                                                    {{ invoice.invoiceId }}
+                                                    {{ invoice.invoiceId || invoice.liveInvoiceId }}
                                                 </td>
                                                 <td class="">
                                                     {{ invoice.createdDate | date : "dd/MM/yyyy" }}
                                                 </td>
                                                 <td>{{ invoice.finalPrice | currency : "VND" }}</td>
                                                 <td>
-                                                    {{
-                                                    invoice.paymentType === "CREDIT_CARD"
-                                                    ? "Banking"
-                                                    : "COD"
-                                                    }}
+
+                                                    <p-tag
+                                                        [value]="invoice.paymentType === 'CREDIT_CARD' ? 'Paid': 'COD'"
+                                                        [severity]="invoice.paymentType === 'CREDIT_CARD' ? 'success': 'info'"></p-tag>
                                                 </td>
                                                 <td>
                                                     <p-tag [value]="invoice.status"
@@ -147,7 +146,7 @@
                                                               invoice.status === 'PENDING' ||
                                                               invoice.status === 'CANCEL'
                                                             " styleClass="p-button-secondary" label="Contact"
-                                                        (onClick)="$event.stopPropagation(); contactAdmin()"></p-button>
+                                                        (onClick)="$event.stopPropagation(); contactAdmin(invoice)"></p-button>
                                                 </td>
                                             </tr>
                                         </ng-template>

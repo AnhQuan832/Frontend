@@ -44,6 +44,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { LiveDetailComponent } from './live-detail/live-detail.component';
 import { HomeComponent } from './landing/landing.component';
 import { register } from 'swiper/element/bundle';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 register();
 @NgModule({
     imports: [
@@ -85,6 +86,7 @@ register();
         SkeletonModule,
         InputTextareaModule,
         KeyFilterModule,
+        InfiniteScrollModule,
     ],
     declarations: [
         UserPageComponent,

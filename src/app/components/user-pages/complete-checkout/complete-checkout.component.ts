@@ -29,7 +29,7 @@ export class CompleteCheckoutComponent implements OnInit {
                 setTimeout(() => {
                     if (isLogin) this.router.navigate(['/user/profile']);
                     else this.router.navigate(['/user/home']);
-                }, 300);
+                }, 500);
             },
         });
     }

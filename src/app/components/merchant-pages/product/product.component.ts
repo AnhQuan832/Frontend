@@ -21,7 +21,7 @@ export class ProductComponent extends BaseComponent {
 
     deleteProductsDialog: boolean = false;
 
-    products: any[] = [];
+    products: any[] = [].constructor(10);
 
     product: any = {};
 
@@ -39,6 +39,7 @@ export class ProductComponent extends BaseComponent {
 
     first: number = 1;
     totalRecords: number = 1;
+    isLoading: boolean = true;
     constructor(
         private productService: ProductService,
         private router: Router,
@@ -55,10 +56,13 @@ export class ProductComponent extends BaseComponent {
     }
 
     getProducts() {
+        this.isLoading = true;
         this.productService
             .getAllProduct({ merchantId: this.getUserInfo().merchantId })
             .subscribe({
                 next: (res) => {
+                    this.isLoading = false;
+
                     this.products = res;
                 },
             });

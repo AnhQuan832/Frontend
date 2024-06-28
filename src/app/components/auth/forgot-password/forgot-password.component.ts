@@ -56,6 +56,7 @@ export class ForgotPasswordComponent {
                         if (res) {
                             this.email = res;
                             this.isSubmitted = false;
+                            this.validateForm.reset();
                             this.validateForm.patchValue({
                                 emailAddress: this.loginForm.value.userEmail,
                             });
@@ -88,7 +89,7 @@ export class ForgotPasswordComponent {
     validate() {
         this.isSubmitted = true;
 
-        this.authService.validateResset(this.validateForm.value).subscribe({
+        this.authService.validateReset(this.validateForm.value).subscribe({
             next: (res) => {
                 this.valid = true;
             },
