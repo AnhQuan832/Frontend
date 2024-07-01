@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
+import { BaseComponent } from 'src/app/base.component';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
@@ -12,9 +13,10 @@ import { ToastMessageService } from 'src/app/services/toast-message.service';
     templateUrl: './landing.component.html',
     styleUrls: ['./landing.component.less'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent extends BaseComponent implements OnInit {
     mostProd;
     listStream = [];
+    isLogin: boolean = false;
     constructor(
         private cartService: CartService,
         private storageService: StorageService,
@@ -23,8 +25,11 @@ export class HomeComponent implements OnInit {
         private messageService: ToastMessageService,
         private streamService: StreamService,
         public layout: LayoutService
-    ) {}
+    ) {
+        super();
+    }
     ngOnInit(): void {
+        this.isLogin = !!this.getToken();
         const localCart = this.storageService.getItemLocal('localCart');
         if (localCart) {
             localCart.forEach((item) => {

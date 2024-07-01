@@ -169,4 +169,42 @@ export class MerchantService {
                 })
             );
     }
+
+    getMerchant(merchantId) {
+        return this.http
+            .get(API.MERCHANT.END_POINT.MERCHANT + '/customer/' + merchantId)
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return data.data.merchant;
+                    } else return false;
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
+    }
+
+    updateProfile(data) {
+        return this.http
+            .put(API.MERCHANT.END_POINT.MERCHANT + '/info', data, {
+                headers: this.storageService.getHttpHeader(),
+            })
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return true;
+                    } else throw new Error();
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
+    }
 }

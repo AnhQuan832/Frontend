@@ -1,13 +1,31 @@
 <div class="grid">
     <div class="col-12">
-        <div class="card px-6 py-6 position-relative vh-100">
-            <div class="cover-img mb-4"
-                style="background-image: url({{merchantDetail.merchantAvatar}}); height: 200px;">
-                <img width="150px" height="150px" src="{{ merchantDetail.merchantAvatar }}" alt=""
-                    class="rounded-circle logo" onerror="this.onerror=null;this.src='/assets/no_user.png';" />
+        <div class="card px-6 py-6">
+            <div class="position-relative">
+                <div class="cover-img mb-4 position-relative" id="cover"
+                    style="background-image: url({{merchantDetail?.merchantAvatar}}); height: 216px;">
+                    <div class="logo">
+                        <img id="logo" width="150px" height="150px" src="{{ merchantDetail?.merchantAvatar }}" alt=""
+                            class="rounded-circle" onerror="this.onerror=null;this.src='/assets/no_user.png';" />
+
+                    </div>
+                    <div class="position-absolute" style="top:8px; right: 8px;">
+                        <p-menu #menu [model]="items" [popup]="true" appendTo="body"></p-menu>
+
+                        <button pButton pRipple icon="pi pi-ellipsis-h"
+                            class="p-button-rounded p-button-secondary mr-2 p-button-outlined"
+                            (click)="menu.toggle($event)" pTooltip="Edit"></button>
+                    </div>
+                </div>
+            </div>
+
+            <input type="file" accept="image/png, image/jpeg" id="merchantAvatar" (change)="onSelectImage($event)" />
+            <input type="file" accept="image/png, image/jpeg" id="coverImg" (change)="onSelectCover($event)" />
+            <div class="d-flex gap-4">
+                <h3>Merchant Info</h3>
             </div>
             <div class="info d-flex pt-4 ">
-                <div class="basic-info ps-4">
+                <!-- <div *ngIf="!isEditing" class="basic-info ps-4">
                     <h5><b>Name: </b> {{ merchantDetail.merchantName }}</h5>
                     <h5>
                         <b>Phone: </b>
@@ -27,6 +45,14 @@
                     <h5>
                         <b>Created Date: </b>
                         {{ merchantDetail.createdDate | date: "dd/MM/yyyy" }}
+                    </h5>
+                    <h5>
+                        <b>Description: </b>
+                        {{ merchantDetail.description }}
+                    </h5>
+                    <h5>
+                        <b>Permission to live: </b>
+                        {{ merchantDetail.isLiveable ? 'Allowed' : 'Banned' }}
                     </h5>
                     <h5><b>Related Document or License: </b></h5>
                     <h6 class="mt-0" style="font-weight: 400" *ngIf="merchantDetail.relatedDocuments.length == 0">
@@ -49,7 +75,84 @@
                             </div>
                         </a>
                     </div>
+                </div> -->
+                <div>
+                    <form class="form bg-white w-100" id="form-container" [formGroup]="updateMerchantInfoRequest">
+                        <div>
+
+                            <div class="input-textbox d-flex justify-content-center w-100">
+                                <span class="m-4 my-2 w-100">
+                                    <h6 class="mb-1">Shop Name</h6>
+                                    <input class="w-100 rounded-2 p-2 mb-3" pInputText type="text"
+                                        formControlName="merchantName" />
+                                </span>
+                            </div>
+                            <div class="input-textbox d-flex justify-content-center w-100">
+                                <span class="m-4 my-2 w-100">
+                                    <h6 class="mb-1">Shop Description</h6>
+                                    <textarea class="w-100 rounded-2 p-2 mb-3" row="5" pInputTextarea
+                                        formControlName="merchantDescription"></textarea>
+                                </span>
+                            </div>
+                            <div class="input-textbox d-flex justify-content-center w-100">
+                                <span class="m-4 my-2 w-100">
+                                    <h6 class="mb-1">Phone Number</h6>
+                                    <input class="w-100 rounded-2 p-2 mb-3" type="text" pKeyFilter="num" pInputText
+                                        formControlName="phoneNumber" maxlength="10" />
+                                </span>
+                            </div>
+                            <!-- <div class="input-textbox d-flex justify-content-start w-100">
+                                    <span class="ms-4 mt-2">
+                                        <p-divider class="mb-1">Address</p-divider>
+                                    </span>
+                                </div> -->
+                        </div>
+
+                        <div class="w-100">
+                            <div class="address-container m-4 my-2 w-100">
+                                <!-- <span class="">
+                                    <h6 class="mb-1" class="addressLabel  mb-1">
+                                        Address
+                                    </h6>
+                                    <input class="w-100 rounded-2 p-2 mb-3" type="text" pInputText
+                                        formControlName="address" />
+                                </span> -->
+                                <span class="">
+                                    <h6 class="mb-1" class="addressLabel  mb-1">City</h6>
+                                    <p-dropdown [options]="listProvince" [filter]="true" [autoDisplayFirst]="false"
+                                        optionLabel="provName" filterBy="provName" optionValue="provCode"
+                                        [ngModelOptions]="{ standalone: true }" [(ngModel)]="selectedProvince"
+                                        (onChange)="provinceSelectedChange($event.value)">
+                                    </p-dropdown>
+                                </span>
+                                <span class="">
+                                    <h6 class="mb-1" class="addressLabel  mb-1">
+                                        District
+                                    </h6>
+                                    <p-dropdown [filter]="true" [autoDisplayFirst]="false" optionLabel="distName"
+                                        optionValue="distCode" filterBy="distName" [options]="listDistrict"
+                                        [ngModelOptions]="{ standalone: true }" [(ngModel)]="selectedDistrict"
+                                        (onChange)="districtSelectedChange($event.value)">
+                                    </p-dropdown>
+                                </span>
+                                <span class="">
+                                    <h6 class="mb-1" class="addressLabel  mb-1">Ward</h6>
+                                    <p-dropdown [options]="listWard" [ngModelOptions]="{ standalone: true }"
+                                        [(ngModel)]="selectedWard" [autoDisplayFirst]="false" filterBy="wardName"
+                                        optionLabel="wardName" optionValue="wardCode">
+                                    </p-dropdown>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="btn-container d-flex justify-content-center pt-4 mb-4">
+                            <button type="submit" class="btn btn-primary text-nowrap rounded-3"
+                                [disabled]="updateMerchantInfoRequest.invalid " (click)="updateData()">
+                                Update
+                            </button>
+                        </div>
+                    </form>
                 </div>
+
             </div>
         </div>
     </div>

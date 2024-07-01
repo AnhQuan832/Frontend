@@ -4,12 +4,79 @@
 
 .logo {
     position: relative;
+    width: fit-content;
     top: 60px;
-    aspect-ratio: 1;
-    object-fit: cover;
-    border: solid 1px;
+    img {
+        aspect-ratio: 1;
+        object-fit: cover;
+        border: solid 1px;
+    }
+    .button-update {
+        display: none;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+    &:hover {
+        .button-update {
+            display: block;
+        }
+    }
 }
 
 i {
-    font-size: 3rem;
+    font-size: 1.5rem;
+}
+h1 {
+    font-weight: 500;
+}
+h5 {
+    font-weight: 345;
+}
+
+.fit-content {
+    width: fit-content;
+}
+
+.address-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 575.98px) {
+    .address-container {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+:host ::ng-deep {
+    .p-dropdown {
+        width: 100%;
+    }
+
+    .p-dropdown.p-component {
+        height: 36.6px !important;
+    }
+
+    .p-dropdown .p-dropdown-label {
+        height: 100% !important;
+        display: flex;
+        align-items: center;
+    }
+}
+.form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.cover-img {
+    position: relative;
+    overflow: hidden;
+}
+
+input[type="file"] {
+    // visibility: hidden;
+    display: none;
 }

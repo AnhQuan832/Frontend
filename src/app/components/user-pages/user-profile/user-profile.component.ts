@@ -159,7 +159,10 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
     }
 
     updateData() {
-        this.userService.update(this.formGroup.getRawValue()).subscribe({
+        const data = this.formGroup.getRawValue();
+        // delete data['addressList'];
+        data['userAvatar'] = null;
+        this.userService.update(data).subscribe({
             next: (res) => {
                 this.msgService.showMessage('Updated', '', 'success');
             },

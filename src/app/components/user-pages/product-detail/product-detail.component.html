@@ -87,6 +87,37 @@
             </div>
         </div>
     </div>
+    <div *ngIf="merchant" class="mt-4 card d-flex flex-row">
+        <div class="d-flex gap-4 align-items-center me-4">
+            <div>
+                <img width="100px" height="100px" src="{{merchant.merchantAvatar}}" alt=""
+                    onerror="this.onerror=null;this.src='/assets/no_user.png';" class="rounded-circle">
+            </div>
+            <div class="action d-flex flex-column gap-2">
+                <h4 class="my-1">{{merchant.merchantName}}</h4>
+                <div class="d-flex flex-row gap-2">
+                    <button pButton pRipple class="btn btn-secondary" icon="pi pi-comments" label="Chat"
+                        (click)="chat()"></button>
+                    <button pButton pRipple class="btn btn-secondary" icon="pi pi-eye" label="View Shop"
+                        (click)="goToMerchant()"></button>
+                </div>
+
+            </div>
+        </div>
+        <p-divider layout="vertical"></p-divider>
+        <div class="merchant-info">
+            <div class="info">
+                <h6>Joined: {{merchant.createdDate | date }}</h6>
+                <h6>Products: {{merchant.noProduct}}</h6>
+            </div>
+            <div class="info">
+
+                <h6>Phone Number: {{merchant.phoneNumber}}</h6>
+                <h6>Address: {{merchant.cityName}}</h6>
+            </div>
+        </div>
+    </div>
+
     <div class="mt-4 card">
         <p-tabView>
             <p-tabPanel header="Product Details">

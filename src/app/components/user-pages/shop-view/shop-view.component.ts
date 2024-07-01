@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DataView } from 'primeng/dataview';
 import _ from 'lodash';
 import { forkJoin } from 'rxjs';
@@ -9,6 +9,7 @@ import { ProductService } from 'src/app/services/product.service';
     styleUrls: ['./shop-view.component.scss'],
 })
 export class ShopViewComponent implements OnInit {
+    @Input() merchantId = null;
     responsiveOptions = [
         {
             breakpoint: '1199px',
@@ -45,6 +46,7 @@ export class ShopViewComponent implements OnInit {
     scrollUpDistance = 2;
     totalRecord = 0;
     isLoadingMore = false;
+    filter = {};
     constructor(private productService: ProductService) {}
     ngOnInit(): void {
         this.initialize();
@@ -53,7 +55,7 @@ export class ShopViewComponent implements OnInit {
     private initialize() {
         this.isLoading = true;
 
-        this.getProducts(true);
+        this.applyFilter(true);
         forkJoin([
             this.productService.getCategory(),
             this.productService.getBrand(),
@@ -68,26 +70,24 @@ export class ShopViewComponent implements OnInit {
     }
 
     getProducts(isInit = false) {
-        if (isInit) this.products = [];
-        else {
-            this.isLoadingMore = true;
-            if (this.totalRecord === this.products.length) {
-                this.isLoadingMore = false;
-                return;
-            }
+        if (isInit) {
+            this.products = [];
+            this.isLoading = true;
+        } else if (this.totalRecord === this.products.length) {
+            this.isLoadingMore = false;
+            return;
         }
-        this.productService
-            .getAllProduct({ page: this.page, size: this.size })
-            .subscribe({
-                next: (res) => {
-                    this.isLoading = false;
-                    this.isLoadingMore = false;
-                    if (res.length !== 0)
-                        this.totalRecord = res[0]['totalRecord'] || 0;
-                    this.products.push(...res);
-                },
-                error: (err) => console.log(err),
-            });
+        this.isLoadingMore = true;
+
+        this.productService.getAllProduct(this.filter).subscribe({
+            next: (res) => {
+                this.isLoading = false;
+                this.isLoadingMore = false;
+                this.totalRecord = res.length !== 0 ? res[0]['totalRecord'] : 0;
+                this.products.push(...res);
+            },
+            error: (err) => console.log(err),
+        });
     }
 
     getSeverity(status: string) {
@@ -122,10 +122,6 @@ export class ShopViewComponent implements OnInit {
                     .includes(formatedValue)
             );
         });
-    }
-
-    onFilter(dv: DataView, event: Event) {
-        dv.filter((event.target as HTMLInputElement).value, 'contains');
     }
 
     // onCheckboxBrandChange(event) {
@@ -187,35 +183,28 @@ export class ShopViewComponent implements OnInit {
 
     onPriceChange() {}
 
-    applyFilter() {
-        this.isLoading = true;
-        const filter = {
+    applyFilter(init = true) {
+        this.filter = {
             brandId: this.selectedBrand == 'All' ? null : this.selectedBrand,
             categoryId: this.selectedCate == 'All' ? null : this.selectedCate,
             minPrice: this.priceRange[0],
             maxPrice: this.priceRange[1],
-            page: this.page,
+            page: init ? 1 : this.page,
             size: this.size,
+            merchantId: this.merchantId,
         };
-        for (const key in filter) {
-            if (filter[key] === null) {
-                delete filter[key];
+        for (const key in this.filter) {
+            if (this.filter[key] === null) {
+                delete this.filter[key];
             }
         }
-        this.productService.getAllProduct({ ...filter }).subscribe({
-            next: (res) => {
-                this.isLoading = false;
-                this.products = res;
-            },
-            error: (err) => console.log(err),
-        });
+        this.getProducts(init);
     }
     clearFilter() {}
 
-    onScrollDown(ev) {
-        console.log('scrolled down!!', ev);
-        this.page++;
-        this.getProducts();
+    onScrollDown() {
+        ++this.page;
+        this.applyFilter(false);
     }
 
     onUp(ev) {

@@ -1,0 +1,13 @@
+<div class="info mx-4">
+    <div class="cover-img mb-4" style="background-image: url({{merchantDetail.merchantAvatar}}); height: 200px;">
+        <!-- <img width="100px" height="100px" src="{{ merchantDetail.merchantAvatar }}" alt="" class="rounded-circle logo"
+            onerror="this.onerror=null;this.src='/assets/no_user.png';" /> -->
+    </div>
+</div>
+
+
+<div *ngIf="merchantDetail.description" class="description card m-4">
+    <p>{{merchantDetail.description}}</p>
+</div>
+
+<app-shop-view [merchantId]="merchantId"></app-shop-view>

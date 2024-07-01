@@ -57,6 +57,7 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
     checkOutForm: FormGroup;
     isLogin;
     liveCartId;
+    isLoading: boolean = false;
     constructor(
         private apiAddress: AddressService,
         private cartService: CartService,
@@ -242,6 +243,7 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
         //     };
         //     this.checkOutForm.patchValue({ address: address });
         // }
+        this.isLoading = true;
         const domain = window.location.origin;
         this.checkOutForm.patchValue({ voucher: this.selectedVoucher });
         this.checkOutForm.patchValue({
@@ -263,16 +265,16 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
                 paymentInfoDTO: this.checkOutForm.value,
                 cartId: this.cartItem[0].cartId,
             };
+            localStorage.removeItem('cart');
+            localStorage.removeItem('discountPrice');
+            localStorage.removeItem('voucherByMerchantMap');
+
             if (!this.liveCartId) {
                 this.invoiceService.processPayment(data).subscribe({
                     next: (res) => {
                         // window.open(res);
                         if (res) {
-                            window.location.href = res.paymentUrl;
-                            this.storageService.setItemLocal(
-                                'sucInvoice',
-                                res.invoiceId || res.liveInvoiceId
-                            );
+                            this.completeCheckout(res);
                         } else {
                             this.msgService.add({
                                 key: 'toast',
@@ -283,6 +285,7 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
                                 this.router.navigate(['/user/profile']);
                             }, 1000);
                         }
+                        this.isLoading = false;
                     },
                 });
             } else {
@@ -292,11 +295,7 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
                     next: (res) => {
                         // window.open(res);
                         if (res) {
-                            window.location.href = res.paymentUrl;
-                            this.storageService.setItemLocal(
-                                'sucInvoice',
-                                res.invoiceId
-                            );
+                            this.completeCheckout(res);
                         } else {
                             this.msgService.add({
                                 key: 'toast',
@@ -307,6 +306,7 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
                                 this.router.navigate(['/user/profile']);
                             }, 1000);
                         }
+                        this.isLoading = false;
                     },
                 });
             }
@@ -321,11 +321,7 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
                     next: (res) => {
                         // window.open(res);
                         if (res) {
-                            window.location.href = res.paymentUrl;
-                            this.storageService.setItemLocal(
-                                'sucInvoice',
-                                res.invoiceId
-                            );
+                            this.completeCheckout(res);
                         } else {
                             this.msgService.add({
                                 key: 'toast',
@@ -343,11 +339,7 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
                     next: (res) => {
                         // window.open(res);
                         if (res) {
-                            window.location.href = res.paymentUrl;
-                            this.storageService.setItemLocal(
-                                'sucInvoice',
-                                res.invoiceId
-                            );
+                            this.completeCheckout(res);
                         } else {
                             this.msgService.add({
                                 key: 'toast',
@@ -435,5 +427,12 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
         //     });
         //     this.selectedShipping = this.listShippingService[0];
         // });
+    }
+    completeCheckout(data) {
+        this.storageService.setItemLocal(
+            'sucInvoice',
+            data.invoiceIdList || data.liveInvoiceId
+        );
+        window.location.href = data.paymentUrl;
     }
 }

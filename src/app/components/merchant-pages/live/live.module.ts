@@ -14,6 +14,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
+import { PendingChangesGuard } from './pending-change.guard';
 
 @NgModule({
     declarations: [LiveComponent],
@@ -33,5 +34,6 @@ import { PaginatorModule } from 'primeng/paginator';
         InputTextModule,
         PaginatorModule,
     ],
+    providers: [PendingChangesGuard],
 })
 export class LiveModule {}

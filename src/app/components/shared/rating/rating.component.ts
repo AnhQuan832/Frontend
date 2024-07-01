@@ -36,6 +36,13 @@ export class RatingComponent implements OnInit {
                 this.messageService.showMessage('', 'Success', 'success');
                 this.ref.close();
             },
+            error: (err) => {
+                this.messageService.showMessage(
+                    '',
+                    'You have rated this product',
+                    'error'
+                );
+            },
         });
     }
 }

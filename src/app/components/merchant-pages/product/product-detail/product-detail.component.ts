@@ -165,19 +165,28 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
 
     toBlobImgs() {
         const formData = new FormData();
-        for (let i = 0; i < this.imgs.length; i++) {
-            formData.append(
-                'newImages',
-                this.imgs[i].file,
-                this.imgs[i].file.name
+        if (this.removedImgs.length)
+            this.prepareFormData(
+                formData,
+                this.removedImgs,
+                'deletedImages',
+                true
             );
-        }
-        formData.append(
-            'deletedImages',
-            new Blob([JSON.stringify(this.removedImgs)], {
-                type: 'application/json',
-            })
-        );
+        if (this.imgs.length)
+            this.prepareFormData(formData, this.imgs, 'newImages', false);
+        // for (let i = 0; i < this.imgs.length; i++) {
+        //     formData.append(
+        //         'newImages',
+        //         this.imgs[i].file,
+        //         this.imgs[i].file.name
+        //     );
+        // }
+        // formData.append(
+        //     'deletedImages',
+        //     new Blob([JSON.stringify(this.removedImgs)], {
+        //         type: 'application/json',
+        //     })
+        // );
         return formData;
     }
 
@@ -280,11 +289,16 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
 
     onSaveProduct() {
         console.log(this.product);
-        // this.productService.updateImages(this.addProductForm.get('productId').value, this.toBlobImgs()).subscribe({
-        //   next: (res) => {
-        //     console.log(res)
-        //   }
-        // })
+        this.productService
+            .updateImages(
+                this.addProductForm.get('productId').value,
+                this.toBlobImgs()
+            )
+            .subscribe({
+                next: (res) => {
+                    console.log(res);
+                },
+            });
         const requests = [];
         Object.values(this.listUpdateVariety).forEach((variety) => {
             const data = {

@@ -30,7 +30,7 @@
 
 
 
-        <h2>Recommended product for you</h2>
+        <h2>Most popular product</h2>
         <section class="recommended-prod">
             <swiper-container class="mySwiper" navigation="true" space-between="30" autoplay-delay="3500" rewind="true"
                 autoplay-disable-on-interaction="false" slides-per-view="5">
@@ -47,8 +47,8 @@
             </swiper-container>
 
         </section>
-        <h2>Live channels</h2>
-        <section class="recommended-live">
+        <h2 *ngIf="isLogin">Live channels</h2>
+        <section *ngIf="isLogin" class="recommended-live">
             <swiper-container class="mySwiper" navigation="true" space-between="30" autoplay-delay="3500" rewind="true"
                 autoplay-disable-on-interaction="false" slides-per-view="3">
                 <swiper-slide *ngFor="let stream of listStream" class="live-slide cursor-pointer"

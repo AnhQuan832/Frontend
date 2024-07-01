@@ -3,34 +3,54 @@ import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { forkJoin } from 'rxjs';
+import { BaseComponent } from 'src/app/base.component';
 
 @Component({
     selector: 'app-complete-checkout',
     templateUrl: './complete-checkout.component.html',
     styleUrls: ['./complete-checkout.component.less'],
 })
-export class CompleteCheckoutComponent implements OnInit {
+export class CompleteCheckoutComponent extends BaseComponent implements OnInit {
     constructor(
         private location: Location,
         private invoiceService: InvoiceService,
         private router: Router,
-        private storageSerivce: StorageService
-    ) {}
+        private storageService: StorageService
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
-        const invoiceId = this.storageSerivce.getItemLocal('sucInvoice');
-        const isLogin = this.storageSerivce.getItemLocal('userInfo');
-        const params = {
-            status: 'PAID',
-            invoiceId: invoiceId,
-        };
-        this.invoiceService.updateStatus(params).subscribe({
-            next: (res) => {
-                setTimeout(() => {
-                    if (isLogin) this.router.navigate(['/user/profile']);
-                    else this.router.navigate(['/user/home']);
-                }, 500);
-            },
-        });
+        const invoiceIds = this.storageService.getItemLocal('sucInvoice');
+        const isLogin = this.getUserInfo();
+        // const updateRequests = invoiceIds.map((invoiceId) => {
+        //     const params = {
+        //         status: 'PAID',
+        //         invoiceId: invoiceId,
+        //     };
+        //     return this.invoiceService.updateStatus(params);
+        // });
+
+        // forkJoin(updateRequests).subscribe({
+        //     next: (responses) => {
+        //         setTimeout(() => {
+        //             if (isLogin) {
+        //                 this.router.navigate(['/user/profile']);
+        //             } else {
+        //                 this.router.navigate(['/user/home']);
+        //             }
+        //         }, 500);
+        //     },
+        //     error: (err) => {
+        //         console.error('Error updating invoices:', err);
+        //     },
+        // });
+
+        if (isLogin) {
+            this.router.navigate(['/user/profile']);
+        } else {
+            this.router.navigate(['/user/home']);
+        }
     }
 }

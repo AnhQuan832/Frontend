@@ -45,6 +45,7 @@ import { LiveDetailComponent } from './live-detail/live-detail.component';
 import { HomeComponent } from './landing/landing.component';
 import { register } from 'swiper/element/bundle';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { MerchantShopComponent } from './merchant-shop/merchant-shop.component';
 register();
 @NgModule({
     imports: [
@@ -101,6 +102,7 @@ register();
         MerchantRequestComponent,
         LiveDetailComponent,
         HomeComponent,
+        MerchantShopComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

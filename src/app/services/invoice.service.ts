@@ -29,7 +29,7 @@ export class InvoiceService {
                             ...data.data.invoiceList.invoices,
                         ];
                     } else {
-                        throw new Error(data.meta);
+                        return false;
                     }
                 }),
                 catchError((err) => {
@@ -51,7 +51,7 @@ export class InvoiceService {
                     ) {
                         return data.data.output;
                     } else {
-                        throw new Error(data.meta);
+                        return false;
                     }
                 }),
                 catchError((err) => {
@@ -94,7 +94,7 @@ export class InvoiceService {
                     ) {
                         return data.data.invoiceItemList;
                     } else {
-                        throw new Error(data.meta);
+                        return false;
                     }
                 }),
                 catchError((err) => {
@@ -116,7 +116,7 @@ export class InvoiceService {
                     ) {
                         return data.data.output;
                     } else {
-                        throw new Error(data.meta);
+                        return false;
                     }
                 }),
                 catchError((err) => {
@@ -136,7 +136,7 @@ export class InvoiceService {
                     ) {
                         return data.data.output;
                     } else {
-                        throw new Error(data.meta);
+                        return false;
                     }
                 }),
                 catchError((err) => {
@@ -156,7 +156,7 @@ export class InvoiceService {
                     ) {
                         return data.data.output;
                     } else {
-                        throw new Error(data.meta);
+                        return false;
                     }
                 }),
                 catchError((err) => {
@@ -179,7 +179,7 @@ export class InvoiceService {
                     ) {
                         return data.data.invoiceItemList;
                     } else {
-                        throw new Error(data.meta);
+                        return false;
                     }
                 }),
                 catchError((err) => {
@@ -201,7 +201,7 @@ export class InvoiceService {
                     ) {
                         return data.data.output;
                     } else {
-                        throw new Error(data.meta);
+                        return false;
                     }
                 }),
                 catchError((err) => {
@@ -223,7 +223,7 @@ export class InvoiceService {
                     ) {
                         return data.data.output;
                     } else {
-                        throw new Error(data.meta);
+                        return false;
                     }
                 }),
                 catchError((err) => {
@@ -245,7 +245,7 @@ export class InvoiceService {
                     ) {
                         return data.data.invoiceItemList;
                     } else {
-                        throw new Error(data.meta);
+                        return false;
                     }
                 }),
                 catchError((err) => {

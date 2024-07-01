@@ -11,11 +11,14 @@ import { Toast } from 'primeng/toast';
 import { ToastMessageService } from 'src/app/services/toast-message.service';
 import { v4 as uuidv4 } from 'uuid';
 import { s } from '@fullcalendar/core/internal-common';
+import { MerchantService } from 'src/app/services/merchant.service';
+import { ChatComponent } from '../chat/chat.component';
 
 @Component({
     selector: 'app-product-detail',
     templateUrl: './product-detail.component.html',
     styleUrls: ['./product-detail.component.scss'],
+    providers: [ChatComponent],
 })
 export class ProductDetailComponent extends BaseComponent implements OnInit {
     product;
@@ -36,13 +39,17 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     isDisableBuy: boolean = false;
     mostProd;
     mostBuy;
+
+    merchant;
     constructor(
         private storageService: StorageService,
         private router: Router,
         private productService: ProductService,
         private cartService: CartService,
         private messageService: ToastMessageService,
-        private invoiceService: InvoiceService
+        private invoiceService: InvoiceService,
+        private merchantService: MerchantService,
+        private chatCpn: ChatComponent
     ) {
         super();
     }
@@ -68,6 +75,9 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                 },
             });
         this.product = this.storageService.getItemLocal('currentProduct');
+        const productId = window.location.href.slice(
+            window.location.href.lastIndexOf('/') + 1
+        );
         this.listVarieties = this.product?.varieties;
         this.isLoading = true;
         this.productService.getProdMost(7).subscribe({
@@ -77,10 +87,11 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
             this.mostBuy = data;
         });
         this.productService
-            .getProduct(this.product.productId, viewerId)
+            .getProduct(productId || this.product.productId, viewerId)
             .subscribe({
                 next: (res) => {
                     this.product = res;
+                    this.getMerchant(res.merchantId);
                     if (this.product.detail) {
                         this.product.detail = this.product.detail.replace(
                             /(?:\r\n|\r|\n)/g,
@@ -109,6 +120,13 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
             });
     }
 
+    getMerchant(merchantId) {
+        this.merchantService.getMerchant(merchantId).subscribe({
+            next: (res) => {
+                this.merchant = res;
+            },
+        });
+    }
     setDefaultAttribute() {
         let colorItem, sizeItem;
         if (this.listColor.length > 0) {
@@ -266,5 +284,15 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
         this.router.navigate([`/user/product-detail/${item.productId}`]);
         // location.href = `https://pescue-shop.vercel.app/user/product-detail/${item.productId}`;
         window.location.reload();
+    }
+
+    goToMerchant() {
+        this.router.navigate([`/user/shop/${this.merchant.merchantId}`]);
+    }
+
+    chat() {
+        sessionStorage.setItem('reciepientId', this.merchant.userId);
+
+        this.router.navigate(['/user/message']);
     }
 }

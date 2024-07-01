@@ -168,3 +168,14 @@ button {
         -webkit-line-clamp: 3;
     }
 }
+
+.merchant-info {
+    display: grid;
+    width: 60%;
+    grid-template-columns: repeat(3, 1fr);
+    .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}

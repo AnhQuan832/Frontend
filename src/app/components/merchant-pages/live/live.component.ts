@@ -19,8 +19,10 @@ import {
 import { StreamVideoComponent } from '../../shared/stream-video/stream-video.component';
 import { MenuItem } from 'primeng/api';
 import { ToastMessageService } from 'src/app/services/toast-message.service';
-import { findElements } from '@fullcalendar/core/internal';
+import { eventTupleToStore, findElements } from '@fullcalendar/core/internal';
 import { StorageService } from 'src/app/services/storage.service';
+import { ComponentCanDeactivate } from './pending-change.guard';
+import { Observable, windowCount } from 'rxjs';
 
 @Component({
     selector: 'app-live',
@@ -30,6 +32,10 @@ import { StorageService } from 'src/app/services/storage.service';
 export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     @ViewChild('streamVideo', { static: false })
     streamVideo: StreamVideoComponent;
+    @HostListener('window:beforeunload', ['$event'])
+    beforeunloadHandler($event: any) {
+        return false;
+    }
     listAllProduct = [];
     listProductForLive = [];
     isOnLive = false;
@@ -51,6 +57,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     first = 1;
     totalRecords = 1;
     listLiveProduct = [];
+    isRefresh = false;
     constructor(
         private productService: ProductService,
         private streamService: StreamService,
@@ -65,7 +72,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     }
     ngOnDestroy(): void {
         this.shutDownLive();
-        this.setTempSession();
+        // this.setTempSession();
     }
     ngOnInit(): void {
         this.getProductForLive();
@@ -92,11 +99,6 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
                 },
             },
         ];
-    }
-
-    @HostListener('window:beforeunload')
-    beforeunloadHandler() {
-        this.setTempSession();
     }
 
     setTempSession() {
@@ -344,7 +346,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     }
 
     editWholeVariety(product, value) {
-        if (product.detail)
+        if (product.detail?.varieties?.length)
             product.detail.varieties.forEach((item) => {
                 if (typeof item.price === 'number') item.price = value;
                 else item.isSelected = value;

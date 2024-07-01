@@ -1,4 +1,11 @@
 <div class="check-out d-flex p-4 gap-4" [formGroup]="checkOutForm" style="min-height: 65vh">
+    <div *ngIf="isLoading"
+        class="loading w-100 h-100 position-absolute d-flex d-flex justify-content-center align-items-center flex-column gap-2 bg-body z-3">
+        <div class="spinner-border" role="status">
+            <span class="sr-only"></span>
+        </div>
+        <p style="opacity: 0.7">Loading</p>
+    </div>
     <div class="col-7 p-4 card">
         <h3>Pescue Shop</h3>
         <div class="personal">

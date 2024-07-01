@@ -64,7 +64,10 @@
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-ellipsis-h"
-                                    class="p-button-rounded p-button-text mr-2" (click)="onRowSelect(product)"></button>
+                                    class="p-button-rounded p-button-text mr-2"
+                                    (click)="selectedMerchant = merchant; menu.toggle($event)"></button>
+                                <p-menu #menu [model]="items" [popup]="true" appendTo="body"></p-menu>
+
                             </div>
                         </td>
                     </tr>
