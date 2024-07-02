@@ -43,6 +43,7 @@ import { ProductImageComponent } from './product-image/product-image.component';
 import { SkeletonModule } from 'primeng/skeleton';
 import { StreamVideoComponent } from './stream-video/stream-video.component';
 import { KeyFilterModule } from 'primeng/keyfilter';
+import { PaginatorComponent } from './paginator/paginator.component';
 
 @NgModule({
     declarations: [
@@ -58,6 +59,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
         QuantityComponent,
         ProductImageComponent,
         StreamVideoComponent,
+        PaginatorComponent,
     ],
     imports: [
         CommonModule,
@@ -106,6 +108,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
         QuantityComponent,
         ProductImageComponent,
         StreamVideoComponent,
+        PaginatorComponent,
     ],
     providers: [MessageService, DialogService, ProductComponent],
 })

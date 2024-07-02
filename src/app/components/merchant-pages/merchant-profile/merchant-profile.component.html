@@ -3,7 +3,7 @@
         <div class="card px-6 py-6">
             <div class="position-relative">
                 <div class="cover-img mb-4 position-relative" id="cover"
-                    style="background-image: url({{merchantDetail?.merchantAvatar}}); height: 216px;">
+                    style="background-image: url({{merchantDetail?.merchantCover}}); height: 216px;">
                     <div class="logo">
                         <img id="logo" width="150px" height="150px" src="{{ merchantDetail?.merchantAvatar }}" alt=""
                             class="rounded-circle" onerror="this.onerror=null;this.src='/assets/no_user.png';" />
@@ -79,7 +79,7 @@
                 <div>
                     <form class="form bg-white w-100" id="form-container" [formGroup]="updateMerchantInfoRequest">
                         <div>
-
+                            <h5>Basic</h5>
                             <div class="input-textbox d-flex justify-content-center w-100">
                                 <span class="m-4 my-2 w-100">
                                     <h6 class="mb-1">Shop Name</h6>
@@ -87,18 +87,19 @@
                                         formControlName="merchantName" />
                                 </span>
                             </div>
-                            <div class="input-textbox d-flex justify-content-center w-100">
-                                <span class="m-4 my-2 w-100">
-                                    <h6 class="mb-1">Shop Description</h6>
-                                    <textarea class="w-100 rounded-2 p-2 mb-3" row="5" pInputTextarea
-                                        formControlName="merchantDescription"></textarea>
-                                </span>
-                            </div>
+
                             <div class="input-textbox d-flex justify-content-center w-100">
                                 <span class="m-4 my-2 w-100">
                                     <h6 class="mb-1">Phone Number</h6>
                                     <input class="w-100 rounded-2 p-2 mb-3" type="text" pKeyFilter="num" pInputText
                                         formControlName="phoneNumber" maxlength="10" />
+                                </span>
+                            </div>
+                            <div class="input-textbox d-flex justify-content-center w-100">
+                                <span class="m-4 my-2 w-100">
+                                    <h6 class="mb-1">Shop Description</h6>
+                                    <textarea class="w-100 rounded-2 p-2 mb-3" pInputTextarea [autoResize]="true"
+                                        formControlName="merchantDescription" style="max-height: 400px;"></textarea>
                                 </span>
                             </div>
                             <!-- <div class="input-textbox d-flex justify-content-start w-100">
@@ -107,8 +108,11 @@
                                     </span>
                                 </div> -->
                         </div>
+                        <p-divider layout="vertical"></p-divider>
 
                         <div class="w-100">
+                            <h5>Address</h5>
+
                             <div class="address-container m-4 my-2 w-100">
                                 <!-- <span class="">
                                     <h6 class="mb-1" class="addressLabel  mb-1">
@@ -125,7 +129,7 @@
                                         (onChange)="provinceSelectedChange($event.value)">
                                     </p-dropdown>
                                 </span>
-                                <span class="">
+                                <span class="my-2">
                                     <h6 class="mb-1" class="addressLabel  mb-1">
                                         District
                                     </h6>
@@ -135,7 +139,7 @@
                                         (onChange)="districtSelectedChange($event.value)">
                                     </p-dropdown>
                                 </span>
-                                <span class="">
+                                <span class="my-1">
                                     <h6 class="mb-1" class="addressLabel  mb-1">Ward</h6>
                                     <p-dropdown [options]="listWard" [ngModelOptions]="{ standalone: true }"
                                         [(ngModel)]="selectedWard" [autoDisplayFirst]="false" filterBy="wardName"

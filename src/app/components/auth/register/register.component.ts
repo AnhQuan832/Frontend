@@ -52,7 +52,7 @@ export class RegisterComponent {
             Validators.required,
             Validators.minLength(6),
         ]),
-        userFullName: this.builder.control('', [Validators.required]),
+        userFullName: this.builder.control('', Validators.required),
         userPhoneNumber: this.builder.control('', [
             Validators.required,
             Validators.pattern(/^(?:\d{9}|\d{10})$/),
@@ -104,6 +104,9 @@ export class RegisterComponent {
     }
 
     verify() {
+        this.isSubmitted = true;
+
+        if (this.verifyForm.invalid) return;
         this.verifyForm.patchValue({
             emailAddress: this.registerForm.value.userEmail,
         });
@@ -111,7 +114,13 @@ export class RegisterComponent {
             next: (res: any) => {
                 if (res.meta.statusCode === '1_9_f')
                     this.msgErrorOTP = res.meta.message;
-                else this.msgSuccess = 'Account created';
+                else {
+                    this.msgErrorOTP = '';
+                    this.msgSuccess = 'Account created';
+                    setTimeout(() => {
+                        this.router.navigate(['/auth/login']);
+                    }, 1000);
+                }
             },
         });
     }

@@ -160,14 +160,17 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
 
     updateData() {
         const data = this.formGroup.getRawValue();
-        // delete data['addressList'];
+        delete data['addressList'];
         data['userAvatar'] = null;
-        this.userService.update(data).subscribe({
+        let formData = new FormData();
+        this.prepareFormData(formData, data, 'updateUserProfileDTO', true);
+        let avatar = this.avatarFile?.length ? this.avatarFile[0] : null;
+        this.prepareFormData(formData, avatar, false);
+        this.userService.update(formData).subscribe({
             next: (res) => {
                 this.msgService.showMessage('Updated', '', 'success');
             },
         });
-        this.getData();
     }
 
     registerMerchant() {

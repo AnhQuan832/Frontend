@@ -37,8 +37,8 @@ export class ProductComponent extends BaseComponent {
 
     ref: DynamicDialogRef;
 
-    first: number = 1;
-    totalRecords: number = 1;
+    first: number = 0;
+    totalRecords: number = 10;
     isLoading: boolean = true;
     constructor(
         private productService: ProductService,
@@ -52,17 +52,20 @@ export class ProductComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        this.getProducts();
+        this.getProducts(true);
     }
 
-    getProducts() {
+    getProducts(isInit = false, paging?) {
         this.isLoading = true;
         this.productService
-            .getAllProduct({ merchantId: this.getUserInfo().merchantId })
+            .getAllProduct({
+                merchantId: this.getUserInfo().merchantId,
+                ...paging,
+            })
             .subscribe({
                 next: (res) => {
                     this.isLoading = false;
-
+                    if (isInit) this.totalRecords = res[0].totalRecord;
                     this.products = res;
                 },
             });
@@ -220,5 +223,6 @@ export class ProductComponent extends BaseComponent {
 
     onPageChange(event) {
         console.log(event);
+        this.getProducts(false, { page: event.page + 1, size: 10 });
     }
 }

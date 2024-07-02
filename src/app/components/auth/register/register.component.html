@@ -96,33 +96,33 @@
                     <asl-google-signin-button class="mx-auto" type="standard" size="large"></asl-google-signin-button>
                 </form>
 
-                <form *ngIf="verifyEmail"
-                    class="login_container_form d-flex flex-column col-12 lg:col-6 xl:col-4 p-4 rounded-2"
+                <form *ngIf="verifyEmail" class="login_container_form d-flex flex-column col-12  p-4 rounded-2"
                     [formGroup]="verifyForm" (ngSubmit)="verify()">
-                    <img class="my-4 mx-auto w-75" src="https://i.ibb.co/3h7wrgX/logo-removebg-preview.png"
-                        alt="Logo" />
+                    <app-logo class="m-auto"></app-logo>
 
                     <span class="my-2">
                         <h6>OTP</h6>
 
-                        <input class="w-full md:w-30rem mb-2" type="number" maxlength="10" pKeyFilter="int"
-                            formControlName="otp" (focus)="clearErrorNotification()" />
-                        <p class="text-end text-primary" style="cursor: pointer" (click)="sendOtp()">
-                            Resend
+                        <input class="w-full md:w-30rem mb-2 ps-2" pInputText type="text" maxlength="10"
+                            formControlName="userPhoneNumber" (focus)="clearErrorNotification()" pKeyFilter="num" />
+                        <p class="mx-auto my-2">
+                            <small class="text-danger text-center" *ngIf="msgErrorOTP">{{
+                                msgErrorOTP
+                                }}</small>
+                            <small class="text-success text-center" *ngIf="msgSuccess">Account Created <a
+                                    href="/auth/login">Back to
+                                    login</a></small>
                         </p>
                         <div *ngIf="isSubmitted">
-                            <small class="text-danger" *ngIf="
-                                        registerForm.get('userPhoneNumber')?.hasError('pattern')
-                                    ">Please fill the correct phone number</small>
-                            <small class="text-danger" *ngIf="
-                                        registerForm
-                                            .get('userPhoneNumber')
-                                            ?.hasError('required')
-                                    ">OTP number is required</small>
+                            <small class="text-danger" *ngIf="verifyForm.invalid">OTP number is required</small>
                             <small class="text-danger text-center" *ngIf="msgError">{{
                                 msgError
                                 }}</small>
                         </div>
+                        <p class="text-end text-primary" style="cursor: pointer" (click)="sendOtp()">
+                            Resend
+                        </p>
+
                     </span>
 
                     <div class="btn-container d-flex justify-content-center pt-4">
@@ -130,14 +130,7 @@
                             Verify account
                         </button>
                     </div>
-                    <p class="mx-auto my-2">
-                        <small class="text-danger text-center" *ngIf="msgErrorOTP">{{
-                            msgErrorOTP
-                            }}</small>
-                        <small class="text-success text-center" *ngIf="msgSuccess">Account Created <a
-                                href="/auth/login">Back to
-                                login</a></small>
-                    </p>
+
                 </form>
             </div>
         </div>

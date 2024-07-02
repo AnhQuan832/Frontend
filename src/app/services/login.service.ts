@@ -25,11 +25,11 @@ export class LoginService {
                         API.AUTHENTICATE.STATUS.AUTHENTICATE_SUCCESSFUL
                     ) {
                         return data.data.user;
-                        // } else if (
-                        //     data.meta.statusCode ===
-                        //     API.AUTHENTICATE.STATUS.BAD_CREDENTIAL
-                        // ) {
-                        //     return false;
+                    } else if (
+                        data.meta.statusCode ===
+                        API.AUTHENTICATE.STATUS.BAD_CREDENTIAL
+                    ) {
+                        return 'Bad credential! Please check your email or password again!';
                     } else {
                         throw new Error(data.meta);
                     }
@@ -152,9 +152,20 @@ export class LoginService {
     }
 
     validateRes(data) {
-        return this.http.post(API.AUTHENTICATE.END_POINT.VALIDATE_EMAIL, null, {
-            params: data,
-        });
+        return this.http
+            .post(API.AUTHENTICATE.END_POINT.VALIDATE_EMAIL, null, {
+                params: data,
+            })
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode === API.AUTHENTICATE.STATUS.SUCCESS
+                    ) {
+                        return true;
+                    }
+                    return false;
+                })
+            );
     }
 
     validateReset(data) {

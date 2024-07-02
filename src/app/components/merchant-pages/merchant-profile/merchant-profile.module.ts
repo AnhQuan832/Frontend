@@ -11,6 +11,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
     declarations: [MerchantProfileComponent],
@@ -26,6 +27,7 @@ import { ButtonModule } from 'primeng/button';
         ReactiveFormsModule,
         MenuModule,
         ButtonModule,
+        DividerModule,
     ],
 })
 export class MerchantProfileModule {}

@@ -32,7 +32,7 @@ h1 {
     font-weight: 500;
 }
 h5 {
-    font-weight: 345;
+    // font-weight: 345;
 }
 
 .fit-content {
@@ -41,7 +41,7 @@ h5 {
 
 .address-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     gap: 20px;
 }
 
@@ -68,7 +68,7 @@ h5 {
 }
 .form {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 3fr 1fr 3fr;
 }
 
 .cover-img {

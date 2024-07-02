@@ -148,14 +148,12 @@
 
                         <td>
                             <p-skeleton></p-skeleton>
-
                         </td>
                     </tr>
                 </ng-template>
             </p-table>
-            <p-paginator [alwaysShow]="false" (onPageChange)="onPageChange($event)" [first]="first" [rows]="10"
-                [totalRecords]="totalRecords"></p-paginator>
+            <app-paginator [first]="first" [rows]="10" [totalRecords]="totalRecords"
+                (onPageChange)="onPageChange($event)"></app-paginator>
         </div>
     </div>
 </div>
-<p-toast key="toast"></p-toast>
