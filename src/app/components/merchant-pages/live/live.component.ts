@@ -71,7 +71,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
         }
     }
     ngOnDestroy(): void {
-        this.shutDownLive();
+        // this.shutDownLive();
         // this.setTempSession();
     }
     ngOnInit(): void {
