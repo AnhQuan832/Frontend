@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { aW } from '@fullcalendar/core/internal-common';
+import { aW, di } from '@fullcalendar/core/internal-common';
 import { MenuItem } from 'primeng/api';
 import { BaseComponent } from 'src/app/base.component';
 import { AddressService } from 'src/app/services/address.service';
@@ -21,6 +21,7 @@ export class MerchantProfileComponent
     extends BaseComponent
     implements OnInit, AfterViewInit
 {
+    @Input() merchantId;
     merchantDetail;
     isEditing: boolean = false;
     listProvince = new Array();
@@ -150,10 +151,19 @@ export class MerchantProfileComponent
     }
 
     async districtSelectedChange(selectedValue, distCode?) {
-        // this.checkOutForm.patchValue({ district: selectedValue.distName });
-
+        if (selectedValue) {
+            const foundDistrict = this.listDistrict.find(
+                (item) => item.distCode == selectedValue
+            );
+            this.updateMerchantInfoRequest.patchValue({
+                districtName: foundDistrict.distName,
+            });
+            this.updateMerchantInfoRequest.patchValue({
+                districtId: foundDistrict.distCode,
+            });
+        }
         await this.apiAddress
-            .getWardsByDistrict(distCode || selectedValue.distCode)
+            .getWardsByDistrict(distCode || selectedValue)
             .then((response: any) => {
                 const rListWard = response.data;
                 this.listWard = rListWard.map((rListWard) => {
@@ -168,6 +178,19 @@ export class MerchantProfileComponent
             };
     }
 
+    wardSelectedChange(selectedValue) {
+        if (selectedValue) {
+            const foundWard = this.listWard.find(
+                (item) => item.wardCode == selectedValue
+            );
+            this.updateMerchantInfoRequest.patchValue({
+                wardCode: foundWard.wardCode,
+            });
+            this.updateMerchantInfoRequest.patchValue({
+                wardName: foundWard.wardName,
+            });
+        }
+    }
     updateData() {
         let formData = new FormData();
         this.prepareFormData(

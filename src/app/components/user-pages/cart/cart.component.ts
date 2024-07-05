@@ -16,24 +16,14 @@ export class CartComponent implements OnInit {
     cart = [];
     cartId;
     voucherByMerchantMap = {};
-    selectedProducts: any[] = [
-        {
-            totalItemPrice: 200,
-            quantity: 2,
-            stockAmount: 4,
-            unitPrice: 100,
-            listAttributeName: ['attribute1', 'attribute2'],
-            name: 'Product 1',
-            image: 'https://firebasestorage.googleapis.com/v0/b/advance-totem-350103.appspot.com/o/Fund%2Fnha-cho-cho-bang-go.jpg?alt=media&token=f7553df5-a21b-497b-a200-b88a48139439',
-            isSelected: true,
-        },
-    ];
+    selectedProducts: any[] = [];
     isLogin: boolean = false;
     originalData: any;
     totalPrice: number = 0;
     discountPrice: number = 0;
     finalPrice: number = 0;
     listVoucher: any[] = [];
+    cartPriceByMerchant = {};
     constructor(
         private cartService: CartService,
         private storageService: StorageService,
@@ -84,34 +74,7 @@ export class CartComponent implements OnInit {
                 this.calculateTotal();
                 this.onSelectedItemsChange();
             },
-            error: () => {
-                this.cart = [
-                    {
-                        totalItemPrice: 200,
-                        quantity: 2,
-                        stockAmount: 4,
-                        unitPrice: 100,
-                        listAttributeName: ['attribute1', 'attribute2'],
-                        name: 'Product 1',
-                        image: 'https://firebasestorage.googleapis.com/v0/b/advance-totem-350103.appspot.com/o/Fund%2Fnha-cho-cho-bang-go.jpg?alt=media&token=f7553df5-a21b-497b-a200-b88a48139439',
-                        isSelected: true,
-                    },
-                    {
-                        totalItemPrice: 300,
-                        quantity: 3,
-                        stockAmount: 4,
-                        unitPrice: 100,
-                        listAttributeName: [
-                            'attribute1',
-                            'attribute2',
-                            'attribute3',
-                        ],
-                        name: 'Product 2',
-                        image: 'https://firebasestorage.googleapis.com/v0/b/advance-totem-350103.appspot.com/o/Fund%2Fnha-cho-cho-bang-go.jpg?alt=media&token=f7553df5-a21b-497b-a200-b88a48139439',
-                        isSelected: false,
-                    },
-                ];
-            },
+            error: () => {},
         });
     }
     removeItem(data) {
@@ -192,6 +155,7 @@ export class CartComponent implements OnInit {
             (pro) => pro.isSelected
         );
         forkJoin(requests).subscribe();
+        this.calculateTotal();
     }
 
     calculateTotal() {
@@ -221,6 +185,7 @@ export class CartComponent implements OnInit {
                 }
             }
             this.totalPrice += totalSelectedPrice;
+            this.cartPriceByMerchant[merchant.merchantId] = totalSelectedPrice;
             this.discountPrice += merchant.discountPrice;
             this.finalPrice = this.totalPrice - this.discountPrice;
         });
@@ -265,5 +230,13 @@ export class CartComponent implements OnInit {
             'voucherByMerchantMap',
             this.voucherByMerchantMap
         );
+    }
+
+    onShowVoucher(merchantId) {
+        let filteredVoucher = this.listVoucher.filter(
+            (voucher) =>
+                voucher.minInvoiceValue < this.cartPriceByMerchant[merchantId]
+        );
+        return filteredVoucher;
     }
 }

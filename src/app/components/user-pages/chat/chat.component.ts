@@ -226,14 +226,14 @@ export class ChatComponent implements OnInit, AfterViewInit {
         this.messageData.recipientId = recipientId;
     }
 
-    public connect() {
+    public async connect() {
         let Sock = new SockJS(
             'https://kltn-pescue-production.up.railway.app/ws'
         );
         // let Sock = new SockJS('http://localhost:8080/ws');
 
         this.stompClient = over(Sock);
-        this.stompClient.connect({}, this.onConnected, this.onError);
+        await this.stompClient.connect({}, this.onConnected, this.onError);
     }
 
     onConnected = () => {
@@ -265,13 +265,17 @@ export class ChatComponent implements OnInit, AfterViewInit {
         console.log(err);
     };
 
-    sendValue(message) {
+    sendValue(message, senderId?, recipientId?) {
         if (this.stompClient) {
             var chatMessage = {
                 senderId:
-                    this.messageData.senderId || 'USER_1699792351661_gmNWp',
+                    senderId ||
+                    this.messageData.senderId ||
+                    'USER_1699792351661_gmNWp',
                 recipientId:
-                    this.messageData.recipientId || 'USER_1697033158735',
+                    recipientId ||
+                    this.messageData.recipientId ||
+                    'USER_1697033158735',
                 content: message,
             };
             this.stompClient.send(

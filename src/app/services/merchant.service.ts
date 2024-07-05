@@ -45,7 +45,7 @@ export class MerchantService {
                         data.meta.statusCode ===
                         API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
                     ) {
-                        return data.data.merchantList.content;
+                        return data.data.merchantList;
                     } else return false;
                 }),
                 catchError((err) => {

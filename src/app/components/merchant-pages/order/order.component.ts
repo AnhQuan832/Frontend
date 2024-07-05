@@ -19,6 +19,9 @@ export class OrderComponent implements OnInit {
     listVoucher;
     ref: DynamicDialogRef;
     rangeDates;
+    totalRecords: number = 1;
+    first: number = 0;
+    size = 10;
     constructor(
         private router: Router,
         private dialogService: DialogService,
@@ -28,15 +31,18 @@ export class OrderComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.getData();
+        this.getData(true);
     }
 
-    getData(params?) {
-        this.orderService.getPaymentInfo(params).subscribe({
-            next: (res) => {
-                this.listVoucher = res;
-            },
-        });
+    getData(isInit = false, params?) {
+        this.orderService
+            .getPaymentInfo({ page: this.first, size: 10, ...params })
+            .subscribe({
+                next: (res) => {
+                    this.listVoucher = res.content;
+                    if (isInit) this.totalRecords = res.totalElements;
+                },
+            });
     }
 
     openDetail(data?) {
@@ -91,7 +97,12 @@ export class OrderComponent implements OnInit {
                 }),
                 groupType: 'DAY',
             };
-            this.getData(params);
+            this.getData(false, params);
         }
+    }
+
+    onPageChange(event) {
+        this.first = event.page;
+        this.getData();
     }
 }

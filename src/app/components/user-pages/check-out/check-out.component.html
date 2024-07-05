@@ -168,8 +168,7 @@
             </h6>
         </span>
         <button class="btn btn-primary mt-2 mx-auto" [disabled]="
-                !checkOutForm.value.phoneNumber ||
-                !checkOutForm.value.recipientName ||
+                checkOutForm.invalid ||
                 (!selectedAdd && isLogin)
             " (click)="onCheckOut()">
             Place Order

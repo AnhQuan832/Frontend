@@ -7,7 +7,6 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { OrderComponent } from './order.component';
 import { ToastModule } from 'primeng/toast';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
@@ -25,12 +24,17 @@ import { TooltipModule } from 'primeng/tooltip';
 import { TagModule } from 'primeng/tag';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { CalendarModule } from 'primeng/calendar';
+import { SharedModule } from '../../shared/shared.module';
+import { PaginatorModule } from 'primeng/paginator';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
     declarations: [OrderComponent, OrderDetailComponent],
     imports: [
         CommonModule,
         OrderRoutingModule,
+        TableModule,
         FileUploadModule,
         FormsModule,
         ButtonModule,
@@ -52,9 +56,12 @@ import { CalendarModule } from 'primeng/calendar';
         TooltipModule,
         MultiSelectModule,
         PanelModule,
-        TableModule,
-        TagModule,
         CalendarModule,
+        PaginatorModule,
+        KeyFilterModule,
+        TooltipModule,
+        SkeletonModule,
+        TagModule,
     ],
 })
 export class OrderModule {}

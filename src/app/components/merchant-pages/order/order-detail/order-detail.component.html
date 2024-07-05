@@ -49,12 +49,12 @@
         <input disabled="true" pInputText [value]="data.paymentType" type="text" />
     </div>
 </div>
-<p-table #dt [value]="listTransactions" responsiveLayout="scroll" dataKey="cartItemId" [rows]="8" [globalFilterFields]="[
+<p-table #dt [value]="listTransactions" responsiveLayout="scroll" dataKey="cartItemId" [rows]="3" [globalFilterFields]="[
         'name',
         'price',
         'brand.name',
         'subCategory.category.name'
-    ]" [paginator]="true" [showCurrentPageReport]="true" [rowHover]="true">
+    ]" [paginator]="true" [rowHover]="true">
     <!-- <ng-template pTemplate="caption">
           <div class="d-flex justify-content-end">
             <span class="block p-input-icon-left">
@@ -85,10 +85,12 @@
     </ng-template>
     <ng-template pTemplate="body" let-product>
         <tr>
-            <td style="min-width: 10rem; width: 34%">
+            <td style="min-width: 10rem; width: 54%">
                 <span class="p-column-title">Name</span>
-                <img [src]="product?.image" width="100" class="shadow-4" />
-                {{ product.name }}
+                <div class="d-flex gap-2 align-items-center">
+                    <img [src]="product?.image" width="100" class="shadow-4" />
+                    <p class="product-name" [pTooltip]="product.name">{{ product.name }}</p>
+                </div>
             </td>
 
             <td style="width: 14%; min-width: 8rem">

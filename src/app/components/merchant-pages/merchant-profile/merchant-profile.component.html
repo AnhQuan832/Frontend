@@ -143,7 +143,8 @@
                                     <h6 class="mb-1" class="addressLabel  mb-1">Ward</h6>
                                     <p-dropdown [options]="listWard" [ngModelOptions]="{ standalone: true }"
                                         [(ngModel)]="selectedWard" [autoDisplayFirst]="false" filterBy="wardName"
-                                        optionLabel="wardName" optionValue="wardCode">
+                                        optionLabel="wardName" optionValue="wardCode"
+                                        (onChange)="wardSelectedChange($event.value)">
                                     </p-dropdown>
                                 </span>
                             </div>

@@ -1,5 +1,16 @@
 <div class="container p-4">
     <div class="info col-sm-8">
+        <div class="position-relative">
+            <div class="cover-img mb-4 position-relative" id="cover"
+                style="background-image: url({{merchantDetail?.merchantCover}}); height: 216px;">
+                <div class="logo">
+                    <img id="logo" width="150px" height="150px" src="{{ merchantDetail?.merchantAvatar }}" alt=""
+                        class="rounded-circle" onerror="this.onerror=null;this.src='/assets/no_user.png';" />
+
+                </div>
+
+            </div>
+        </div>
         <div class="pet-info my-auto">
             <h1 class="ps-4">{{ merchantDetail.shelterName }}</h1>
             <div class="basic-info ps-4">

@@ -45,8 +45,9 @@
                     </div>
                     <div *ngIf="isLogin" class="voucher d-flex gap-4 align-items-center">
                         <h6>Select Voucher:</h6>
-                        <p-dropdown [options]="listVoucher" optionLabel="name" [(ngModel)]="shop.voucher"
-                            placeholder="Select Voucher" (onChange)="onVoucherSelected(shop)"></p-dropdown>
+                        <p-dropdown [options]="onShowVoucher(shop.merchantId)" optionLabel="name"
+                            [(ngModel)]="shop.voucher" placeholder="Select Voucher"
+                            (onChange)="onVoucherSelected(shop)"></p-dropdown>
                     </div>
                     <p-divider></p-divider>
 

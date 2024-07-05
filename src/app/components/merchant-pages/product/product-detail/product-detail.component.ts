@@ -117,9 +117,11 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
         });
     }
 
-    public getSubCate() {
+    public getSubCate(cateId?) {
         this.productService
-            .getSubCategory(this.product.subCategory.category.categoryId)
+            .getSubCategory(
+                cateId || this.product.subCategory.category.categoryId
+            )
             .subscribe({
                 next: (res) => (this.subCategoryOption = res),
             });
@@ -174,19 +176,6 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
             );
         if (this.imgs.length)
             this.prepareFormData(formData, this.imgs, 'newImages', false);
-        // for (let i = 0; i < this.imgs.length; i++) {
-        //     formData.append(
-        //         'newImages',
-        //         this.imgs[i].file,
-        //         this.imgs[i].file.name
-        //     );
-        // }
-        // formData.append(
-        //     'deletedImages',
-        //     new Blob([JSON.stringify(this.removedImgs)], {
-        //         type: 'application/json',
-        //     })
-        // );
         return formData;
     }
 
@@ -288,17 +277,17 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     }
 
     onSaveProduct() {
-        console.log(this.product);
-        this.productService
-            .updateImages(
-                this.addProductForm.get('productId').value,
-                this.toBlobImgs()
-            )
-            .subscribe({
-                next: (res) => {
-                    console.log(res);
-                },
-            });
+        if (this.imgs.length || this.removedImgs.length)
+            this.productService
+                .updateImages(
+                    this.addProductForm.get('productId').value,
+                    this.toBlobImgs()
+                )
+                .subscribe({
+                    next: (res) => {
+                        console.log(res);
+                    },
+                });
         const requests = [];
         Object.values(this.listUpdateVariety).forEach((variety) => {
             const data = {
@@ -321,11 +310,11 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                 );
             },
             error: (err) => {
-                this.messageService.add({
-                    key: 'toast',
-                    severity: 'error',
-                    detail: 'Something went wrong',
-                });
+                // this.messageService.add({
+                //     key: 'toast',
+                //     severity: 'error',
+                //     detail: 'Something went wrong',
+                // });
                 console.log(err);
             },
         });
@@ -369,7 +358,6 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     }
 
     onDeleteAtt(vari) {
-        console.log(vari);
         this.productService.deleteAttribute(vari).subscribe({
             next: () =>
                 this.messageService.add({
@@ -392,5 +380,9 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     updateVariety(variety, value) {
         variety.stockAmount = value;
         this.listUpdateVariety[variety.varietyId] = variety;
+    }
+
+    onCateChange(event) {
+        this.getSubCate(event.value.categoryId);
     }
 }

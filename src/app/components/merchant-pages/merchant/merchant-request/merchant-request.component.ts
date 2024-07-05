@@ -30,10 +30,11 @@ export class MerchantRequestComponent {
         this.initMenuItems();
     }
     getMerchantList() {
-        const params = { isApproved: false, offset: this.first, limit: 10 };
+        const params = { isApproved: false, page: this.first, size: 10 };
         this.merchantService.getAllMerchant(params).subscribe({
             next: (data) => {
-                this.listMerchant = data;
+                this.listMerchant = data.content;
+                this.totalRecords = data.totalElements;
                 // this.listMerchant.forEach((merchant) => {
                 //     if (!merchant.rating) {
                 //         merchant.rating = 0;
@@ -51,7 +52,8 @@ export class MerchantRequestComponent {
     }
 
     onPageChange(event) {
-        console.log(event);
+        this.first = event.page;
+        this.getMerchantList();
     }
 
     initMenuItems() {

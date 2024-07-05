@@ -34,6 +34,10 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     streamVideo: StreamVideoComponent;
     @HostListener('window:beforeunload', ['$event'])
     beforeunloadHandler($event: any) {
+        // const res = await this.selectExit();
+        console.log(window.event);
+        localStorage.setItem('local', JSON.stringify(window.event));
+        debugger;
         return false;
     }
     listAllProduct = [];
@@ -99,6 +103,12 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
                 },
             },
         ];
+    }
+
+    async selectExit() {
+        return new Promise((resolve, reject) => {
+            resolve(true);
+        });
     }
 
     setTempSession() {

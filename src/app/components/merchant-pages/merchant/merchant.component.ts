@@ -29,10 +29,11 @@ export class MerchantComponent {
     }
     getMerchantList() {
         this.merchantService
-            .getAllMerchant({ isApproved: true, pageNumber: 1 })
+            .getAllMerchant({ isApproved: true, page: this.first, size: 10 })
             .subscribe({
                 next: (data) => {
-                    this.listMerchant = data;
+                    this.listMerchant = data.content;
+                    this.totalRecords = data.totalElements;
                 },
             });
     }
@@ -45,7 +46,8 @@ export class MerchantComponent {
     }
 
     onPageChange(event) {
-        console.log(event);
+        this.first = event.page;
+        this.getMerchantList();
     }
 
     initMenuItems() {

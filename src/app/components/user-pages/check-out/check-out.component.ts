@@ -80,12 +80,12 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
             address: this.fb.group({
                 userId: this.fb.control(''),
                 addressId: this.fb.control(''),
-                streetName: this.fb.control('', [Validators.required]),
-                cityName: this.fb.control('', [Validators.required]),
-                districtName: this.fb.control('', [Validators.required]),
-                wardName: this.fb.control('', [Validators.required]),
-                districtId: this.fb.control('', [Validators.required]),
-                wardCode: this.fb.control('', [Validators.required]),
+                streetName: this.fb.control(''),
+                cityName: this.fb.control(''),
+                districtName: this.fb.control(''),
+                wardName: this.fb.control(''),
+                districtId: this.fb.control(''),
+                wardCode: this.fb.control(''),
             }),
             voucherByMerchantMap: this.fb.control(null),
         });

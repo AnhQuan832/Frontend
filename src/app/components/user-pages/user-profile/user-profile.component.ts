@@ -165,7 +165,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         let formData = new FormData();
         this.prepareFormData(formData, data, 'updateUserProfileDTO', true);
         let avatar = this.avatarFile?.length ? this.avatarFile[0] : null;
-        this.prepareFormData(formData, avatar, false);
+        this.prepareFormData(formData, avatar, 'userAvatar', false);
         this.userService.update(formData).subscribe({
             next: (res) => {
                 this.msgService.showMessage('Updated', '', 'success');

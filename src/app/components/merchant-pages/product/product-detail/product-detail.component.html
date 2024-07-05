@@ -30,7 +30,7 @@
                         <div class="d-flex gap-2">
                             <div class="col-11 px-3 pt-0">
                                 <p-dropdown [options]="categoryOption" optionLabel="name" [autoDisplayFirst]="false"
-                                    formControlName="category">
+                                    formControlName="category" (onChange)="onCateChange($event)">
                                 </p-dropdown>
                             </div>
                             <div class="col-1 pt-1">

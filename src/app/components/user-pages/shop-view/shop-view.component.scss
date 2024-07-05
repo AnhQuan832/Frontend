@@ -49,8 +49,10 @@
     flex-wrap: wrap;
     gap: 15px;
     height: fit-content;
+    // justify-content: space-between;
+
     .product {
-        width: clamp(150px, 25%, 225px);
+        width: clamp(150px, 23%, 220px);
         height: fit-content;
     }
 }

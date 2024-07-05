@@ -24,13 +24,10 @@
                     </div>
                 </div>
                 <div class="change-logo d-flex justify-content-center my-2">
-                    <!-- <button
-            (click)="avatarInput.click()"
-            style="width: fit-content; padding: 0.25rem 1.5rem"
-            class="btn btn-secondary"
-          >
-            Select avatar
-          </button> -->
+                    <button (click)="avatarInput.click()" style="width: fit-content; padding: 0.25rem 1.5rem"
+                        class="btn btn-secondary">
+                        Select avatar
+                    </button>
                     <input type="file" accept="image/png, image/jpeg" #avatarInput (change)="selectedAvatar($event)"
                         style="display: none" />
                 </div>

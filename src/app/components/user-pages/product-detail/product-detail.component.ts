@@ -39,8 +39,8 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     isDisableBuy: boolean = false;
     mostProd;
     mostBuy;
-
     merchant;
+    similarProd;
     constructor(
         private storageService: StorageService,
         private router: Router,
@@ -92,6 +92,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                 next: (res) => {
                     this.product = res;
                     this.getMerchant(res.merchantId);
+                    this.getSimilarProd(res.subCategory.category.categoryId);
                     if (this.product.detail) {
                         this.product.detail = this.product.detail.replace(
                             /(?:\r\n|\r|\n)/g,
@@ -173,8 +174,11 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
         this.selectedVariety = this.listDetailVariety.find((item) => {
             if (this.selectedSize && this.selectedColor)
                 return (
-                    item[1].attributeId === this.selectedSize.attributeId &&
-                    item[0].attributeId === this.selectedColor.attributeId
+                    (item[1].attributeId === this.selectedSize.attributeId &&
+                        item[0].attributeId ===
+                            this.selectedColor.attributeId) ||
+                    (item[0].attributeId === this.selectedSize.attributeId &&
+                        item[1].attributeId === this.selectedColor.attributeId)
                 );
             else if (this.selectedSize && !this.selectedColor) {
                 if (item?.varietyAttributes.length > 1)
@@ -291,8 +295,29 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     }
 
     chat() {
-        sessionStorage.setItem('reciepientId', this.merchant.userId);
+        sessionStorage.setItem('reciepientID', this.merchant.merchantId);
+        this.chatCpn.connect();
+        setTimeout(() => {
+            this.chatCpn.sendValue(
+                'Hi',
+                this.getUserInfo().userId,
+                this.merchant.userId
+            );
+            // this.router.navigate(['/user/message']);
+        }, 1000);
+    }
 
-        this.router.navigate(['/user/message']);
+    getSimilarProd(categoryId) {
+        this.productService
+            .getAllProduct({
+                page: 1,
+                size: 5,
+                categoryId: categoryId,
+            })
+            .subscribe({
+                next: (res) => {
+                    this.similarProd = res;
+                },
+            });
     }
 }
