@@ -85,7 +85,8 @@
                     </span>
 
                     <div class="btn-container d-flex justify-content-center pt-4">
-                        <button type="submit" class="btn btn-primary w-100 text-nowrap rounded-3">
+                        <button type="submit" class="btn btn-primary w-100 text-nowrap rounded-3"
+                            [disabled]="registerForm.invalid">
                             Create account
                         </button>
                     </div>
@@ -104,7 +105,7 @@
                         <h6>OTP</h6>
 
                         <input class="w-full md:w-30rem mb-2 ps-2" pInputText type="text" maxlength="10"
-                            formControlName="userPhoneNumber" (focus)="clearErrorNotification()" pKeyFilter="num" />
+                            formControlName="otp" (focus)="clearErrorNotification()" pKeyFilter="num" />
                         <p class="mx-auto my-2">
                             <small class="text-danger text-center" *ngIf="msgErrorOTP">{{
                                 msgErrorOTP
@@ -114,7 +115,8 @@
                                     login</a></small>
                         </p>
                         <div *ngIf="isSubmitted">
-                            <small class="text-danger" *ngIf="verifyForm.invalid">OTP number is required</small>
+                            <small class="text-danger" *ngIf="verifyForm.invalid && isSubmitted">OTP number is
+                                required</small>
                             <small class="text-danger text-center" *ngIf="msgError">{{
                                 msgError
                                 }}</small>

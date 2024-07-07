@@ -184,6 +184,7 @@ export class ShopViewComponent implements OnInit {
     onPriceChange() {}
 
     applyFilter(init = true) {
+        if (init) this.page = 1;
         this.filter = {
             brandId: this.selectedBrand == 'All' ? null : this.selectedBrand,
             categoryId: this.selectedCate == 'All' ? null : this.selectedCate,

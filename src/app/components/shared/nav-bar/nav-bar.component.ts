@@ -2,7 +2,7 @@ import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { debounce } from 'rxjs';
+import { debounceTime, Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { ProductService } from 'src/app/services/product.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -19,11 +19,13 @@ export class NavBarComponent
     extends BaseComponent
     implements OnInit, AfterViewInit
 {
+    readonly timeDebounce = 300;
     isLogin: boolean;
     keySearch;
     searchRes;
     isShowSearch = true;
     showSearchRes = false;
+    searchSubject = new Subject<string>();
     items: MenuItem[] = [
         {
             label: 'Profile',
@@ -65,6 +67,11 @@ export class NavBarComponent
         });
     }
     ngOnInit(): void {
+        this.searchSubject
+            .pipe(debounceTime(this.timeDebounce))
+            .subscribe((searchValue) => {
+                this.search(searchValue);
+            });
         this.isLogin = !!this.getToken();
         this.checkPageAuth();
     }
@@ -77,18 +84,18 @@ export class NavBarComponent
         this.router.navigate(['/user/cart']);
     }
 
-    onSearch(key) {
+    onSearch(value) {
+        this.searchSubject.next(value);
+    }
+
+    search(key) {
         this.showSearchRes = true;
         if (!key) this.showSearchRes = false;
-
-        this.productService.globalSearch(this.keySearch).subscribe({
+        const params = { keyword: key, size: 10 };
+        this.productService.globalSearch(params).subscribe({
             next: (res) => {
-                // this.searchRes = Object.keys(res);
-                // this.searchRes = Object.keys(res).reduce((acc, key) => {
-                //   return acc.concat(res[key]);
-                // }, []);
                 this.searchRes = Object.values(res).map((items: any) => {
-                    const groupItemName = items[0]?.groupName;
+                    const groupItemName = items[0]?.groupName.toUpperCase();
                     const groupItemId = groupItemName?.toLowerCase();
 
                     const groupItems = items.map((item) => ({
@@ -97,16 +104,19 @@ export class NavBarComponent
                         image: item.itemImage,
                         group: item.groupName,
                     }));
-
+                    // if (groupItems.length > 0)
                     return {
                         itemName: groupItemName || '',
                         itemId: groupItemId || '',
                         items: groupItems,
                     };
+                    // return null;
                 });
+                console.log(this.searchRes);
             },
         });
     }
+
     hideSearchBar() {
         this.isShowSearch = false;
     }
@@ -116,6 +126,7 @@ export class NavBarComponent
         const prod = { ...product, productId: product.itemId };
         this.storageService.setItemLocal('currentProduct', prod);
         this.router.navigate([`user/product-detail/${prod.productId}`]);
+        setTimeout(() => window.location.reload(), 100);
     }
 
     setActiveNav() {

@@ -33,14 +33,8 @@ export class RegisterComponent {
     isSubmitted = false;
 
     verifyForm = this.builder.group({
-        emailAddress: this.builder.control('', [
-            Validators.required,
-            Validators.email,
-        ]),
-        otp: this.builder.control('', [
-            Validators.required,
-            Validators.minLength(6),
-        ]),
+        emailAddress: this.builder.control(''),
+        otp: this.builder.control('', [Validators.required]),
     });
 
     registerForm = this.builder.group({
@@ -73,6 +67,7 @@ export class RegisterComponent {
                             return;
                         }
                         this.verifyEmail = true;
+                        this.isSubmitted = false;
                     },
                     error: (err) => console.log(err),
                 });
@@ -112,8 +107,7 @@ export class RegisterComponent {
         });
         this.authService.validateRes(this.verifyForm.value).subscribe({
             next: (res: any) => {
-                if (res.meta.statusCode === '1_9_f')
-                    this.msgErrorOTP = res.meta.message;
+                if (!res) this.msgErrorOTP = 'Incorrect OTP, please try again';
                 else {
                     this.msgErrorOTP = '';
                     this.msgSuccess = 'Account created';

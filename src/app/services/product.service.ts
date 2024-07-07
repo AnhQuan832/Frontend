@@ -410,24 +410,22 @@ export class ProductService {
             );
     }
 
-    globalSearch(keyword) {
-        return this.http
-            .get(API.SEARCH.ENDPOINT, { params: { keyword: keyword } })
-            .pipe(
-                map((data: any) => {
-                    if (
-                        data.meta.statusCode ===
-                        API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
-                    ) {
-                        return data.data.searchResult;
-                    } else {
-                        return [];
-                    }
-                }),
-                catchError((err) => {
-                    throw new Error(err);
-                })
-            );
+    globalSearch(params) {
+        return this.http.get(API.SEARCH.ENDPOINT, { params: params }).pipe(
+            map((data: any) => {
+                if (
+                    data.meta.statusCode ===
+                    API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
+                ) {
+                    return data.data.searchResult;
+                } else {
+                    return [];
+                }
+            }),
+            catchError((err) => {
+                throw new Error(err);
+            })
+        );
     }
 
     updateVarietyStock(data) {

@@ -44,6 +44,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { StreamVideoComponent } from './stream-video/stream-video.component';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { PaginatorComponent } from './paginator/paginator.component';
+import { ListboxModule } from 'primeng/listbox';
 
 @NgModule({
     declarations: [
@@ -94,6 +95,7 @@ import { PaginatorComponent } from './paginator/paginator.component';
         MenuModule,
         SkeletonModule,
         KeyFilterModule,
+        ListboxModule,
     ],
     exports: [
         AddBrand,
