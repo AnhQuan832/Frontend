@@ -39,6 +39,7 @@ export const API = {
             MOST_BUY: API_URL + 'product/most-buy',
             VARIETY_STOCK: API_URL + 'product/variety/stock-amount',
             VARIETY_MEASUREMENT: API_URL + 'product/variety/measurement',
+            RECOMMEND: API_URL + 'product/recommend',
         },
         STATUS: {
             GET_PRODUCT_SUCCESS: '0_2_s',
@@ -64,6 +65,7 @@ export const API = {
                 API_URL + 'payment/un-authenticate/user-cart-checkout',
             UNTAUTH_SINGLE_CHECKOUT:
                 API_URL + 'payment/un-authenticate/single-item-checkout',
+            SHIPPING_FEE: API_URL + 'payment/shipping-fee',
         },
     },
     ORDER: {

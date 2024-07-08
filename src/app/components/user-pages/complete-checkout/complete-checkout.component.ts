@@ -23,7 +23,7 @@ export class CompleteCheckoutComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         const invoiceIds = this.storageService.getItemLocal('sucInvoice');
-        const isLogin = this.getUserInfo();
+        const isLogin = !!this.getToken();
         // const updateRequests = invoiceIds.map((invoiceId) => {
         //     const params = {
         //         status: 'PAID',
@@ -47,10 +47,10 @@ export class CompleteCheckoutComponent extends BaseComponent implements OnInit {
         //     },
         // });
 
-        if (isLogin) {
-            this.router.navigate(['/user/profile']);
-        } else {
-            this.router.navigate(['/user/home']);
-        }
+        // if (isLogin) {
+        //     this.router.navigate(['/user/profile']);
+        // } else {
+        //     this.router.navigate(['/user/home']);
+        // }
     }
 }

@@ -83,7 +83,6 @@ export class LiveDetailComponent
         );
         this.getAllProduct();
         this.publishStream(this.sessionKey);
-        this.getLiveCart();
     }
 
     leaveSession() {
@@ -243,12 +242,16 @@ export class LiveDetailComponent
             else if (this.selectedSize && !this.selectedColor)
                 return (
                     item?.varietyAttributes[1]?.attributeId ===
-                    this.selectedSize.attributeId
+                        this.selectedSize.attributeId ||
+                    item?.varietyAttributes[0]?.attributeId ===
+                        this.selectedSize.attributeId
                 );
             else if (!this.selectedSize && this.selectedColor)
                 return (
                     item.varietyAttributes[0].attributeId ===
-                    this.selectedColor.attributeId
+                        this.selectedColor.attributeId ||
+                    item.varietyAttributes[1].attributeId ===
+                        this.selectedColor.attributeId
                 );
             return false;
         });
@@ -338,6 +341,7 @@ export class LiveDetailComponent
                     // let publisher: Publisher = this.OV.initPublisher(undefined);
                     // this.session.publish(publisher);
                     this.streamVideo.onParticipantChange(true, 'You');
+                    this.getLiveCart();
                 })
                 .catch((error) => {
                     console.log(

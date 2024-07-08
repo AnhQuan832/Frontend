@@ -8,6 +8,7 @@ import {
 } from 'primeng/dynamicdialog';
 import { OrderService } from 'src/app/services/order.service';
 import * as _ from 'lodash';
+import { ToastMessageService } from 'src/app/services/toast-message.service';
 
 @Component({
     selector: 'app-order-detail',
@@ -22,7 +23,7 @@ export class OrderDetailComponent implements OnInit {
         private invoiceService: OrderService,
         private dialogSerivce: DialogService,
         private config: DynamicDialogConfig,
-        private msgService: MessageService,
+        private msgService: ToastMessageService,
         private ref: DynamicDialogRef
     ) {
         this.data = _.cloneDeep(this.config.data);
@@ -52,11 +53,11 @@ export class OrderDetailComponent implements OnInit {
             })
             .subscribe({
                 next: () => {
-                    this.msgService.add({
-                        key: 'toast',
-                        severity: 'success',
-                        detail: 'Success',
-                    });
+                    this.msgService.showMessage(
+                        '',
+                        'Update status successfully!',
+                        'success'
+                    );
                     this.ref.close();
                 },
             });

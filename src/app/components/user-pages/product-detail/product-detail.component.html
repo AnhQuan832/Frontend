@@ -127,8 +127,8 @@
             <p-tabPanel header="Rating & Reviews">
                 <div class="list-review card" *ngFor="let rv of product.ratingList">
                     <div class="info d-flex align-items-start ">
-                        <img width="50px" class="me-2" src="{{ rv.userAvatar || product.images[0]  }}"
-                            onerror="this.onerror=null;this.src='/assets/imgs/no_user.png';" alt="" />
+                        <img width="50px" class="me-2 rounded-circle" src="{{ rv.userAvatar   }}"
+                            onerror="this.onerror=null;this.src='/assets/no_user.png';" alt="" />
                         <span class="d-flex flex-column">
                             <p style="font-size: 0.75rem" class="m-0">
                                 {{ rv.userFirstName }} {{ rv.userLastName }} |
@@ -185,25 +185,41 @@
 
 
     <section class="section my-4 product" id="shop" aria-label="product">
-        <div class="container-fluid mx-auto">
+        <div>
             <h4 class="h4 section-title">Recommend for you</h4>
+            <swiper-container class="mySwiper" navigation="true" space-between="30" autoplay-delay="3500" rewind="true"
+                autoplay-disable-on-interaction="false" slides-per-view="5">
+                <swiper-slide *ngFor="let item of similarProd" class="live-slide cursor-pointer"
+                    (click)="onProdClick(item.productId)" style="height: 380px;">
+                    <app-product-card class="my-2" [product]="item"></app-product-card>
+                </swiper-slide>
+                <div class="autoplay-progress" slot="container-end">
+                    <svg viewBox="0 0 48 48">
+                        <circle cx="24" cy="24" r="20"></circle>
+                    </svg>
+                    <span></span>
+                </div>
+            </swiper-container>
 
-            <ul class="grid-list d-flex gap-4">
-                <li *ngFor="let item of similarProd" style="cursor: pointer" (click)="onProdClick(item)">
-                    <app-product-card [product]="item"></app-product-card>
-                </li>
-            </ul>
         </div>
     </section>
     <section class="section my-4 product" id="shop" aria-label="product">
         <div class="container-fluid mx-auto">
             <h4 class="h4 section-title">Best Seller</h4>
 
-            <ul class="grid-list d-flex gap-4">
-                <li *ngFor="let item of mostBuy" style="cursor: pointer" (click)="onProdClick(item)">
-                    <app-product-card [product]="item"></app-product-card>
-                </li>
-            </ul>
+            <swiper-container class="mySwiper" navigation="true" space-between="30" autoplay-delay="3500" rewind="true"
+                autoplay-disable-on-interaction="false" slides-per-view="5">
+                <swiper-slide *ngFor="let item of mostBuy" class="live-slide cursor-pointer"
+                    (click)="onProdClick(item.productId)" style="height: 380px;">
+                    <app-product-card class="my-2" [product]="item"></app-product-card>
+                </swiper-slide>
+                <div class="autoplay-progress" slot="container-end">
+                    <svg viewBox="0 0 48 48">
+                        <circle cx="24" cy="24" r="20"></circle>
+                    </svg>
+                    <span></span>
+                </div>
+            </swiper-container>
         </div>
     </section>
 </div>

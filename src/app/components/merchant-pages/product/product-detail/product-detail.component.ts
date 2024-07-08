@@ -41,6 +41,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     isAddAttribute: boolean = false;
     attPrice = 0;
     listUpdateVariety = [];
+    userId;
     addProductForm = this.builder.group({
         productId: this.builder.control(''),
         name: this.builder.control('', Validators.required),
@@ -78,9 +79,9 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
 
     private async initialize() {
         this.product = this.storageService.getItemLocal('currentProduct');
-        const userId = this.getUserInfo().userId;
+        this.userId = this.getUserInfo().userId;
         await this.productService
-            .getProduct(this.product.productId, userId)
+            .getProduct(this.product.productId, this.userId)
             .subscribe({
                 next: (res) => {
                     this.product = res;
@@ -128,24 +129,28 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     }
 
     getProduct() {
-        this.productService.getProduct(this.product.productId).subscribe({
-            next: (res) => {
-                this.product = res;
-                this.product.varieties.forEach((item) => {
-                    this.listDetailVariety.push({
-                        ...item,
-                        ...item.varietyAttributes,
+        this.productService
+            .getProduct(this.product.productId, this.userId)
+            .subscribe({
+                next: (res) => {
+                    this.product = res;
+                    this.product.varieties.forEach((item) => {
+                        this.listDetailVariety.push({
+                            ...item,
+                            ...item.varietyAttributes,
+                        });
                     });
-                });
-                console.log(this.product);
-                this.listSize = [];
-                this.listColor = [];
-                (this.product.varietyAttributeList || []).forEach((item) => {
-                    if (item.type === 'SIZE') this.listSize.push(item);
-                    else this.listColor.push(item);
-                });
-            },
-        });
+                    console.log(this.product);
+                    this.listSize = [];
+                    this.listColor = [];
+                    (this.product.varietyAttributeList || []).forEach(
+                        (item) => {
+                            if (item.type === 'SIZE') this.listSize.push(item);
+                            else this.listColor.push(item);
+                        }
+                    );
+                },
+            });
     }
 
     setFormData(product: any) {
@@ -284,9 +289,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                     this.toBlobImgs()
                 )
                 .subscribe({
-                    next: (res) => {
-                        console.log(res);
-                    },
+                    next: (res) => {},
                 });
         const requests = [];
         Object.values(this.listUpdateVariety).forEach((variety) => {
@@ -300,14 +303,13 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
         this.addProductForm.patchValue({ varieties: this.product.varieties });
         this.productService.updateProduct(this.addProductForm.value).subscribe({
             next: (res) => {
+                this.getProduct();
+
                 this.messageService.add({
                     key: 'toast',
                     severity: 'success',
                     detail: 'Success',
                 });
-                this.getProductDetail(
-                    this.addProductForm.get('productId').value
-                );
             },
             error: (err) => {
                 // this.messageService.add({
@@ -316,14 +318,6 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                 //     detail: 'Something went wrong',
                 // });
                 console.log(err);
-            },
-        });
-    }
-
-    getProductDetail(id) {
-        this.productService.getProduct(id).subscribe({
-            next: (res) => {
-                this.storageService.setItemLocal('currentProduct', res);
             },
         });
     }

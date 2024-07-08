@@ -40,7 +40,8 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     mostProd;
     mostBuy;
     merchant;
-    similarProd;
+    similarProd = [];
+    productId;
     constructor(
         private storageService: StorageService,
         private router: Router,
@@ -75,7 +76,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                 },
             });
         this.product = this.storageService.getItemLocal('currentProduct');
-        const productId = window.location.href.slice(
+        this.productId = window.location.href.slice(
             window.location.href.lastIndexOf('/') + 1
         );
         this.listVarieties = this.product?.varieties;
@@ -87,7 +88,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
             this.mostBuy = data;
         });
         this.productService
-            .getProduct(productId || this.product.productId, viewerId)
+            .getProduct(this.productId || this.product.productId, viewerId)
             .subscribe({
                 next: (res) => {
                     this.product = res;
@@ -115,6 +116,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                     this.isLoading = false;
                 },
             });
+        this.getRecommendProd();
         if (!this.isLogin)
             this.cartService.getUnauthCart().subscribe({
                 next: (res) => this.storageService.setItemLocal('cart', res),
@@ -180,20 +182,19 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                     (item[0].attributeId === this.selectedSize.attributeId &&
                         item[1].attributeId === this.selectedColor.attributeId)
                 );
-            else if (this.selectedSize && !this.selectedColor) {
-                if (item?.varietyAttributes.length > 1)
-                    return (
-                        item?.varietyAttributes[1]?.attributeId ===
-                        this.selectedSize.attributeId
-                    );
+            else if (this.selectedSize && !this.selectedColor)
                 return (
+                    item?.varietyAttributes[1]?.attributeId ===
+                        this.selectedSize.attributeId ||
                     item?.varietyAttributes[0]?.attributeId ===
-                    this.selectedSize.attributeId
+                        this.selectedSize.attributeId
                 );
-            } else if (!this.selectedSize && this.selectedColor)
+            else if (!this.selectedSize && this.selectedColor)
                 return (
                     item.varietyAttributes[0].attributeId ===
-                    this.selectedColor.attributeId
+                        this.selectedColor.attributeId ||
+                    item.varietyAttributes[1].attributeId ===
+                        this.selectedColor.attributeId
                 );
             return false;
         });
@@ -316,8 +317,24 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
             })
             .subscribe({
                 next: (res) => {
-                    this.similarProd = res;
+                    this.similarProd = [...this.similarProd, ...res];
+                    this.similarProd = this.removeDuplicate(this.similarProd);
                 },
             });
+    }
+
+    getRecommendProd() {
+        this.productService.getRecommendProduct(this.productId).subscribe({
+            next: (res) => {
+                if (res) this.similarProd = res;
+            },
+        });
+    }
+
+    removeDuplicate(listProduct) {
+        listProduct = listProduct.filter(
+            (item) => item.productId !== this.product.productId
+        );
+        return _.uniqBy(listProduct, 'productId');
     }
 }

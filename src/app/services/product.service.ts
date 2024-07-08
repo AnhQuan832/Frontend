@@ -448,4 +448,24 @@ export class ProductService {
                 })
             );
     }
+
+    getRecommendProduct(productId) {
+        return this.http
+            .get(API.PRODUCT.END_POINT.RECOMMEND + `/${productId}`)
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return data.data.productList;
+                    } else {
+                        return [];
+                    }
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
+    }
 }

@@ -32,14 +32,13 @@ import { Observable, windowCount } from 'rxjs';
 export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     @ViewChild('streamVideo', { static: false })
     streamVideo: StreamVideoComponent;
-    @HostListener('window:beforeunload', ['$event'])
-    beforeunloadHandler($event: any) {
-        // const res = await this.selectExit();
-        console.log(window.event);
-        localStorage.setItem('local', JSON.stringify(window.event));
-        debugger;
-        return false;
-    }
+    // @HostListener('window:beforeunload', ['$event'])
+    // beforeunloadHandler($event: any) {
+    //     console.log(window.event);
+    //     localStorage.setItem('local', JSON.stringify(window.event));
+    //     debugger;
+    //     return false;
+    // }
     listAllProduct = [];
     listProductForLive = [];
     isOnLive = false;
@@ -124,7 +123,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
             .getAllProduct({
                 merchantId: info.merchantId,
                 page: this.first,
-                size: 10,
+                size: 50,
             })
             .subscribe({
                 next: (res) => {
@@ -200,7 +199,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
             }
             this.messageService.showMessage(
                 '',
-                'Your live has been shut down by Admin',
+                'Your live has been shut down',
                 'error'
             );
             this.isLiveSuccess = false;
@@ -358,14 +357,14 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     editWholeVariety(product, value) {
         if (product.detail?.varieties?.length)
             product.detail.varieties.forEach((item) => {
-                if (typeof item.price === 'number') item.price = value;
+                if (typeof value === 'number') item.livePrice = value;
                 else item.isSelected = value;
             });
         else {
             this.getProductDetail(product);
             setTimeout(() => {
                 product.detail.varieties.forEach((item) => {
-                    if (typeof item.price === 'number') item.price = value;
+                    if (typeof value === 'number') item.livePrice = value;
                     else item.isSelected = value;
                 });
             }, 1000);

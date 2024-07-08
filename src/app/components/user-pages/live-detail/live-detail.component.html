@@ -59,7 +59,8 @@
                                     <h6 class="mb-0">{{ selectedProduct.name }}</h6>
                                     <!-- <h6 class="mb-0">{{ selectedProduct.quantity }}</h6> -->
                                     <p class="mb-0">
-                                        {{ selectedProduct?.totalselectedProductPrice || selectedProduct?.price |
+                                        {{ this.attPrice || selectedProduct?.totalselectedProductPrice ||
+                                        selectedProduct?.price |
                                         currency :
                                         "VND" }}
                                     </p>

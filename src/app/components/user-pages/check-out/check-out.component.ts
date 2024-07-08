@@ -387,46 +387,8 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
             this.isAddNewAddress = !this.isAddNewAddress;
         }
     }
-    async changeAdd() {
-        await this.provinceSelectedChange({
-            provName: this.selectedAdd.cityName,
-        });
-        const dist = this.listDistrict.find(
-            (item) => item.distName === this.selectedAdd.districtName
-        );
-        await this.districtSelectedChange({ distCode: dist.distCode });
-        const ward = this.listWard.find(
-            (item) => item.wardName === this.selectedAdd.wardName
-        );
-        // await this.apiAddress
-        //     .getShippingService(dist.distCode)
-        //     .then((res: any) => {
-        //         this.listShippingService = res.data;
-        //     });
-        // this.listShippingService.forEach((item, index) => {
-        //     const data = {
-        //         to_district_id: dist.distCode,
-        //         to_ward_code: ward.wardCode,
-        //         insurance_value: 500000,
-        //         service_id: item.service_id,
-        //         height: 15,
-        //         length: 15,
-        //         weight: 1000,
-        //         width: 15,
-        //         coupon: null,
-        //     };
-        //     this.cartService.getShippingFee(data).subscribe((res: any) => {
-        //         if (res.code === 200)
-        //             this.shipService.map((item) => {
-        //                 if (
-        //                     item.service_type_id ===
-        //                     this.listShippingService[index].service_type_id
-        //                 )
-        //                     item.price = res.data.total;
-        //             });
-        //     });
-        //     this.selectedShipping = this.listShippingService[0];
-        // });
+    changeAdd() {
+        this.calculateShippingFee(this.cartItem[0].cartId);
     }
     completeCheckout(data) {
         this.storageService.setItemLocal(
@@ -434,5 +396,20 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
             data.invoiceIdList || data.liveInvoiceId
         );
         window.location.href = data.paymentUrl;
+    }
+
+    calculateShippingFee(cartId) {
+        const params = {
+            cartId: cartId,
+            wardCode: this.selectedAdd.wardCode,
+            districtCode: this.selectedAdd.districtId,
+            cityCode: this.selectedAdd.cityCode || 202,
+        };
+        console.log(params);
+        this.invoiceService.getShippingFee(params).subscribe({
+            next: (res) => {
+                console.log(res);
+            },
+        });
     }
 }
