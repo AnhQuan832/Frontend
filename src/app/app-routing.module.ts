@@ -47,8 +47,8 @@ import { AuthGuard } from './components/auth/auth.guard';
                             './components/user-pages/user-pages.module'
                         ).then((m) => m.UserPageModule),
                 },
-                { path: 'notfound', component: NotfoundComponent },
-                { path: '**', redirectTo: '/notfound' },
+                // { path: 'notfound', component: NotfoundComponent },
+                // { path: '**', redirectTo: '/notfound' },
             ],
             {
                 scrollPositionRestoration: 'enabled',

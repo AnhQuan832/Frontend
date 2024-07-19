@@ -13,9 +13,9 @@ export class StatisticService {
         private storageService: StorageService
     ) {}
 
-    getData(params) {
+    getData(role, params) {
         return this.http
-            .post(API.STATISTIC.END_POINT.STATISTIC, null, {
+            .get(API.STATISTIC.END_POINT.STATISTIC + `/${role}`, {
                 params: params,
                 headers: this.storageService.getHttpHeader(),
             })

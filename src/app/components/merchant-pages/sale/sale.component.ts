@@ -9,6 +9,8 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { OrderService } from 'src/app/services/order.service';
 import { forkJoin } from 'rxjs';
 import jsPDF from 'jspdf';
+import { ex } from '@fullcalendar/core/internal-common';
+import { BaseComponent } from 'src/app/base.component';
 
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -18,7 +20,7 @@ import jsPDF from 'jspdf';
     styleUrls: ['./sale.component.scss'],
     providers: [{ provide: 'Window', useValue: window }],
 })
-export class SaleComponent implements OnInit {
+export class SaleComponent extends BaseComponent implements OnInit {
     lineData;
     rangeDates;
     listInvoice;
@@ -65,21 +67,26 @@ export class SaleComponent implements OnInit {
     selectedOption = null;
     mostView;
     mostBuy;
+    role;
     constructor(
         private statisticService: StatisticService,
         private productService: ProductService,
         private orderService: OrderService,
         @Inject('Window') private window: Window
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
+        this.role = this.getRole() === 'ROLE_ADMIN' ? 'admin' : 'merchant';
         const params = {
             fromDate: moment()
                 .clone()
                 .startOf('week')
-                .set({ hour: 7, minute: 0, second: 0, millisecond: 0 }),
-            toDate: moment().clone().endOf('week'),
-            groupType: 'DAY',
+                .set({ hour: 7, minute: 0, second: 0, millisecond: 0 })
+                .unix(),
+            toDate: moment().clone().endOf('week').unix(),
+            interval: 'day',
         };
         this.getData(params);
         this.getView(7);
@@ -170,7 +177,7 @@ export class SaleComponent implements OnInit {
     }
 
     getData(params) {
-        this.statisticService.getData(params).subscribe({
+        this.statisticService.getData(this.role, params).subscribe({
             next: (res) => {
                 this.initChart(res);
             },

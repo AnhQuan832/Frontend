@@ -28,6 +28,7 @@ export class DashboardComponent
 
     subscription!: Subscription;
 
+    role;
     constructor(
         private productService: ProductService,
         public layoutService: LayoutService,
@@ -41,13 +42,15 @@ export class DashboardComponent
     ngOnInit() {
         const token = this.storageService.getDataFromCookie('jwtToken');
         // if (!token) this.router.navigate(['/auth/login']);
+        this.role = this.getRole() === 'ROLE_ADMIN' ? 'admin' : 'merchant';
         const params = {
-            fromDate: moment()
+            start_time_millis: moment()
                 .clone()
                 .startOf('week')
-                .set({ hour: 7, minute: 0, second: 0, millisecond: 0 }),
-            toDate: moment().clone().endOf('week'),
-            groupType: 'DAY',
+                .set({ hour: 7, minute: 0, second: 0, millisecond: 0 })
+                .unix(),
+            end_time_millis: moment().clone().endOf('week').unix(),
+            interval: 'day',
         };
         this.getData(params);
 
@@ -106,7 +109,7 @@ export class DashboardComponent
     }
 
     getData(params) {
-        this.statisticService.getData(params).subscribe({
+        this.statisticService.getData(this.role, params).subscribe({
             next: (res) => {
                 this.initChart(res);
             },

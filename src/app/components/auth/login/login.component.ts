@@ -46,20 +46,20 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
     loginWithGoogle() {
         this.socialLoginService.authState.subscribe((user) => {
-            this.authService.loginGoogle(user).subscribe((res) => {
-                if (typeof res === 'string') {
-                    this.msgError = res;
-                    return;
-                }
-                this.setInfo(res);
-                this.router.navigate(['/user/home']);
-            });
+            if (user)
+                this.authService.loginGoogle(user).subscribe((res) => {
+                    if (typeof res === 'string') {
+                        this.msgError = res;
+                        return;
+                    }
+                    this.setInfo(res);
+                    this.checkPermission(this.getRole());
+                });
         });
     }
 
     login() {
         this.isSubmitted = true;
-
         if (this.loginForm.valid)
             this.authService
                 .login(
@@ -85,15 +85,23 @@ export class LoginComponent extends BaseComponent implements OnInit {
             .then((accessToken) => (this.accessToken = accessToken));
     }
     public signOut(): void {
-        this.socialLoginService.signOut();
+        this.socialLoginService
+            .signOut()
+            .then(
+                () =>
+                    (document.cookie =
+                        'jwtToken' +
+                        '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;')
+            );
         this.refreshToken();
-        document.cookie =
-            'jwtToken' + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     }
     refreshToken(): void {
-        this.socialLoginService.refreshAuthToken(
-            GoogleLoginProvider.PROVIDER_ID
-        );
+        this.socialLoginService
+            .refreshAuthToken(GoogleLoginProvider.PROVIDER_ID)
+            .then();
+        this.socialLoginService
+            .refreshAccessToken(GoogleLoginProvider.PROVIDER_ID)
+            .then();
     }
 
     clearErrorNotification() {
