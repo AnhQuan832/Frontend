@@ -93,7 +93,8 @@
                         </td>
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Image</span>
-                            <img [src]="product?.image" [alt]="product.name" width="100" class="shadow-4" />
+                            <img [src]="product?.image" [alt]="product.name" width="100" class="shadow-4"
+                                onerror="this.onerror=null;this.src='/assets/no_prod.jpg';" />
                         </td>
                         <td>
                             <span>

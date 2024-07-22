@@ -94,6 +94,8 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                     this.product = res;
                     this.getMerchant(res.merchantId);
                     this.getSimilarProd(res.subCategory.category.categoryId);
+                    if (this.product.varieties.length === 1)
+                        this.selectedVariety = this.product.varieties[0];
                     if (this.product.detail) {
                         this.product.detail = this.product.detail.replace(
                             /(?:\r\n|\r|\n)/g,

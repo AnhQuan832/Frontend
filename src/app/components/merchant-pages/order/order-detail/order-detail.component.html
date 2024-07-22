@@ -115,5 +115,7 @@
     <button *ngIf="data.status === 'COMPLETED'" pButton pRipple label="Return" class="p-button-waring mr-2"
         (click)="updateStatus('RETURN')"></button>
     <button *ngIf="data.status === 'PENDING' || data.status === 'PAID'" pButton pRipple label="Confirm"
-        class="p-button-success mr-2" (click)="updateStatus('COMPLETED')"></button>
+        class="p-button-success mr-2" (click)="updateStatus('DELIVERING')"></button>
+    <button *ngIf="data.status === 'DELIVERING' " pButton pRipple label="Complete" class="p-button-success mr-2"
+        (click)="updateStatus('COMPLETED')"></button>
 </div>

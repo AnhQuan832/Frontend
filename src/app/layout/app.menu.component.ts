@@ -39,7 +39,7 @@ export class AppMenuComponent extends BaseComponent implements OnInit {
                             routerLink: ['/merchant/product'],
                         },
                         {
-                            label: 'Order',
+                            label: 'List Order',
                             icon: 'pi pi-fw pi-shopping-cart',
                             routerLink: ['/merchant/order'],
                         },

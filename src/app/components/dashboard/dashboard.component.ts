@@ -58,6 +58,8 @@ export class DashboardComponent
             quantity: 5,
             daysAmount: 7,
         };
+        if (this.getRole() === 'ROLE_MERCHANT')
+            paramTable['merchantId'] = this.getUserInfo().merchantId;
         this.productService.getProdMost(paramTable).subscribe((data) => {
             this.products = data;
         });
@@ -90,15 +92,15 @@ export class DashboardComponent
                         documentStyle.getPropertyValue('--primary-500'),
                     tension: 0.4,
                 },
-                {
-                    label: 'Total Import',
-                    data: totalImport,
-                    fill: false,
-                    backgroundColor:
-                        documentStyle.getPropertyValue('--teal-400'),
-                    borderColor: documentStyle.getPropertyValue('--teal-400'),
-                    tension: 0.4,
-                },
+                // {
+                //     label: 'Total Import',
+                //     data: totalImport,
+                //     fill: false,
+                //     backgroundColor:
+                //         documentStyle.getPropertyValue('--teal-400'),
+                //     borderColor: documentStyle.getPropertyValue('--teal-400'),
+                //     tension: 0.4,
+                // },
             ],
         };
     }

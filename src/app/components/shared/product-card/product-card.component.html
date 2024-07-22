@@ -2,8 +2,9 @@
     (click)="onCardClick()">
     <div class="image-container">
 
-        <img class="img" src="{{ product.image || product.images[0] || 'https://via.placeholder.com/320x300' }}"
-            lazyload="true" />
+        <img class="img"
+            src="{{ product?.image || product?.images?.length ? product.images[0] : '/assets/no_prod.jpg' || '/assets/no_prod.jpg' }}"
+            lazyload="true" onerror="this.onerror=null;this.src='/assets/no_prod.jpg';" />
     </div>
     <div class="card-content w-100 d-flex flex-column p-3 justify-content-between">
         <span>

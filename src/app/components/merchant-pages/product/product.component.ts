@@ -37,7 +37,7 @@ export class ProductComponent extends BaseComponent {
 
     ref: DynamicDialogRef;
 
-    first: number = 0;
+    first: number = 1;
     totalRecords: number = 10;
     isLoading: boolean = true;
     constructor(
@@ -52,7 +52,7 @@ export class ProductComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        this.getProducts(true);
+        this.getProducts(true, { page: this.first, size: 10 });
     }
 
     getProducts(isInit = false, paging?) {

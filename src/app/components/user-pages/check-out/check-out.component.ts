@@ -395,7 +395,10 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
             'sucInvoice',
             data.invoiceIdList || data.liveInvoiceId
         );
-        window.location.href = data.paymentUrl;
+        window.location.href =
+            this.checkOutForm.value.paymentType === 'CREDIT_CARD'
+                ? data?.paymentUrl
+                : window.location.origin + '/user/complete-checkout';
     }
 
     calculateShippingFee(cartId) {

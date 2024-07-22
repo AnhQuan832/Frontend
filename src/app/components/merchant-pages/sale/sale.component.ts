@@ -80,12 +80,12 @@ export class SaleComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         this.role = this.getRole() === 'ROLE_ADMIN' ? 'admin' : 'merchant';
         const params = {
-            fromDate: moment()
+            start_time_millis: moment()
                 .clone()
                 .startOf('week')
                 .set({ hour: 7, minute: 0, second: 0, millisecond: 0 })
                 .unix(),
-            toDate: moment().clone().endOf('week').unix(),
+            end_time_millis: moment().clone().endOf('week').unix(),
             interval: 'day',
         };
         this.getData(params);
@@ -123,48 +123,56 @@ export class SaleComponent extends BaseComponent implements OnInit {
                         documentStyle.getPropertyValue('--primary-500'),
                     tension: 0.4,
                 },
-                {
-                    label: 'Total Import',
-                    data: totalImport,
-                    fill: false,
-                    backgroundColor:
-                        documentStyle.getPropertyValue('--teal-400'),
-                    borderColor: documentStyle.getPropertyValue('--teal-400'),
-                    tension: 0.4,
-                },
+                // {
+                //     label: 'Total Import',
+                //     data: totalImport,
+                //     fill: false,
+                //     backgroundColor:
+                //         documentStyle.getPropertyValue('--teal-400'),
+                //     borderColor: documentStyle.getPropertyValue('--teal-400'),
+                //     tension: 0.4,
+                // },
             ],
         };
     }
 
     onDateChange() {
         this.genParam = {
-            fromDate: moment(this.rangeDates[0]).set({
-                hour: 7,
-                minute: 0,
-                second: 0,
-                millisecond: 0,
-            }),
-            toDate: moment(this.rangeDates[1]).set({
-                hour: 7,
-                minute: 0,
-                second: 0,
-                millisecond: 0,
-            }),
+            start_time_millis: moment(this.rangeDates[0])
+                .set({
+                    hour: 7,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+                })
+                .unix(),
+            end_time_millis: moment(this.rangeDates[1])
+                .set({
+                    hour: 7,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+                })
+                .unix(),
         };
         const params = {
-            fromDate: moment(this.rangeDates[0]).set({
-                hour: 7,
-                minute: 0,
-                second: 0,
-                millisecond: 0,
-            }),
-            toDate: moment(this.rangeDates[1]).set({
-                hour: 7,
-                minute: 0,
-                second: 0,
-                millisecond: 0,
-            }),
-            groupType: 'DAY',
+            start_time_millis: moment(this.rangeDates[0])
+                .set({
+                    hour: 7,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+                })
+                .unix(),
+            end_time_millis: moment(this.rangeDates[1])
+                .set({
+                    hour: 7,
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0,
+                })
+                .unix(),
+            interval: 'day',
         };
 
         this.getData(params);
@@ -188,19 +196,27 @@ export class SaleComponent extends BaseComponent implements OnInit {
         if (this.selectedOption.id !== 'SPECIFIC') {
             this.rangeDates = null;
             const params = {
-                fromDate: moment()
+                start_time_millis: moment()
                     .clone()
                     .startOf(this.selectedOption.id)
-                    .set({ hour: 7, minute: 0, second: 0, millisecond: 0 }),
-                toDate: moment().clone().endOf(this.selectedOption.id),
-                groupType: this.selectedOption.id === 'year' ? 'MONTH' : 'DAY',
+                    .set({ hour: 7, minute: 0, second: 0, millisecond: 0 })
+                    .unix(),
+                end_time_millis: moment()
+                    .clone()
+                    .endOf(this.selectedOption.id)
+                    .unix(),
+                interval: this.selectedOption.id === 'year' ? 'month' : 'day',
             };
             this.genParam = {
-                fromDate: moment()
+                start_time_millis: moment()
                     .clone()
                     .startOf(this.selectedOption.id)
-                    .set({ hour: 7, minute: 0, second: 0, millisecond: 0 }),
-                toDate: moment().clone().endOf(this.selectedOption.id),
+                    .set({ hour: 7, minute: 0, second: 0, millisecond: 0 })
+                    .unix(),
+                end_time_millis: moment()
+                    .clone()
+                    .endOf(this.selectedOption.id)
+                    .unix(),
             };
             this.getData(params);
             let days = 0;
@@ -222,6 +238,8 @@ export class SaleComponent extends BaseComponent implements OnInit {
         const params = {
             daysAmount: days,
         };
+        if (this.getRole() === 'ROLE_MERCHANT')
+            params['merchantId'] = this.getUserInfo().merchantId;
         this.productService.getProdMost(params).subscribe((data) => {
             this.mostView = data;
         });

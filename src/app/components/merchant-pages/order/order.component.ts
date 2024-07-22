@@ -102,7 +102,7 @@ export class OrderComponent implements OnInit {
     }
 
     onPageChange(event) {
-        this.first = event.page;
+        this.first = event.page + 1;
         this.getData();
     }
 }
