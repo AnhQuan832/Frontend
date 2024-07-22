@@ -38,10 +38,15 @@
                     <b>Created Date: </b>
                     {{ merchantDetail.createdDate | date: "dd/MM/yyyy" }}
                 </h5>
+                <h5 *ngIf="!isRequest"><b>Allowed to Live: </b>
+                    {{ merchantDetail.isLiveable ? 'True' : 'False' }}</h5>
+                <h5 *ngIf="!isRequest"><b>Status: </b>
+                    {{ merchantDetail.isSuspended ? 'True' : 'False' }}</h5>
                 <h5><b>Related Document or License: </b></h5>
                 <h6 class="mt-0" style="font-weight: 400" *ngIf="merchantDetail.relatedDocuments.length == 0">
                     (No document or License yet)
                 </h6>
+
             </div>
             <div class="doc-container ps-4 d-flex gap-3">
                 <div class="doc-info" *ngFor="let item of merchantDetail.relatedDocuments">
@@ -62,13 +67,31 @@
             </div>
         </div>
 
-        <div class="button ps-4 d-flex gap-3">
+        <div *ngIf="isRequest" class="button ps-4 d-flex gap-3">
             <button class="btn btn-primary" (click)="acceptRequest()">
                 Accept
             </button>
 
             <button class="btn btn-secondary " (click)="rejectRequest()">
                 Reject
+            </button>
+        </div>
+
+        <div *ngIf="!isRequest" class="button ps-4 d-flex gap-3">
+            <button *ngIf="!merchantDetail.isSuspended" class="btn btn-primary" (click)="suspendMerchant()">
+                Suspend
+            </button>
+
+            <button *ngIf="merchantDetail.isSuspended" class="btn btn-primary " (click)="unSuspentMerchant()">
+                Unsuspend
+            </button>
+
+            <button *ngIf="merchantDetail.isLiveable" class="btn btn-primary" (click)="banLive()">
+                Ban Live
+            </button>
+
+            <button *ngIf="!merchantDetail.isLiveable" class="btn btn-primary " (click)="unBanLive()">
+                UnBan Live
             </button>
         </div>
     </div>

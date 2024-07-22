@@ -44,12 +44,13 @@ export class DashboardComponent
         // if (!token) this.router.navigate(['/auth/login']);
         this.role = this.getRole() === 'ROLE_ADMIN' ? 'admin' : 'merchant';
         const params = {
-            start_time_millis: moment()
-                .clone()
-                .startOf('week')
-                .set({ hour: 7, minute: 0, second: 0, millisecond: 0 })
-                .unix(),
-            end_time_millis: moment().clone().endOf('week').unix(),
+            start_time_millis:
+                moment()
+                    .clone()
+                    .startOf('week')
+                    .set({ hour: 7, minute: 0, second: 0, millisecond: 0 })
+                    .unix() * 1000,
+            end_time_millis: moment().clone().endOf('week').unix() * 1000,
             interval: 'day',
         };
         this.getData(params);

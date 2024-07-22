@@ -59,10 +59,10 @@ export class MerchantComponent {
                 },
             },
             {
-                label: 'Accept',
+                label: 'Suspend',
                 command: () => {
                     this.merchantService
-                        .approveMerchant(this.selectedMerchant.merchantId)
+                        .suspendMerchant(this.selectedMerchant.merchantId)
                         .subscribe({
                             next: (data) => {
                                 this.getMerchantList();
@@ -76,10 +76,10 @@ export class MerchantComponent {
                 },
             },
             {
-                label: 'Reject',
+                label: 'Unsuspend',
                 command: () => {
                     this.merchantService
-                        .disapproveMerchant(this.selectedMerchant.merchantId)
+                        .unsuspendMerchant(this.selectedMerchant.merchantId)
                         .subscribe({
                             next: (data) => {
                                 this.getMerchantList();

@@ -143,6 +143,8 @@ export const API = {
             UNSUSPEND_MERCHANT: API_URL + 'merchant/un-suspend',
             APPROVE_MERCHANT: API_URL + 'merchant/approve',
             UN_APPROVE_MERCHANT: API_URL + 'merchant/un-approve',
+            BAN_LIVE: API_URL + 'merchant/ban/live',
+            UN_BAN_LIVE: API_URL + 'merchant/un-ban/live',
         },
     },
     SEARCH: {

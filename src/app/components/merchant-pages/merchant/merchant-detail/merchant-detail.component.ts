@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BaseComponent } from 'src/app/base.component';
 import { MerchantService } from 'src/app/services/merchant.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { ToastMessageService } from 'src/app/services/toast-message.service';
 
 @Component({
     selector: 'app-merchant-detail',
@@ -9,10 +11,13 @@ import { StorageService } from 'src/app/services/storage.service';
     styleUrls: ['./merchant-detail.component.scss'],
 })
 export class MerchantDetailComponent extends BaseComponent implements OnInit {
+    @Input() isRequest: boolean = false;
     merchantDetail;
     constructor(
         private merchantService: MerchantService,
-        private storageService: StorageService
+        private storageService: StorageService,
+        private messageService: ToastMessageService,
+        private router: Router
     ) {
         super();
     }
@@ -36,7 +41,87 @@ export class MerchantDetailComponent extends BaseComponent implements OnInit {
     urlToFileType(url: string): string {
         return url.slice(url.lastIndexOf('.') + 1, url.lastIndexOf('?'));
     }
-    acceptRequest() {}
+    acceptRequest() {
+        this.merchantService
+            .approveMerchant(this.merchantDetail.merchantId)
+            .subscribe({
+                next: (data) => {
+                    this.messageService.showMessage(
+                        '',
+                        'Merchant has been approved',
+                        'success'
+                    );
+                },
+            });
+    }
 
-    rejectRequest() {}
+    rejectRequest() {
+        this.merchantService
+            .disapproveMerchant(this.merchantDetail.merchantId)
+            .subscribe({
+                next: (data) => {
+                    this.messageService.showMessage(
+                        '',
+                        'Merchant has been rejected',
+                        'success'
+                    );
+                },
+            });
+    }
+
+    suspendMerchant() {
+        this.merchantService
+            .suspendMerchant(this.merchantDetail.merchantId)
+            .subscribe({
+                next: (data) => {
+                    this.messageService.showMessage(
+                        '',
+                        'Merchant has been suspended',
+                        'success'
+                    );
+
+                    this.router.navigate(['/merchant/merchant']);
+                },
+            });
+    }
+
+    unSuspentMerchant() {
+        this.merchantService
+            .unsuspendMerchant(this.merchantDetail.merchantId)
+            .subscribe({
+                next: (data) => {
+                    this.messageService.showMessage(
+                        '',
+                        'Merchant has been unsuspended',
+                        'success'
+                    );
+                },
+            });
+    }
+
+    banLive() {
+        this.merchantService.banLive(this.merchantDetail.merchantId).subscribe({
+            next: (data) => {
+                this.messageService.showMessage(
+                    '',
+                    'Merchant has been banned from live',
+                    'success'
+                );
+            },
+        });
+    }
+
+    unBanLive() {
+        this.merchantService
+            .unBanLive(this.merchantDetail.merchantId)
+            .subscribe({
+                next: (data) => {
+                    this.messageService.showMessage(
+                        '',
+                        'Merchant has been unbanned from live',
+                        'success'
+                    );
+                },
+            });
+    }
 }

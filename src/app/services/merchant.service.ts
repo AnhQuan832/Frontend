@@ -207,4 +207,52 @@ export class MerchantService {
                 })
             );
     }
+
+    banLive(merchantId: string) {
+        return this.http
+            .put(
+                API.MERCHANT.END_POINT.BAN_LIVE + '/' + merchantId,
+                {},
+                {
+                    headers: this.storageService.getHttpHeader(),
+                }
+            )
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return true;
+                    } else return false;
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
+    }
+
+    unBanLive(merchantId: string) {
+        return this.http
+            .put(
+                API.MERCHANT.END_POINT.UN_BAN_LIVE + '/' + merchantId,
+                {},
+                {
+                    headers: this.storageService.getHttpHeader(),
+                }
+            )
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.PRODUCT.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return true;
+                    } else return false;
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
+    }
 }

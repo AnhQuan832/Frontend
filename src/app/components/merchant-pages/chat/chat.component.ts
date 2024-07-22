@@ -50,11 +50,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
     async ngOnInit() {
         this.isLogin = this.storageService.getDataFromCookie('jwtToken');
         if (!this.isLogin) this.router.navigate(['/auth/login']);
-        await this.connect();
-        await this.getChatRoom();
-        await this.getListUsers();
-        await this.getUnreadMessage();
-        this.isLoadingChatRoom = false;
+        this.initData();
     }
 
     ngAfterViewInit(): void {
@@ -69,6 +65,14 @@ export class ChatComponent implements OnInit, AfterViewInit {
                 this.selectUser(this.currentUser[0]);
             }
         }, 3500);
+    }
+
+    async initData() {
+        await this.connect();
+        await this.getChatRoom();
+        await this.getListUsers();
+        await this.getUnreadMessage();
+        this.isLoadingChatRoom = false;
     }
 
     async sendMessage() {
@@ -123,9 +127,12 @@ export class ChatComponent implements OnInit, AfterViewInit {
     }
 
     public getListUsers() {
-        this.listUsers = this.listChatRoom.map((chatRoom) => {
-            if (chatRoom.firstUser.userId !== this.senderId) {
-                return {
+        this.listUsers = [];
+        this.listChatRoom.forEach((chatRoom) => {
+            if (chatRoom.firstUser === null || chatRoom.secondUser === null)
+                return;
+            if (chatRoom.firstUser?.userId !== this.senderId) {
+                this.listUsers.push({
                     chatRoomId: chatRoom.chatRoomId,
                     userId: chatRoom.firstUser.userId,
                     userName:
@@ -134,9 +141,9 @@ export class ChatComponent implements OnInit, AfterViewInit {
                         chatRoom.firstUser.userLastName,
                     userAvatar: chatRoom.firstUser.userAvatar,
                     isRead: false,
-                };
+                });
             } else {
-                return {
+                this.listUsers.push({
                     chatRoomId: chatRoom.chatRoomId,
                     userId: chatRoom.secondUser.userId,
                     userName:
@@ -145,7 +152,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
                         chatRoom.secondUser.userLastName,
                     userAvatar: chatRoom.secondUser.userAvatar,
                     isRead: false,
-                };
+                });
             }
         });
         this.listUsersBackup = [...this.listUsers];

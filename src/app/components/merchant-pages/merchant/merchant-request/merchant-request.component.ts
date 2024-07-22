@@ -47,7 +47,7 @@ export class MerchantRequestComponent {
     onMerchantSelected(merchant) {
         this.storageService.setItemLocal('merchantDetail', merchant);
         this.router.navigate([
-            `merchant/merchant/detail/${merchant.merchantId}`,
+            `merchant/merchant/request-detail/${merchant.merchantId}`,
         ]);
     }
 

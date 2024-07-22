@@ -11,12 +11,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { RatingModule } from 'primeng/rating';
 import { MenuModule } from 'primeng/menu';
+import { RequestDetailComponent } from './request-detail/request-detail.component';
+import { Tag, TagModule } from 'primeng/tag';
 
 @NgModule({
     declarations: [
         MerchantComponent,
         MerchantRequestComponent,
         MerchantDetailComponent,
+        RequestDetailComponent,
     ],
     imports: [
         CommonModule,
@@ -28,6 +31,7 @@ import { MenuModule } from 'primeng/menu';
         ButtonModule,
         RatingModule,
         MenuModule,
+        TagModule,
     ],
 })
 export class MerchantModule {}
