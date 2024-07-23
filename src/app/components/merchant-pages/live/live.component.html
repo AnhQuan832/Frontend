@@ -84,8 +84,8 @@
                     </div> -->
 
                         <p-table [value]="listAllProduct" dataKey="name" rowGroupMode="subheader" groupRowsBy="name"
-                            sortField="name" sortMode="single" styleClass="p-datatable-striped" paginator=" true"
-                            rows="10">
+                            sortField="name" sortMode="single" styleClass="p-datatable-striped" [paginator]=" true"
+                            [rows]="10">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th width="20px"></th>
@@ -113,8 +113,9 @@
                                                 : 'pi pi-chevron-right'
                                         " (click)="showProductDetail(product)"></button>
 
-                                        <img src="{{ product?.image }}" alt="" width="32"
-                                            style="vertical-align: middle" />
+                                        <img src="{{ product?.image }}" alt="" width="32" style="vertical-align: middle"
+                                            lazyload="true"
+                                            onerror="this.onerror=null;this.src='/assets/no_prod.jpg';" />
                                         <span class="font-bold ml-2">{{
                                             product.name || product.productName
                                             }}</span>

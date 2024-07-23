@@ -3,7 +3,7 @@
     <div class="image-container">
 
         <img class="img"
-            src="{{ product?.image || product?.images?.length ? product.images[0] : '/assets/no_prod.jpg' || '/assets/no_prod.jpg' }}"
+            src="{{ product?.image ||( product?.images ? product?.images[0] : '/assets/no_prod.jpg') || '/assets/no_prod.jpg' }}"
             lazyload="true" onerror="this.onerror=null;this.src='/assets/no_prod.jpg';" />
     </div>
     <div class="card-content w-100 d-flex flex-column p-3 justify-content-between">
@@ -12,8 +12,8 @@
             <!-- <p class="product-des">
       {{ product?.description }}
     </p> -->
-            <p class="product-des clamp mt-0 mb-1" style="font-size: 0.85rem">
-                {{ product?.subCategory?.category?.name }}
+            <p *ngIf="isShowCategory" class="product-des clamp mt-0 mb-1" style="font-size: 0.85rem">
+                {{ product?.subCategory?.category?.name || product?.categoryName }}
             </p>
             <div *ngIf="!viewOnly" class="product-rating">
                 <p-rating [(ngModel)]="product.avgRating" [readonly]="true" [cancel]="false"></p-rating>

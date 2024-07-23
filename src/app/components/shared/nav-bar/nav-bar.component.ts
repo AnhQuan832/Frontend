@@ -122,11 +122,15 @@ export class NavBarComponent
     }
 
     routeToProduct(product) {
-        this.showSearchRes = false;
-        const prod = { ...product, productId: product.itemId };
-        this.storageService.setItemLocal('currentProduct', prod);
-        this.router.navigate([`user/product-detail/${prod.productId}`]);
-        setTimeout(() => window.location.reload(), 100);
+        if (product.group !== 'merchant') {
+            this.showSearchRes = false;
+            const prod = { ...product, productId: product.itemId };
+            this.storageService.setItemLocal('currentProduct', prod);
+            this.router.navigate([`user/product-detail/${prod.productId}`]);
+            setTimeout(() => window.location.reload(), 100);
+        } else {
+            this.router.navigate([`user/shop/${product.itemId}`]);
+        }
     }
 
     setActiveNav() {

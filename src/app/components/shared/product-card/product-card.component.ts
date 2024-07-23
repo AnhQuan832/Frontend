@@ -12,6 +12,7 @@ export class ProductCardComponent {
     @Input() viewOnly: boolean = false;
     @Input() isLoading: boolean = false;
     @Input() isFitWidth: boolean = false;
+    @Input() isShowCategory: boolean = false;
     constructor(
         private storageService: StorageService,
         private router: Router

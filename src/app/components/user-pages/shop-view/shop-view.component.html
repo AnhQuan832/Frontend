@@ -67,8 +67,8 @@
     <div class=" col-sm-12 col-md-10" infinite-scroll [infiniteScrollDistance]="scrollDistance"
         [infiniteScrollUpDistance]="scrollUpDistance" [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown()">
         <div *ngIf="!isLoading; else loading" class="w-100 shopView-list">
-            <app-product-card *ngFor="let product of products" [product]="product" class="product"
-                [isFitWidth]="true"></app-product-card>
+            <app-product-card *ngFor="let product of products" [product]="product" class="product" [isFitWidth]="true"
+                [isShowCategory]="true"></app-product-card>
             <div *ngIf="isLoadingMore"><app-product-card *ngFor="let _ of [].constructor(size)"
                     [isLoading]="true"></app-product-card>
             </div>

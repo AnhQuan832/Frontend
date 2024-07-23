@@ -23,7 +23,7 @@ import { ToastMessageService } from 'src/app/services/toast-message.service';
 import { StreamVideoComponent } from '../../shared/stream-video/stream-video.component';
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
-
+import * as _ from 'lodash';
 @Component({
     selector: 'app-live-detail',
     templateUrl: './live-detail.component.html',
@@ -59,6 +59,8 @@ export class LiveDetailComponent
     liveCart = [];
     listAllProduct;
     currentStock = 0;
+    firstPrice;
+    stockAmount = 0;
     constructor(
         private productService: ProductService,
         private cartService: CartService,
@@ -133,24 +135,31 @@ export class LiveDetailComponent
     onSelectProduct(product) {
         const userId = this.getUserInfo().userId;
         this.listDetailVariety = [];
+        let listAtt = [];
+        let listVar = product.items.map((item) => {
+            return item.varietyId;
+        });
         this.productService.getProduct(product.productId, userId).subscribe({
             next: (res) => {
+                console.log(product);
                 this.selectedProduct = res;
                 this.selectedProduct.varieties.forEach((item) => {
-                    this.listDetailVariety.push({
-                        ...item,
-                        ...item.varietyAttributes,
-                    });
+                    if (listVar.includes(item.varietyId)) {
+                        this.listDetailVariety.push({
+                            ...item,
+                            ...item.varietyAttributes,
+                        });
+                        listAtt.push(...item.varietyAttributes);
+                    }
                 });
+                listAtt = _.uniqBy(listAtt, 'attributeId');
                 this.listColor = [];
                 this.listSize = [];
-                (this.selectedProduct.varietyAttributeList || []).forEach(
-                    (item) => {
-                        if (item.type === 'SIZE')
-                            this.listSize.push({ ...item, active: true });
-                        else this.listColor.push({ ...item, active: true });
-                    }
-                );
+                (listAtt || []).forEach((item) => {
+                    if (item.type === 'SIZE')
+                        this.listSize.push({ ...item, active: true });
+                    else this.listColor.push({ ...item, active: true });
+                });
             },
         });
     }
@@ -236,8 +245,11 @@ export class LiveDetailComponent
         this.selectedVariety = this.listDetailVariety.find((item) => {
             if (this.selectedSize && this.selectedColor)
                 return (
-                    item[1].attributeId === this.selectedSize.attributeId &&
-                    item[0].attributeId === this.selectedColor.attributeId
+                    (item[1].attributeId === this.selectedSize.attributeId &&
+                        item[0].attributeId ===
+                            this.selectedColor.attributeId) ||
+                    (item[0].attributeId === this.selectedSize.attributeId &&
+                        item[1].attributeId === this.selectedColor.attributeId)
                 );
             else if (this.selectedSize && !this.selectedColor)
                 return (
@@ -260,7 +272,9 @@ export class LiveDetailComponent
             (item) => item.varietyId === this.selectedVariety.varietyId
         );
         this.attPrice = liveItem.livePrice;
+        this.firstPrice = liveItem.initialPrice;
         this.currentStock = liveItem.currentStock;
+        this.stockAmount = liveItem.initialStock;
     }
 
     onChangeQty(event) {
@@ -268,7 +282,7 @@ export class LiveDetailComponent
             this.numberOfProduct = this.selectedVariety.stockAmount;
             this.isDisableBuy = true;
         } else {
-            this.attPrice = this.selectedVariety.price * event;
+            // this.attPrice = this.selectedVariety.price * event;
             this.numberOfProduct = event;
             this.isDisableBuy = false;
         }

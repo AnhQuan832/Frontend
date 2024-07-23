@@ -54,7 +54,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     listComment = [];
     price = 200000000;
     coverImgFile: FileList;
-    isSelectTitleLive = true;
+    isSelectTitleLive = false;
     liveTitle;
     isLoading: boolean = false;
     first = 1;
@@ -74,7 +74,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
         }
     }
     ngOnDestroy(): void {
-        // this.shutDownLive();
+        this.shutDownLive();
         // this.setTempSession();
     }
     ngOnInit(): void {

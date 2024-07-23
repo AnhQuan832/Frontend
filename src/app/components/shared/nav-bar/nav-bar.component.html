@@ -43,7 +43,8 @@
                     </ng-template>
                     <ng-template let-item pTemplate="item">
                         <div class="flex align-items-center gap-2 d-flex">
-                            <img src="{{ item?.image }}" width="50px" height="20px" />
+                            <img src="{{ item?.image }}" width="50px" height="20px" lazyload="true"
+                                onerror="this.onerror=null;this.src='/assets/no_prod.jpg';" />
                             <div>{{ item?.itemName }}</div>
                         </div>
                     </ng-template>

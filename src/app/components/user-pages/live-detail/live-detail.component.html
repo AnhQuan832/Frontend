@@ -41,7 +41,7 @@
                                             {{ item?.totalItemPrice || item?.price | currency : "VND" }}
                                         </p>
                                     </div>
-                                    <div>
+                                    <div *ngIf="!isEnd">
                                         <button pButton pRipple class="btn btn-primary" icon="pi pi-shopping-cart"
                                             (click)="isSelectVariety= true; onSelectProduct(item)"></button>
                                     </div>
@@ -58,6 +58,13 @@
 
                                     <h6 class="mb-0">{{ selectedProduct.name }}</h6>
                                     <!-- <h6 class="mb-0">{{ selectedProduct.quantity }}</h6> -->
+                                    <p class="mb-0" *ngIf="attPrice !== firstPrice">
+                                        <s>
+                                            {{ this.firstPrice |
+                                            currency :
+                                            "VND" }}
+                                        </s>
+                                    </p>
                                     <p class="mb-0">
                                         {{ this.attPrice || selectedProduct?.totalselectedProductPrice ||
                                         selectedProduct?.price |
@@ -94,8 +101,7 @@
                                 </div>
                                 <div class="d-flex">
                                     <h6 class="mt-2 me-2 w-80"><b>Amount</b></h6>
-                                    <app-quantity class="ms-2" [quantity]="numberOfProduct"
-                                        [max]="selectedVariety?.stockAmount || 0"
+                                    <app-quantity class="ms-2" [quantity]="numberOfProduct" [max]="stockAmount || 0"
                                         (onQuantity)="onChangeQty($event)"></app-quantity>
                                 </div>
                             </div>
@@ -135,9 +141,9 @@
                             <div *ngFor="let item of liveCart['liveCartItemList']">
                                 <div class="cart-item d-flex">
                                     <span style="min-width: 10rem" class="d-flex align-items-center flex-wrap gap-4">
-                                        <p-checkbox [(ngModel)]="item.isSelected" [binary]="true"
-                                            (onChange)="selectItem(shop,item)"></p-checkbox>
-                                        <img [src]="item?.liveItem?.coverImage" width="100" height="100"
+                                        <!-- <p-checkbox [(ngModel)]="item.isSelected" [binary]="true"
+                                            (onChange)="selectItem(shop,item)"></p-checkbox> -->
+                                        <img [src]="item?.liveItem?.coverImage" width="80" height="80"
                                             class="shadow-4 rounded-3" />
                                         <span class="d-flex flex-column" style="max-width: 50%">
                                             <h5 class="mb-0">
