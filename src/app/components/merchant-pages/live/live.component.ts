@@ -54,7 +54,7 @@ export class LiveComponent extends BaseComponent implements OnInit, OnDestroy {
     listComment = [];
     price = 200000000;
     coverImgFile: FileList;
-    isSelectTitleLive = false;
+    isSelectTitleLive = true;
     liveTitle;
     isLoading: boolean = false;
     first = 1;

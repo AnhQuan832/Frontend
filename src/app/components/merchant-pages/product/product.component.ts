@@ -78,7 +78,7 @@ export class ProductComponent extends BaseComponent {
         });
 
         this.ref.onClose.subscribe((res) => {
-            this.getProducts();
+            this.getProducts(true, { page: this.first, size: 10 });
         });
     }
 

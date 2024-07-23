@@ -1,4 +1,4 @@
-<div class="check-out d-flex p-4 gap-4" [formGroup]="checkOutForm" style="min-height: 65vh">
+<div class="check-out d-flex p-4 gap-4" [formGroup]="checkOutForm" style="min-height: 71vh">
     <div *ngIf="isLoading"
         class="loading w-100 h-100 position-absolute d-flex d-flex justify-content-center align-items-center flex-column gap-2 bg-body z-3">
         <div class="spinner-border" role="status">
@@ -151,6 +151,13 @@
                 <h6>Discount</h6>
                 <h6>
                     {{ -discount || 0 | currency : "VND" }}
+                </h6>
+            </span>
+
+            <span class="d-flex justify-content-between">
+                <h6>Shipping Fee</h6>
+                <h6>
+                    {{ (shipService[0].price || selectedShipping?.price) | currency : "VND" }}
                 </h6>
             </span>
         </div>

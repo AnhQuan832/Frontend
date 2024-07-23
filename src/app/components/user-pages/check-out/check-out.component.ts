@@ -389,6 +389,30 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
     }
     changeAdd() {
         this.calculateShippingFee(this.cartItem[0].cartId);
+        this.listShippingService.forEach((item, index) => {
+            const data = {
+                to_district_id: this.selectedDistrict.distCode,
+                to_ward_code: this.selectedWard.wardCode,
+                insurance_value: 500000,
+                service_id: item.service_id,
+                height: 15,
+                length: 15,
+                weight: 1000,
+                width: 15,
+                coupon: null,
+            };
+            this.cartService.getShippingFee(data).subscribe((res: any) => {
+                if (res.code === 200)
+                    this.shipService.map((item) => {
+                        if (
+                            item.service_type_id ===
+                            this.listShippingService[index].service_type_id
+                        )
+                            item.price = res.data.total;
+                    });
+                console.log(this.shipService);
+            });
+        });
     }
     completeCheckout(data) {
         this.storageService.setItemLocal(
