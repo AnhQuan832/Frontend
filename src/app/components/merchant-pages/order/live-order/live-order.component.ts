@@ -6,17 +6,17 @@ import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { Table } from 'primeng/table';
 import { StorageService } from 'src/app/services/storage.service';
 import { VoucherService } from 'src/app/services/voucher.service';
-import { VoucherDetailComponent } from '../voucher-management/voucher-detail/voucher-detail.component';
 import { OrderService } from 'src/app/services/order.service';
-import { OrderDetailComponent } from './order-detail/order-detail.component';
 import * as moment from 'moment';
 import { BaseComponent } from 'src/app/base.component';
+import { OrderDetailComponent } from '../order-detail/order-detail.component';
+
 @Component({
-    selector: 'app-order',
-    templateUrl: './order.component.html',
-    styleUrls: ['./order.component.scss'],
+    selector: 'app-live-order',
+    templateUrl: './live-order.component.html',
+    styleUrls: ['./live-order.component.scss'],
 })
-export class OrderComponent extends BaseComponent implements OnInit {
+export class LiveOrderComponent extends BaseComponent implements OnInit {
     selectedVouchers;
     listVoucher;
     ref: DynamicDialogRef;
@@ -63,8 +63,9 @@ export class OrderComponent extends BaseComponent implements OnInit {
             if (this.paymentType) params.paymentType = this.paymentType;
         }
         const merchantId = this.getUserInfo().merchantId;
+
         this.orderService
-            .getPaymentInfo({
+            .getLiveInvoices({
                 page: this.first,
                 size: 10,
                 merchantId,
@@ -72,24 +73,10 @@ export class OrderComponent extends BaseComponent implements OnInit {
             })
             .subscribe({
                 next: (res) => {
-                    this.listVoucher = res.content;
+                    this.liveInvoices = res.content;
                     if (isInit) this.totalRecords = res.totalElements;
                 },
             });
-
-        // this.orderService
-        //     .getLiveInvoices({
-        //         page: this.first,
-        //         size: 10,
-        //         merchantId,
-        //         ...params,
-        //     })
-        //     .subscribe({
-        //         next: (res) => {
-        //             this.liveInvoices = res.content;
-        //             if (isInit) this.totalRecords = res.totalElements;
-        //         },
-        //     });
     }
 
     openDetail(data?) {
@@ -100,7 +87,7 @@ export class OrderComponent extends BaseComponent implements OnInit {
         });
 
         this.ref.onClose.subscribe(() => {
-            this.getData();
+            this.getData(true, {});
         });
     }
 

@@ -30,8 +30,13 @@ export class LoginService {
                         API.AUTHENTICATE.STATUS.BAD_CREDENTIAL
                     ) {
                         return 'Bad credential! Please check your email or password again!';
+                    } else if (
+                        data.meta.statusCode ===
+                        API.AUTHENTICATE.STATUS.ACCOUNT_LOCKED
+                    ) {
+                        return 'Account locked! Please contact admin to unlock your account!';
                     } else {
-                        throw new Error(data.meta);
+                        return 'Account not found!';
                     }
                 }),
                 catchError((err) => {

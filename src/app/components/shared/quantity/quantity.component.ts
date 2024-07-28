@@ -9,23 +9,31 @@ export class QuantityComponent implements OnInit {
     @Input() quantity: any;
     @Input() min: number = 0;
     @Input() max: number = 999999;
-
+    @Input() isEmitTrueValue: boolean = false;
     @Output() onQuantity: EventEmitter<number> = new EventEmitter();
+
+    _initValue: any;
     constructor() {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this._initValue = this.quantity;
+    }
 
     increase() {
         if (parseInt(this.quantity) < this.max) {
             this.quantity = (1 + +this.quantity).toString();
-            this.onQuantity.emit(Number(this.quantity));
+            this.onQuantity.emit(
+                this.isEmitTrueValue ? this._initValue : Number(this.quantity)
+            );
         }
     }
 
     decrease() {
         if (parseInt(this.quantity) > this.min) {
             this.quantity = (-1 + +this.quantity).toString();
-            this.onQuantity.emit(Number(this.quantity));
+            this.onQuantity.emit(
+                this.isEmitTrueValue ? this._initValue : Number(this.quantity)
+            );
         }
     }
 
@@ -43,6 +51,8 @@ export class QuantityComponent implements OnInit {
 
         this.quantity = value;
         event.target.value = this.quantity;
-        this.onQuantity.emit(Number(this.quantity));
+        this.onQuantity.emit(
+            this.isEmitTrueValue ? this._initValue : Number(this.quantity)
+        );
     }
 }

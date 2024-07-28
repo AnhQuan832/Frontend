@@ -68,7 +68,7 @@ export class MerchantComponent {
                                 this.getMerchantList();
                                 this.messageService.showMessage(
                                     '',
-                                    'Merchant has been approved',
+                                    'Merchant has been inactivated',
                                     'success'
                                 );
                             },
@@ -85,7 +85,7 @@ export class MerchantComponent {
                                 this.getMerchantList();
                                 this.messageService.showMessage(
                                     '',
-                                    'Merchant has been rejected',
+                                    'Merchant has been activated',
                                     'success'
                                 );
                             },
@@ -93,5 +93,15 @@ export class MerchantComponent {
                 },
             },
         ];
+        if (this.selectedMerchant) {
+            if (this.selectedMerchant.isSuspended) {
+                this.items[0].visible = false;
+                this.items[1].visible = false;
+                this.items[2].visible = true;
+            } else {
+                this.items[1].visible = true;
+                this.items[2].visible = false;
+            }
+        }
     }
 }

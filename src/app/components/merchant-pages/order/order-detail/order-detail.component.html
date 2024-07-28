@@ -72,15 +72,15 @@
     <ng-template pTemplate="header">
         <tr>
             <th>Product</th>
-            <th pSortableColumn="unitPrice">
-                Price <p-sortIcon field="unitPrice"></p-sortIcon>
+            <th>
+                Price
             </th>
-            <th pSortableColumn="quantity">
-                Quantity <p-sortIcon field="quantity"></p-sortIcon>
+            <th>
+                Quantity
             </th>
-            <th pSortableColumn="total_price">
-                Total <p-sortIcon field="total_price"></p-sortIcon>
-            </th>
+            <!-- <th>
+                Total
+            </th> -->
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-product>
@@ -101,10 +101,10 @@
                 <span class="p-column-title text-center">Quantity</span>
                 {{ product.quantity }}
             </td>
-            <td style="width: 14%">
+            <!-- <td style="width: 14%">
                 <span class="p-column-title">Total</span>
                 {{ product.totalPrice | currency : "VND" }}
-            </td>
+            </td> -->
         </tr>
     </ng-template>
 </p-table>

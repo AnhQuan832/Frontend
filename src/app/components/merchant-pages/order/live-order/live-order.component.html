@@ -15,7 +15,7 @@
                 </ng-template>
             </p-toolbar> -->
 
-            <p-table #dt [value]="listVoucher" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="[
+            <p-table #dt [value]="liveInvoices" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="[
                     'type',
                     'createdDate',
                     'value',
@@ -32,7 +32,7 @@
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <span>
                             <div class="d-flex gap-2 align-items-center">
-                                <h5 class="m-0 mb-1">Manage Order</h5>
+                                <h5 class="m-0 mb-1">Manage Live Order</h5>
                                 <!-- <button
                                     type="button"
                                     pButton

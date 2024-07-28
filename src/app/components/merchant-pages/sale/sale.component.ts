@@ -53,17 +53,13 @@ export class SaleComponent extends BaseComponent implements OnInit {
     ];
     cols = [
         { field: 'createdDate', header: 'Created Date' },
-        { field: 'userName', header: 'User Name' },
+        { field: 'recipientName', header: 'User Name' },
         { field: 'finalPrice', header: 'Price (VND)' },
 
         { field: 'paymentType', header: 'Payment Type' },
-        { field: 'status', header: 'Status' },
+        // { field: 'status', header: 'Status' },
     ];
-    importCols = [
-        { field: 'importInvoiceId', header: 'ID' },
-        { field: 'createdDate', header: 'Created Date' },
-        { field: 'totalPrice', header: 'Total Price' },
-    ];
+
     selectedOption = null;
     mostView;
     mostBuy;
@@ -92,10 +88,6 @@ export class SaleComponent extends BaseComponent implements OnInit {
         this.getData(params);
         this.getView(7);
         this.exportColumns = this.cols.map((col) => ({
-            title: col.header,
-            dataKey: col.field,
-        }));
-        this.exportImColumns = this.importCols.map((col) => ({
             title: col.header,
             dataKey: col.field,
         }));
@@ -254,19 +246,13 @@ export class SaleComponent extends BaseComponent implements OnInit {
     }
 
     generatePDF() {
-        forkJoin([
-            this.productService.getAllImport(this.genParam),
-            this.orderService.getPaymentInfo(this.genParam),
-        ]).subscribe({
+        let params = this.genParam;
+        if (this.getRole() === 'ROLE_MERCHANT')
+            params['merchantId'] = this.getUserInfo().merchantId;
+        this.orderService.getPaymentInfo(params).subscribe({
             next: (res) => {
-                this.listImport = res[0];
-                this.listInvoice = res[1];
-                this.listImport.forEach((item) => {
-                    item.createdDate = moment(item.createdDate).format(
-                        'DD/MM/YYYY'
-                    );
-                    item.totalPrice = item.totalPrice.toLocaleString();
-                });
+                this.listInvoice = res.content;
+
                 this.listInvoice.forEach((item) => {
                     item.createdDate = moment(item.createdDate).format(
                         'DD/MM/YYYY'
@@ -282,15 +268,7 @@ export class SaleComponent extends BaseComponent implements OnInit {
                             this.exportColumns,
                             this.listInvoice
                         );
-                        doc.addPage();
-
-                        doc.text('IMPORT', 200, 20);
-
-                        (doc as any).autoTable(
-                            this.exportImColumns,
-                            this.listImport
-                        );
-                        doc.save('reports.pdf');
+                        doc.save(`report-${moment().format('DD/MM/YYYY')}.pdf`);
                     });
                 });
             },

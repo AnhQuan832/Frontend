@@ -103,6 +103,7 @@ export const API = {
             INVOICE: API_URL + 'invoice',
             UPDATE_INVOICE: API_URL + 'invoice/update-status',
             INVOICE_USER: API_URL + 'invoice/user-invoice-info',
+            LIVE_INVOICE: API_URL + 'live/invoice',
         },
         STATUS: {
             SUCCESS: '0_2_s',

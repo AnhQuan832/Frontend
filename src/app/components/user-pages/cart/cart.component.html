@@ -30,7 +30,7 @@
                             </span>
 
                             <span style="width: 14%; min-width: 10rem" class="num-item">
-                                <app-quantity [quantity]="item.quantity" [min]="1" [max]="item.stockAmount"
+                                <app-quantity [quantity]="item.quantity" [min]="0" [max]="item.stockAmount"
                                     (onQuantity)="onChangeQty(item, $event)"></app-quantity>
                                 <button pButton pRipple icon="pi pi-trash"
                                     class="p-button-rounded p-button-danger p-button-text" (click)="

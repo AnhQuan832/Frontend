@@ -255,24 +255,19 @@ export class InvoiceService {
     }
 
     getShippingFee(params) {
-        return this.http
-            .get(API.PAYMENT.END_POINT.SHIPPING_FEE, {
-                params: params,
+        return this.http.post(API.PAYMENT.END_POINT.SHIPPING_FEE, params).pipe(
+            map((data: any) => {
+                if (
+                    data.meta.statusCode === API.CART.STATUS.GET_PRODUCT_SUCCESS
+                ) {
+                    return data.data.shippingFees;
+                } else {
+                    return false;
+                }
+            }),
+            catchError((err) => {
+                throw new Error(err);
             })
-            .pipe(
-                map((data: any) => {
-                    if (
-                        data.meta.statusCode ===
-                        API.CART.STATUS.GET_PRODUCT_SUCCESS
-                    ) {
-                        return data.data.output;
-                    } else {
-                        return false;
-                    }
-                }),
-                catchError((err) => {
-                    throw new Error(err);
-                })
-            );
+        );
     }
 }

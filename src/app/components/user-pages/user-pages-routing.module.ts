@@ -12,6 +12,7 @@ import { ShopViewComponent } from './shop-view/shop-view.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { LiveDetailComponent } from './live-detail/live-detail.component';
 import { MerchantShopComponent } from './merchant-shop/merchant-shop.component';
+import { PurchaseHistoryComponent } from './purchase-history/purchase-history.component';
 
 @NgModule({
     imports: [
@@ -68,6 +69,10 @@ import { MerchantShopComponent } from './merchant-shop/merchant-shop.component';
                     {
                         path: 'shop/:id',
                         component: MerchantShopComponent,
+                    },
+                    {
+                        path: 'purchase-history',
+                        component: PurchaseHistoryComponent,
                     },
                 ],
             },

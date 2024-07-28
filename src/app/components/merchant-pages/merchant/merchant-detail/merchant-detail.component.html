@@ -32,7 +32,7 @@
                 </h5>
                 <h5>
                     <b>Description: </b>
-                    {{ merchantDetail.description }}
+                    {{ merchantDetail.merchantDescription }}
                 </h5>
                 <h5>
                     <b>Created Date: </b>
@@ -43,7 +43,7 @@
                 <h5 *ngIf="!isRequest"><b>Status: </b>
                     {{ merchantDetail.isSuspended ? 'True' : 'False' }}</h5>
                 <h5><b>Related Document or License: </b></h5>
-                <h6 class="mt-0" style="font-weight: 400" *ngIf="merchantDetail.relatedDocuments.length == 0">
+                <h6 class="mt-0" style="font-weight: 400" *ngIf="merchantDetail?.relatedDocuments?.length == 0">
                     (No document or License yet)
                 </h6>
 
@@ -91,7 +91,7 @@
             </button>
 
             <button *ngIf="!merchantDetail.isLiveable" class="btn btn-primary " (click)="unBanLive()">
-                UnBan Live
+                Remove Ban Live
             </button>
         </div>
     </div>

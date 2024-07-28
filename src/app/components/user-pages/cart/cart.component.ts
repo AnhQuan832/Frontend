@@ -51,6 +51,9 @@ export class CartComponent implements OnInit {
                         item.isSelected = item.cartItemDTOList.every(
                             (pro) => pro.isSelected
                         );
+                        item.cartItemDTOList.forEach((item) => {
+                            item.qty = item.quantity;
+                        });
                         return item;
                     });
                     this.calculateTotal();
@@ -69,6 +72,10 @@ export class CartComponent implements OnInit {
                         (pro) => pro.isSelected
                     );
                     // this.voucherByMerchantMap[item.merchantId] = {};
+                    item.cartItemDTOList.forEach((item) => {
+                        item.qty = item.quantity;
+                    });
+
                     return item;
                 });
                 this.calculateTotal();
@@ -115,10 +122,13 @@ export class CartComponent implements OnInit {
         if (data.stockAmount < data.quantity) {
             data.quantity = data.quantity;
         } else {
-            data.quantity = value - data.quantity;
-            this.updateCartItem(data);
-            this.calculateTotal();
-            // this.getCartData();
+            data.quantity = value;
+            const change = {
+                quantity: value - data.qty,
+                varietyId: data.varietyId,
+            };
+            data.qty = value;
+            this.updateCartItem(change);
         }
     }
 
@@ -126,12 +136,20 @@ export class CartComponent implements OnInit {
         if (this.isLogin) {
             this.cartService
                 .addToCart(data.quantity, data.varietyId)
-                .subscribe();
+                .subscribe({
+                    next: (res) => {
+                        this.getCart();
+                    },
+                });
         } else {
             const cartId = this.storageService.getItemLocal('cart').cartId;
             this.cartService
                 .addToCartUnAuth(cartId, data.quantity, data.varietyId)
-                .subscribe();
+                .subscribe({
+                    next: (res) => {
+                        this.getCartData();
+                    },
+                });
         }
     }
 
@@ -161,6 +179,7 @@ export class CartComponent implements OnInit {
     calculateTotal() {
         this.totalPrice = 0;
         this.discountPrice = 0;
+        this.finalPrice = 0;
         this.cart.forEach((merchant) => {
             let totalSelectedPrice = 0;
             merchant.cartItemDTOList.forEach((item) => {

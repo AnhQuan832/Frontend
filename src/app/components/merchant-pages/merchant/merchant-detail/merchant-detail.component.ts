@@ -27,7 +27,6 @@ export class MerchantDetailComponent extends BaseComponent implements OnInit {
     getMerchantDetail() {
         this.merchantDetail =
             this.storageService.getItemLocal('merchantDetail');
-        console.log(location.pathname.split('/'));
         const merchantId = window.location.href.slice(
             window.location.href.lastIndexOf('/') + 1
         );
@@ -51,6 +50,7 @@ export class MerchantDetailComponent extends BaseComponent implements OnInit {
                         'Merchant has been approved',
                         'success'
                     );
+                    this.router.navigate(['/merchant/merchant/request']);
                 },
             });
     }
@@ -65,6 +65,7 @@ export class MerchantDetailComponent extends BaseComponent implements OnInit {
                         'Merchant has been rejected',
                         'success'
                     );
+                    this.router.navigate(['/merchant/merchant/request']);
                 },
             });
     }
@@ -79,6 +80,7 @@ export class MerchantDetailComponent extends BaseComponent implements OnInit {
                         'Merchant has been suspended',
                         'success'
                     );
+                    this.getMerchantDetail();
 
                     this.router.navigate(['/merchant/merchant']);
                 },
@@ -95,6 +97,7 @@ export class MerchantDetailComponent extends BaseComponent implements OnInit {
                         'Merchant has been unsuspended',
                         'success'
                     );
+                    this.getMerchantDetail();
                 },
             });
     }
@@ -107,6 +110,7 @@ export class MerchantDetailComponent extends BaseComponent implements OnInit {
                     'Merchant has been banned from live',
                     'success'
                 );
+                this.getMerchantDetail();
             },
         });
     }
@@ -121,6 +125,7 @@ export class MerchantDetailComponent extends BaseComponent implements OnInit {
                         'Merchant has been unbanned from live',
                         'success'
                     );
+                    this.getMerchantDetail();
                 },
             });
     }

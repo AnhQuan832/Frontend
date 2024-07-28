@@ -39,11 +39,22 @@ export class OrderDetailComponent implements OnInit {
             this.data.paymentType === 'CREDIT_CARD' ? 'Credit card' : 'Cash';
     }
     ngOnInit(): void {
-        this.invoiceService.getPaymentDetail(this.data.invoiceId).subscribe({
-            next: (res) => {
-                this.listTransactions = res;
-            },
-        });
+        if (this.data.invoiceId)
+            this.invoiceService
+                .getPaymentDetail(this.data.invoiceId)
+                .subscribe({
+                    next: (res) => {
+                        this.listTransactions = res;
+                    },
+                });
+        else
+            this.invoiceService
+                .getLiveInvoiceDetail(this.data.liveInvoiceId)
+                .subscribe({
+                    next: (res) => {
+                        this.listTransactions = res;
+                    },
+                });
     }
     updateStatus(status) {
         this.invoiceService

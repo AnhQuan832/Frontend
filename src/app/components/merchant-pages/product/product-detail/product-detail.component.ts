@@ -289,7 +289,9 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                     this.toBlobImgs()
                 )
                 .subscribe({
-                    next: (res) => {},
+                    next: (res) => {
+                        this.getProduct();
+                    },
                 });
         const requests = [];
         Object.values(this.listUpdateVariety).forEach((variety) => {

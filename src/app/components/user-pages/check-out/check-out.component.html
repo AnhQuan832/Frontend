@@ -157,7 +157,7 @@
             <span class="d-flex justify-content-between">
                 <h6>Shipping Fee</h6>
                 <h6>
-                    {{ (shipService[0].price || selectedShipping?.price) | currency : "VND" }}
+                    {{ shippingFee | currency : "VND" }}
                 </h6>
             </span>
         </div>
@@ -165,10 +165,10 @@
             <h6>Total</h6>
             <h6>
                 {{
-                (shipService[0].price || selectedShipping?.price) +
+                shippingFee +
                 totalPrice -
                 discount ||
-                (shipService[0].price || selectedShipping?.price) +
+                shippingFee +
                 cartItem[0]?.price * cartItem[0]?.quantity -
                 discount | currency : "VND"
                 }}

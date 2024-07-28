@@ -6,19 +6,17 @@
                                 'price',
                                 'brand.name',
                                 'subCategory.category.name'
-                            ]" [paginator]="true" [rowsPerPageOptions]="[10, 20, 30]" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" selectionMode="multiple"
-                [rowHover]="true" dataKey="id">
+                            ]" [paginator]="true" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="merchantId">
-                            ID <p-sortIcon field="merchantId"></p-sortIcon>
+                            ID
                         </th>
                         <th>Name</th>
                         <th>Live Thumbnail</th>
                         <th pSortableColumn="createdDate">
                             Created Date
-                            <p-sortIcon field="createdDate"></p-sortIcon>
+
                         </th>
                         <!-- <th pSortableColumn="phoneNumber">
                             Phone <p-sortIcon field="phoneNumber"></p-sortIcon>

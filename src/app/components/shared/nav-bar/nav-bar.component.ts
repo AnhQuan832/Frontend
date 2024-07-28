@@ -34,13 +34,13 @@ export class NavBarComponent
                 this.router.navigate(['/user/profile']);
             },
         },
-        // {
-        //   label: 'Shopping history',
-        //   icon: 'pi pi-shopping-bag',
-        //   command: () => {
-        //     this.router.navigate(['/user/invoice-history']);
-        //   },
-        // },
+        {
+            label: 'Shopping history',
+            icon: 'pi pi-shopping-bag',
+            command: () => {
+                this.router.navigate(['/user/purchase-history']);
+            },
+        },
         {
             label: 'Log out',
             icon: 'pi pi-sign-out',

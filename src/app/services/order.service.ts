@@ -79,4 +79,49 @@ export class OrderService {
                 })
             );
     }
+
+    getLiveInvoices(params?) {
+        return this.http
+            .get(API.INVOICE.END_POINT.LIVE_INVOICE, {
+                params: params,
+                headers: this.storageService.getHttpHeader(),
+            })
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.IMPORT.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return data.data.invoiceList;
+                    } else {
+                        throw new Error(data.meta);
+                    }
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
+    }
+
+    getLiveInvoiceDetail(id) {
+        return this.http
+            .get(API.INVOICE.END_POINT.INVOICE + `/live/${id}`, {
+                headers: this.storageService.getHttpHeader(),
+            })
+            .pipe(
+                map((data: any) => {
+                    if (
+                        data.meta.statusCode ===
+                        API.IMPORT.STATUS.GET_PRODUCT_SUCCESS
+                    ) {
+                        return data.data.invoiceItemList;
+                    } else {
+                        throw new Error(data.meta);
+                    }
+                }),
+                catchError((err) => {
+                    throw new Error(err);
+                })
+            );
+    }
 }

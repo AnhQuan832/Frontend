@@ -28,9 +28,10 @@ import { SharedModule } from '../../shared/shared.module';
 import { PaginatorModule } from 'primeng/paginator';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { SkeletonModule } from 'primeng/skeleton';
+import { LiveOrderComponent } from './live-order/live-order.component';
 
 @NgModule({
-    declarations: [OrderComponent, OrderDetailComponent],
+    declarations: [OrderComponent, OrderDetailComponent, LiveOrderComponent],
     imports: [
         CommonModule,
         OrderRoutingModule,
