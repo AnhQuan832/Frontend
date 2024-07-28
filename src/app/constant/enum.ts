@@ -178,6 +178,7 @@ export const API = {
                 API_URL + 'live/payment/un-authenticate/user-cart-checkout',
             UNTAUTH_SINGLE_CHECKOUT:
                 API_URL + 'live/payment/un-authenticate/single-item-checkout',
+            SHIPPING_FEE: API_URL + 'live/payment/shipping-fee',
         },
     },
 };

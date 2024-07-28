@@ -94,7 +94,7 @@ export class LoginService {
                 userPassword: inputData.userPassword,
                 userFirstName: this.getFirstName(inputData.userFullName),
                 userLastName: this.getLastName(inputData.userFullName),
-                userPhoneNumber: inputData.phoneNumber,
+                userPhoneNumber: inputData.userPhoneNumber,
                 userAvatar: '',
             })
             .pipe(

@@ -121,7 +121,9 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
                 this.listAddress = res;
                 if (this.listAddress.length > 0) {
                     this.selectedAdd = this.listAddress[0];
-                    this.calculateShippingFee(this.cartItem[0].cartId);
+                    this.calculateShippingFee(
+                        this.cartItem[0].cartId || this.liveCartId
+                    );
                 }
             },
         });
@@ -268,7 +270,7 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
         if (this.cartItem[0]?.cartId || this.liveCartId) {
             data = {
                 paymentInfoDTO: this.checkOutForm.value,
-                cartId: this.cartItem[0].cartId,
+                cartId: this.cartItem[0].cartId || this.liveCartId,
             };
             localStorage.removeItem('cart');
             localStorage.removeItem('discountPrice');
@@ -379,7 +381,9 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
                         this.listAddress.push(res);
                         if (this.listAddress.length === 1) {
                             this.selectedAdd = this.listAddress[0];
-                            this.calculateShippingFee(this.cartItem[0].cartId);
+                            this.calculateShippingFee(
+                                this.cartItem[0].cartId || this.liveCartId
+                            );
                         }
                     },
                 });
@@ -399,7 +403,7 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
         }
     }
     changeAdd() {
-        this.calculateShippingFee(this.cartItem[0].cartId);
+        this.calculateShippingFee(this.cartItem[0].cartId || this.liveCartId);
     }
     completeCheckout(data) {
         this.storageService.setItemLocal(
@@ -416,11 +420,11 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
         const params = {
             cartId: cartId,
             wardCode: this.selectedAdd.wardCode,
-            districtCode: this.selectedAdd.districtId,
+            districtId: this.selectedAdd.districtId,
             // cityCode: this.selectedAdd.cityCode || 202,
         };
         this.shippingFee = 0;
-        this.invoiceService.getShippingFee(params).subscribe({
+        this.invoiceService.getShippingFee(params, this.liveCartId).subscribe({
             next: (res) => {
                 res.forEach((item, index) => {
                     this.shippingFee += item.shippingFee;

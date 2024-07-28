@@ -14,18 +14,24 @@
                                         <th>
                                             Invoice ID
                                         </th>
-                                        <th pSortableColumn="createdDate" style="min-width: 6rem" class="ps-4">
+                                        <th style="min-width: 6rem" class="ps-4">
                                             Date
                                         </th>
 
-                                        <th pSortableColumn="finalPrice">
-                                            Price
+                                        <th>
+                                            Total
+                                        </th>
+                                        <th>
+                                            Shipping Fee
+                                        </th>
+                                        <th>
+                                            Final Price
                                         </th>
 
-                                        <th pSortableColumn="paymentType">
+                                        <th>
                                             Payment
                                         </th>
-                                        <th pSortableColumn="status">
+                                        <th>
                                             Status
                                         </th>
                                         <th>Action</th>
@@ -39,6 +45,8 @@
                                         <td class="">
                                             {{ invoice.createdDate | date : "dd/MM/yyyy" }}
                                         </td>
+                                        <td>{{ invoice.totalPrice | currency : "VND" }}</td>
+                                        <td>{{ invoice.shippingFee | currency : "VND" }}</td>
                                         <td>{{ invoice.finalPrice | currency : "VND" }}</td>
                                         <td>
 
@@ -76,13 +84,13 @@
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th>Product</th>
-                                        <th pSortableColumn="unitPrice">
+                                        <th>
                                             Price <p-sortIcon field="unitPrice"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="quantity">
+                                        <th>
                                             Quantity <p-sortIcon field="quantity"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="totalItemPrice">
+                                        <th>
                                             Total <p-sortIcon field="totalItemPrice"></p-sortIcon>
                                         </th>
                                         <th></th>

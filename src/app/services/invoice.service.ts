@@ -254,8 +254,11 @@ export class InvoiceService {
             );
     }
 
-    getShippingFee(params) {
-        return this.http.post(API.PAYMENT.END_POINT.SHIPPING_FEE, params).pipe(
+    getShippingFee(params, isLive) {
+        const url = !isLive
+            ? API.PAYMENT.END_POINT.SHIPPING_FEE
+            : API.LIVE_PAYMENT.END_POINT.SHIPPING_FEE;
+        return this.http.post(url, params).pipe(
             map((data: any) => {
                 if (
                     data.meta.statusCode === API.CART.STATUS.GET_PRODUCT_SUCCESS

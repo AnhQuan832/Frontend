@@ -301,7 +301,7 @@ export class LiveDetailComponent
 
         this.session = this.OV.initSession();
 
-        this.session.on('streamDestroyed', (event: StreamEvent) => {
+        this.session.on('sessionDisconnected', (event) => {
             console.log('Stream destroyed: ' + event);
             this.streamVideo.endStream();
         });
