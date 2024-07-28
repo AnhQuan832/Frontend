@@ -218,7 +218,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
             this.numberOfProduct = this.selectedVariety.stockAmount;
             this.isDisableBuy = true;
         } else {
-            this.attPrice = this.selectedVariety.price * event;
+            this.attPrice = this.selectedVariety.price;
             this.numberOfProduct = event;
             this.isDisableBuy = false;
         }
