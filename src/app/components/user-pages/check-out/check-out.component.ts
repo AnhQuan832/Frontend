@@ -377,6 +377,10 @@ export class CheckOutComponent extends BaseComponent implements OnInit {
                 this.apiAddress.addAddress(address).subscribe({
                     next: (res) => {
                         this.listAddress.push(res);
+                        if (this.listAddress.length === 1) {
+                            this.selectedAdd = this.listAddress[0];
+                            this.calculateShippingFee(this.cartItem[0].cartId);
+                        }
                     },
                 });
             } else {
