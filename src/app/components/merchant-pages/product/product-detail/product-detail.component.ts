@@ -290,7 +290,8 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                 )
                 .subscribe({
                     next: (res) => {
-                        this.getProduct();
+                        this.removedImgs = [];
+                        this.imgs = [];
                     },
                 });
         const requests = [];
