@@ -175,4 +175,8 @@ export class NavBarComponent
         }
         if (page !== 'user') this.router.navigate([`/${page}`]);
     }
+
+    routeToHome() {
+        this.router.navigate(['/user/home']);
+    }
 }
