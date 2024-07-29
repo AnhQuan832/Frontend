@@ -47,10 +47,10 @@ export class DashboardComponent
             start_time_millis:
                 moment()
                     .clone()
-                    .startOf('week')
+                    .startOf('month')
                     .set({ hour: 7, minute: 0, second: 0, millisecond: 0 })
                     .unix() * 1000,
-            end_time_millis: moment().clone().endOf('week').unix() * 1000,
+            end_time_millis: moment().clone().endOf('month').unix() * 1000,
             interval: 'day',
         };
         this.getData(params);
