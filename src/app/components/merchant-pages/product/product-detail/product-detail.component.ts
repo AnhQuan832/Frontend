@@ -42,6 +42,7 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     attPrice = 0;
     listUpdateVariety = [];
     userId;
+    variety;
     addProductForm = this.builder.group({
         productId: this.builder.control(''),
         name: this.builder.control('', Validators.required),
@@ -98,6 +99,12 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
                             this.attribute = res;
                         },
                     });
+                    if (
+                        this.product.varieties.length > 0 &&
+                        this.product.varietyAttributeList.length === 0
+                    ) {
+                        this.variety = this.product.varieties[0];
+                    }
                     this.getBrand();
                     this.getCate();
                     this.getSubCate();

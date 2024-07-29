@@ -103,6 +103,12 @@
                         <textarea formControlName="description" class="w-100" name="" id="textarea" pInputTextarea
                             [autoResize]="true" style="max-height: 400px;"></textarea>
                     </span>
+
+                    <span *ngIf="variety" class="p-float-label col-11">
+                        <h6 class="addressLabel ps-0">Stock</h6>
+                        <app-quantity class="ms-2" [quantity]="variety.stockAmount" [min]="0"
+                            (onQuantity)="updateVariety(variety, $event)"></app-quantity>
+                    </span>
                 </div>
                 <div class="w-50 ms-4">
                     <p-divider align="left">
@@ -142,7 +148,8 @@
         />
       </span> -->
 
-                    <p-table [value]="product.varieties" dataKey="id" [tableStyle]="{ 'min-width': '20rem' }">
+                    <p-table *ngIf="!variety" [value]="product.varieties" dataKey="id"
+                        [tableStyle]="{ 'min-width': '20rem' }">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th width="100px" *ngIf="listSize.length > 0">
