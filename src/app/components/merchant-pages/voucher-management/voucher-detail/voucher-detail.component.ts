@@ -29,8 +29,8 @@ export class VoucherDetailComponent implements OnInit {
         type: this.builder.control('PERCENTAGE', Validators.required),
         value: this.builder.control('', Validators.required),
         price: this.builder.control('', Validators.required),
-        maxValue: this.builder.control('', Validators.required),
-        minInvoiceValue: this.builder.control('', Validators.required),
+        maxValue: this.builder.control(0),
+        minInvoiceValue: this.builder.control(0),
     });
     constructor(
         private voucherSerivce: VoucherService,
