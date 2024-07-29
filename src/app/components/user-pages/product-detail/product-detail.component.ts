@@ -56,9 +56,6 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
     }
     ngOnInit(): void {
         this.initialize();
-        setTimeout(() => {
-            this.setDefaultAttribute();
-        }, 1000);
     }
 
     initialize() {
@@ -92,10 +89,16 @@ export class ProductDetailComponent extends BaseComponent implements OnInit {
             .subscribe({
                 next: (res) => {
                     this.product = res;
+                    this.attPrice = this.product.price;
                     this.getMerchant(res.merchantId);
                     this.getSimilarProd(res.subCategory.category.categoryId);
                     if (this.product.varieties.length === 1)
                         this.selectedVariety = this.product.varieties[0];
+                    else {
+                        setTimeout(() => {
+                            this.setDefaultAttribute();
+                        }, 1000);
+                    }
                     if (this.product.detail) {
                         this.product.detail = this.product.detail.replace(
                             /(?:\r\n|\r|\n)/g,

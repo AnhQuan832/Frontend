@@ -73,10 +73,9 @@
                         (onInput)="onChangeQty($event)"
                     ></p-inputNumber> -->
                     <app-quantity [quantity]="numberOfProduct" (onQuantity)="onChangeQty($event)"
-                        [max]="selectedVariety?.stockAmount || 0"></app-quantity>
+                        [max]="selectedVariety?.stockAmount"></app-quantity>
                     <small *ngIf="isDisableBuy || selectedVariety?.stockAmount === 0 || !selectedVariety"
-                        class="text-danger w-100">Over
-                        stock</small>
+                        class="text-danger w-100">Over stock</small>
                 </div>
             </div>
 
